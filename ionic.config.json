@@ -1,0 +1,7 @@
+{
+  "name": "alanam-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
