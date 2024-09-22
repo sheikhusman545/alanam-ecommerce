@@ -1,0 +1,144 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Order Form</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+  
+    
+  <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+    <h2>Shipping Info</h2>
+    <ion-item>
+      <ion-label>Address Type</ion-label>
+      <ion-select formControlName="addressType" (ionChange)="onAddressTypeChange($event)">
+        <ion-select-option value="individual">Individual</ion-select-option>
+        <ion-select-option value="company">Company</ion-select-option>
+      </ion-select>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label position="floating">Customer Name</ion-label>
+      <ion-input formControlName="customerName"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Email</ion-label>
+      <ion-input formControlName="emailID"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Phone Number</ion-label>
+      <ion-input type="tel" formControlName="phoneNo"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">City</ion-label>
+      <ion-input formControlName="city"></ion-input>
+    </ion-item>
+
+  
+
+    <ion-item>
+      <ion-label position="">Delivery Method</ion-label>
+    </ion-item>
+    
+    <ion-radio-group formControlName="deliveryMethod">
+      <ion-item>
+        <ion-label>Self Pickup</ion-label>
+        <ion-radio slot="start" value="selfPickup"></ion-radio>
+      </ion-item>
+    
+      <ion-item>
+        <ion-label>Home Delivery</ion-label>
+        <ion-radio slot="start" value="homeDelivery"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+    
+   
+
+    <div *ngIf="isCompany">
+      <ion-item>
+        <ion-label position="floating">Company Name</ion-label>
+        <ion-input formControlName="companyName"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Building/No</ion-label>
+        <ion-input formControlName="buildingName_No"></ion-input>
+      </ion-item>
+    </div>
+
+    <div *ngIf="!isCompany">
+      <ion-item>
+        <ion-label position="floating">Building/No</ion-label>
+        <ion-input formControlName="buildingName_No"></ion-input>
+      </ion-item>
+    </div>
+
+    <ion-item>
+      <ion-label position="floating">Street Name/No</ion-label>
+      <ion-input formControlName="streetName_No"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Landmark</ion-label>
+      <ion-input formControlName="landMark"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Delivery Time</ion-label>
+      <ion-select formControlName="deliveryTime">
+        <ion-select-option value="10AM-12PM">10AM-12PM</ion-select-option>
+        <ion-select-option value="12PM-2PM">12PM-2PM</ion-select-option>
+        <ion-select-option value="2PM-4PM">2PM-4PM</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-button expand="full" type="submit">Submit</ion-button>
+  </form>
+</ion-grid>
+<ion-card>
+  <ion-card-header>
+    <ion-card-title>Your Shopping Bag</ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content>
+    <ion-item lines="none">
+      <ion-label>
+        <h2>COLOMBIAN BONELESS BEEF</h2>
+        <p>10 X 35 QAR</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-label>
+        <p>10 - item(s)</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-label>
+        <p>Slaughter charge</p>
+      </ion-label>
+      <ion-label slot="end">0.00 QAR</ion-label>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-label>
+        <p>Cutting charge</p>
+      </ion-label>
+      <ion-label slot="end">0 QAR</ion-label>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-label>
+        <h2>Order Total</h2>
+      </ion-label>
+      <ion-label slot="end">
+        <h2>350.00 QAR</h2>
+      </ion-label>
+    </ion-item>
+  </ion-card-content>
+</ion-card>
+</ion-content>

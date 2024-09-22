@@ -34,4 +34,151 @@
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import "@ionic/angular/css/palettes/dark.system.css";
+// @import "@ionic/angular/css/palettes/dark.system.css";
+body {
+    --ion-background-color: #ffffff; /* Light theme background */
+    --ion-text-color: #000000; /* Light theme text */
+  }
+  
+  .dark {
+    --ion-background-color: #000000; /* Dark theme background */
+    --ion-text-color: #ffffff; /* Dark theme text */
+  }
+  
+  :root {
+	--ion-color-primary: #6c2835;
+	--ion-color-primary-rgb: 0,175,240;
+	--ion-color-primary-contrast: #000000;
+	--ion-color-primary-contrast-rgb: 0,0,0;
+	--ion-color-primary-shade: #009ad3;
+	--ion-color-primary-tint: #1ab7f2;
+
+	--ion-color-secondary: #6c2835;
+	--ion-color-secondary-rgb: 1,99,170;
+	--ion-color-secondary-contrast: #ffffff;
+	--ion-color-secondary-contrast-rgb: 255,255,255;
+	--ion-color-secondary-shade: #015796;
+	--ion-color-secondary-tint: #1a73b3;
+
+	--ion-color-tertiary: #6030ff;
+	--ion-color-tertiary-rgb: 96,48,255;
+	--ion-color-tertiary-contrast: #ffffff;
+	--ion-color-tertiary-contrast-rgb: 255,255,255;
+	--ion-color-tertiary-shade: #542ae0;
+	--ion-color-tertiary-tint: #7045ff;
+
+	--ion-color-success: #2dd55b;
+	--ion-color-success-rgb: 45,213,91;
+	--ion-color-success-contrast: #000000;
+	--ion-color-success-contrast-rgb: 0,0,0;
+	--ion-color-success-shade: #28bb50;
+	--ion-color-success-tint: #42d96b;
+
+	--ion-color-warning: #ffc409;
+	--ion-color-warning-rgb: 255,196,9;
+	--ion-color-warning-contrast: #000000;
+	--ion-color-warning-contrast-rgb: 0,0,0;
+	--ion-color-warning-shade: #e0ac08;
+	--ion-color-warning-tint: #ffca22;
+
+	--ion-color-danger: #c5000f;
+	--ion-color-danger-rgb: 197,0,15;
+	--ion-color-danger-contrast: #ffffff;
+	--ion-color-danger-contrast-rgb: 255,255,255;
+	--ion-color-danger-shade: #ad000d;
+	--ion-color-danger-tint: #cb1a27;
+
+	--ion-color-light: #f6f8fc;
+	--ion-color-light-rgb: 246,248,252;
+	--ion-color-light-contrast: #000000;
+	--ion-color-light-contrast-rgb: 0,0,0;
+	--ion-color-light-shade: #d8dade;
+	--ion-color-light-tint: #f7f9fc;
+
+	--ion-color-medium: #5f5f5f;
+	--ion-color-medium-rgb: 95,95,95;
+	--ion-color-medium-contrast: #ffffff;
+	--ion-color-medium-contrast-rgb: 255,255,255;
+	--ion-color-medium-shade: #545454;
+	--ion-color-medium-tint: #6f6f6f;
+
+	--ion-color-dark: #2f2f2f;
+	--ion-color-dark-rgb: 47,47,47;
+	--ion-color-dark-contrast: #ffffff;
+	--ion-color-dark-contrast-rgb: 255,255,255;
+	--ion-color-dark-shade: #292929;
+	--ion-color-dark-tint: #444444;
+
+
+  }
+  ion-button {
+    --color: #ffffff; /* Default text color */
+   
+  }
+  
+  ion-header {
+	--background: #6c2835; /* Set header background color */
+	
+	ion-toolbar {
+	  --color: white; /* Set text color to white */
+	  
+	  ion-buttons {
+		ion-button {
+		  --color: white; /* Set button icon and text color to white */
+		  ion-icon {
+			color: white; /* Set icon color to white */
+		  }
+		}
+		
+		ion-button[slot="start"] {
+		  --padding-start: 0; /* Remove default padding for start button */
+		}
+		
+		ion-button[slot="end"] {
+		  --padding-end: 0; /* Remove default padding for end button */
+		}
+	  }
+	}
+  }
+  .header-background{
+	background-color: #6c2835 !important;
+  }
+  ion-title {
+	color:white
+}
+  
+.curvy-header {
+	position: relative;
+	color: white;
+	height: 120px; /* Adjust as needed */
+	clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);
+	/* Flat top and curvy bottom */
+  
+	ion-toolbar {
+	  color: white;
+	}
+  
+	ion-buttons {
+	  ion-button {
+		color: white;
+		ion-icon {
+		  color: white;
+		  font-size: 24px;
+		}
+		ion-label {
+		  color: white;
+		  margin-left: 5px;
+		}
+		&:hover {
+		  background-color: rgba(255, 255, 255, 0.2); /* Button hover effect */
+		}
+	  }
+	}
+  
+	ion-title {
+	  text-align: center;
+	  font-size: 20px;
+	  font-weight: bold;
+	  color: white; /* Title color */
+	}
+  }

@@ -1,1 +1,21 @@
 
+ion-tab-bar {
+    --background: #6c2835; /* Set the background color of the tab bar */
+    --color: white; /* Default text color */
+    --color-selected: white; /* Text color when selected */
+  }
+  
+  ion-tab-button {
+    --color: white; /* Default icon color */
+    --color-selected: white; /* Icon color when selected */
+    transition: transform 0.2s ease-in-out; /* Animation effect on click */
+    
+    &:active {
+      transform: scale(1.1); /* Slightly enlarge the tab on click */
+    }
+  
+    ion-icon {
+      font-size: 24px; /* Adjust icon size if needed */
+    }
+  }
+  

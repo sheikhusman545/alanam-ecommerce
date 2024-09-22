@@ -1,0 +1,65 @@
+<ion-header class="header-menu" [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="onBack()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>Categories</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon name="cart-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <img src="assets/images/raw-meat.jpg" alt="Meat " class="">
+  <ion-grid fixed>
+    <ion-row>
+      <!-- <ion-col size="3" class="categories-col">
+        <ion-list>
+          <ion-item (click)="onCategoryClick({ id: 'all' })">
+            All
+          </ion-item>
+          <ion-item *ngFor="let category of categories" (click)="onCategoryClick(category)">
+            <ion-thumbnail>
+              <ion-img [src]="'https://shopapi.alanaam.qa/' + category.categoryUrl" alt="{{ category.en_CategoryName }}"></ion-img>
+            </ion-thumbnail>
+          </ion-item>
+        </ion-list>
+      </ion-col> -->
+      <ion-col size="3" class="categories-col">
+        <ion-list class="categories-list">
+          <ion-item class="category-item-all" (click)="onCategoryClick({ id: 'all' })">
+            <div>All</div> 
+          </ion-item>
+          <ion-item class="category-item" *ngFor="let category of categories" (click)="onCategoryClick(category)">
+            <ion-thumbnail class="category-thumbnail">
+              <ion-img [src]="'https://shopapi.alanaam.qa/' + category.categoryUrl" alt="{{ category.en_CategoryName }}"></ion-img>
+            </ion-thumbnail>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+      
+      <ion-col size="9">
+        <ion-row>
+          <ion-col class="product-col" size="6" *ngFor="let product of products">
+            <div class="product-card" (click)="navigateToProduct(product.productID)">
+              <div class="product-image">
+                <ion-img [src]="'https://shopapi.alanaam.qa/' + product.mainImageUrl" alt="{{ product.en_ProductName }}" class="product-image"></ion-img>
+              </div>
+                <div class="product-desc">
+                <p class="product-name">{{ product.en_ProductName }}</p>
+                <p class="product-price">QAR {{ product.productPrice }}</p>
+              </div>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

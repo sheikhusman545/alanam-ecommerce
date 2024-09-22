@@ -1,0 +1,40 @@
+.overlay {
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+}
+
+.overlay-2 {
+    position: absolute;
+    top: 20%;
+    right: 0;
+}
+.overlay-3{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+}
+.login-type {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  
+  .button-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 50px;
+    margin: 40px;
+  }
+  
+  .continue-as-guest,
+  .login-as-user {
+    width: 100%; 
+    height: 60px;
+  }
+  

@@ -1,0 +1,138 @@
+.header-menu{
+      height: 60px;
+    display: flex;
+    align-items: center;
+}
+// .categories-col {
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   align-items: center;
+//   border-radius: 10px;
+// }
+
+// .categories-col ion-list {
+//   display: flex;
+//   flex-direction: column;
+//   gap: 30px;
+//   height: 100%;
+//   align-items: center;
+// }
+
+// .categories-col ion-list ion-item {
+//   --min-height: 100px;
+//   margin-right: 10px;
+//   justify-content: center;
+ 
+// }
+
+// .categories-col ion-list ion-item ion-label {
+//   font-size: 1.5em;
+//   font-weight: bold;
+// }
+
+// .categories-col ion-img {
+//   width: 100%;
+//   border-radius: 100px
+// }
+
+// .item-inner{
+//   border:none;
+// }
+
+.categories-col {
+  padding: 0; /* No padding */
+  display: flex;
+  flex-direction: column;
+
+}
+
+.categories-list {
+  width: 100%;
+  padding: 0; /* No padding on the list */
+  display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+}
+
+.category-item {
+  padding: 0; /* No padding inside the item */
+  margin-bottom: 15px;
+  background: none; /* Remove background */
+  border: none; /* Remove borders */
+  --min-height: 0; /* Optional: Adjust if needed */
+
+  ion-thumbnail {
+    width: 100%; /* Full width */
+    height: auto;
+    border-radius: 50%; /* Fully rounded image */
+    overflow: hidden;
+  }
+
+  ion-img {
+    width: 100px;
+    height: 100px;
+    object-fit: fill;
+    border-radius: 50%;
+  }
+}
+
+
+
+.product-col {
+
+  display: flex;
+ 
+  .product-card {
+    background-color: rgba(255, 255, 255, 0.8);
+    /* Very light background */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow for depth */
+    border-radius: 12px;
+    /* Soft rounded corners */
+    padding: 20px;
+    /* Padding for content inside */
+    transition: transform 0.2s ease-in-out;
+    max-width: 300px;
+    /* Optional: set max width */
+  }
+
+  .product-card:hover {
+    transform: scale(1.05);
+    /* Slight scale on hover for effect */
+  }
+
+  .product-card .product-image {
+    width: 100%;
+    border-radius: 8px;
+    height: 150px;
+  }
+
+  .product-image {
+    width: 100%;
+    border-radius: 10px;
+
+  }
+
+  .product-name {
+    color: #000;
+    font-family: "Nunito Sans";
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    margin: 5px;
+  }
+
+  .product-price {
+    color: #202020;
+    font-family: Raleway;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 21px;
+    letter-spacing: -0.17px;
+    padding: 0;
+    margin: 0;
+  }
+}

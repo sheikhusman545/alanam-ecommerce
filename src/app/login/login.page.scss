@@ -1,0 +1,163 @@
+.login{
+    height: 100vh;
+}
+.phone-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    text-align: center;
+    padding: 10px 10px;
+}
+
+.phone-container h2 {
+    color: #202020;
+    font-family: Raleway;
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: -0.52px;
+    margin-top: 50px;
+}
+
+.phone-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.phone-container ion-input {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    // display: flex;
+    // width: 100%;
+    // height: 52.218px;
+    // padding: 15.764px 19.705px !important;
+    // align-items: center;
+    // gap: 9.853px;
+    // flex-shrink: 0;
+    // background: var(--Background-Grey, #F8F8F8);
+}
+
+ion-item {
+    width: 100%;
+    max-width: 400px;
+}
+
+ion-input {
+    width: 100%;
+}
+
+/* Set the submit button to be full width */
+
+.submit-btn:hover {
+    background-color: #005bb5;
+}
+
+.submit-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* OTP modal */
+.otp-dialog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.8);
+    animation: slide-in 0.5s ease-out forwards;
+    z-index: 9999;
+}
+
+@keyframes slide-in {
+    0% {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.otp-container {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 40px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.otp-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* OTP input box should take full width and distribute inputs equally */
+.otp-input-box {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.otp-input-box input {
+    width: 100%;
+    max-width: 50px;
+    height: 50px;
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    color: #333;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.otp-input-box input:focus {
+    border-color: #007aff;
+    background-color: #e6f0ff;
+    box-shadow: 0 0 10px rgba(0, 122, 255, 0.5);
+}
+
+.submit-btn {
+    width: 100%;
+}
+
+.overlay {
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+}
+
+.overlay-2 {
+    position: absolute;
+    top: 20%;
+    right: 0;
+}
+.overlay-3{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+}
+
+.submit-btn {
+    width: 100%;
+    height: 70px;
+}

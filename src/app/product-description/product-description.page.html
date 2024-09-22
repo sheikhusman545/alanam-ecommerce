@@ -1,0 +1,75 @@
+<ion-content>
+  <div class="image-container">
+    <img *ngIf="productData" [src]="'https://shopapi.alanaam.qa/' + productData.mainImageUrl" alt="{{ productData.en_ProductName }}">
+    <ion-button class="back-button" (click)="onBack()">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-button>
+  </div>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <div class="main_content ion-padding product-col" *ngIf="productData">
+          <div class="title">
+            <ion-label class="sub_heading" style="color: black;">{{ productData.en_ProductName }}</ion-label>
+            <ion-label class="sub_heading">QAR {{ productData.productPrice }}</ion-label>
+            <ion-label class="sub_ttl">Per Kg</ion-label>
+          </div>
+
+          <ion-label class="sub_heading desc">Description</ion-label>
+          <p class="desc-info">{{ productData.en_ProductDescription }}
+            <ion-label class="sub_heading d-block">Product Code: {{ productData.productCode }}</ion-label>
+            <ion-label class="sub_heading d-block">Packing: Normal</ion-label>
+          </p>
+          <div class="divider"></div>
+
+          <div class="attributes" *ngIf="attributes">
+            <div *ngFor="let attribute of attributes">
+              <ion-item lines="none">
+                <ion-label>- Select the {{ attribute.en_atributeName }} -</ion-label>
+                <ion-select>
+                  <ion-select-option *ngFor="let item of attribute.items" [value]="item.atributeItemID">
+                    {{ item.en_itemName }} ({{ item.extraCost | currency:'USD':true }})
+                  </ion-select-option>
+                </ion-select>
+              </ion-item>
+            </div>
+          </div>
+
+          <ion-row class="cart-button">
+            <ion-col>
+              <ion-label class="sub_heading availability">{{ productData.status ? "In Stock" : "Out Of Stock" }}</ion-label>
+              <div class="btn">
+                <ion-buttons slot="start">
+                  <ion-button (click)="onRemove()" [disabled]="quantity <= productData.minQuantity">
+                    <ion-icon name="remove" color="light"></ion-icon>
+                  </ion-button>
+                </ion-buttons>
+
+                <ion-buttons class="label_number">
+                  <ion-button>
+                    <ion-label>{{ quantity }}</ion-label>
+                  </ion-button>
+                </ion-buttons>
+
+                <ion-buttons slot="end">
+                  <ion-button (click)="onAdd()" [disabled]="quantity >= productData.maxQuantity">
+                    <ion-icon name="add" color="light"></ion-icon>
+                  </ion-button>
+                </ion-buttons>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <ion-button *ngIf="productData.type == 'Booking'" class="content_button" (click)="onOrder('booking')" expand="block">
+            <ion-icon name="cart-outline"></ion-icon>
+            Book Now
+          </ion-button>
+          <ion-button *ngIf="productData.type != 'Booking'" class="content_button" (click)="onOrder('cart')" expand="block">
+            <ion-icon name="cart-outline"></ion-icon>
+            Add to Cart
+          </ion-button>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
