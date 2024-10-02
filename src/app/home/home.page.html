@@ -1,13 +1,121 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>home</ion-title>
+<ion-content>
+
+<ion-header>
+  <!-- Background color for header -->
+  <ion-toolbar color="transparent" class="custom-header-toolbar">
+    <ion-grid>
+      <ion-row class="ion-align-items-center">
+        <!-- Left column for logo -->
+        <ion-col size="6">
+          <img src="assets/images/alanam-logo.png" alt="Logo" class="logo">
+        </ion-col>
+        <!-- Right column for cart icon -->
+        <ion-col size="6" class="ion-text-end">
+          <ion-button fill="clear">
+            <ion-icon name="cart-outline"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col lines="none" class="custom-search">
+          <ion-searchbar placeholder="Search for 'Meet'" class="searchbar-custom"></ion-searchbar>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="ion-text-center">
+          <p class="location-text">Current Location</p>
+          <p class="address-text">#123, Doha, Qatar</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <div class="curved-slider">
+      <swiper-container [pager]="true" [autoplay]="2000" [slidesPerView]="3" [spaceBetween]="10" [loop]="true"
+      [centeredSlides]="true" [breakpoints]="" class="featured-swiper">
+      <swiper-slide  *ngFor="let category of categories">
+        <div class="slider-item">
+          <img [src]="'https://shopapi.alanaam.qa/' +category.categoryUrl" alt="{{category.en_CategoryName}}">
+          <p>{{category.en_CategoryName}}</p>
+        </div>
+      </swiper-slide>
+      </swiper-container>
+    </div>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">home</ion-title>
-    </ion-toolbar>
-  </ion-header>
+ 
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-toolbar color="primary">
+          <div slot="start"> Featured Products </div>
+          <ion-buttons slot="end">
+            <ion-button (click)="goPrevSlide()">
+              <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+            </ion-button>
+            <ion-button (click)="goNextSlide()">
+              <ion-icon slot="icon-only" name="arrow-forward"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-col>
+    </ion-row>
+
+    <div class="curved-slide">
+      <swiper-container [pager]="true" [autoplay]="3000" [slidesPerView]="2" [spaceBetween]="10" [loop]="true"
+        [centeredSlides]="true" [breakpoints]="" class="featured-swiper">
+        <swiper-slide *ngFor="let product of featuredProducts">
+          <div class="product-col">
+            <div class="product-card" (click)="navigateToProduct(product.productID)">
+              <div class="product-image">
+                <ion-img [src]="'https://shopapi.alanaam.qa/' + product.mainImageUrl" alt="{{ product.en_ProductName }}"
+                  class="product-image"></ion-img>
+              </div>
+              <div class="product-desc">
+                <p class="product-name">{{ product.en_ProductName }}</p>
+                <p class="product-price">QAR {{ product.productPrice }}</p>
+              </div>
+            </div>
+          </div>
+        </swiper-slide>
+      </swiper-container>
+    </div>
+  </ion-grid>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-toolbar color="primary">
+          <div slot="start"> Recent Products </div>
+          <ion-buttons slot="end">
+            <ion-button (click)="goPrevSlide()">
+              <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+            </ion-button>
+            <ion-button (click)="goNextSlide()">
+              <ion-icon slot="icon-only" name="arrow-forward"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-col>
+    </ion-row>
+
+    <div class="curved-slide">
+      <swiper-container [pager]="true" [autoplay]="3000" [slidesPerView]="2" [spaceBetween]="10" [loop]="true"
+        [centeredSlides]="true" [breakpoints]="" class="featured-swiper">
+        <swiper-slide *ngFor="let product of newProduct">
+          <div class="product-col">
+            <div class="product-card" (click)="navigateToProduct(product.productID)">
+              <div class="product-image">
+                <ion-img [src]="'https://shopapi.alanaam.qa/' + product.mainImageUrl" alt="{{ product.en_ProductName }}"
+                  class="product-image"></ion-img>
+              </div>
+              <div class="product-desc">
+                <p class="product-name">{{ product.en_ProductName }}</p>
+                <p class="product-price">QAR {{ product.productPrice }}</p>
+              </div>
+            </div>
+          </div>
+        </swiper-slide>
+      </swiper-container>
+    </div>
+  </ion-grid>
 </ion-content>

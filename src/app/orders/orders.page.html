@@ -1,0 +1,89 @@
+<ion-header class="header-menu" [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>MY Previous Orders </ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon name="cart-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="order-history" *ngIf="orders">
+    <h2>My Previous Order </h2>
+    <ion-accordion-group  *ngFor="let order of orders">
+      <!-- Repeat this for each order -->
+      <ion-accordion>
+        <ion-item slot="header">
+          <ion-label>
+            <!-- Order Number on top -->
+            Order #{{order.orderID}} - Total: QAR {{order.grantTotal}} - Quantity: {{order.totalProductsQuantity}}
+          </ion-label>
+        </ion-item>
+
+        <ion-list slot="content">
+          <ion-item *ngFor="let orderDetail of order.orderProducts">
+            <ion-thumbnail slot="start">
+              <img [src]="'https://shopapi.alanaam.qa/' + orderDetail.mainImageUrl" alt="Product Image" />
+            </ion-thumbnail>
+            <ion-label>
+              <h3>{{orderDetail.en_CategoryName}}</h3>
+              <p>Order Quantity: {{orderDetail.productQuantity}}</p>
+              <p>Price: QAR {{orderDetail.productPrice}}</p>
+              <p>SI Charge: QAR {{orderDetail.SlaughterCharge}}</p>
+              <p>Total: QAR {{orderDetail.productAmount}}</p>
+            </ion-label>
+          </ion-item>
+
+          <!-- Order Details & Summary -->
+          <ion-item-divider>Order Details & Summary</ion-item-divider>
+          <ion-item>
+            <ion-label>
+              <p>Order Date: {{ order.orderDate}}</p>
+              <p>Delivery Method: {{order.DeliveryMethod}}</p>
+              <p>Delivery Date: {{order.DeliveryDate}}</p>
+              <p>Delivery Time: {{order.DeliveryDate}}</p>
+              <p>Approved Date: {{order.approvedOn}}</p>
+              <p>Product Quantity {{order.totalProductsQuantity}}</p>
+              <p>Grand Total: {{order.totalProductPrice}}</p>
+              <p>Shipping Charge: {{order.shippingCharge}} </p>
+              <p>Shipping Discount : {{order.shippingDiscount}}</p>
+              <p>Coupon Discount : {{order.couponDiscount}}</p>
+              <p>Other Discount : {{order.otherDiscount}}</p>
+            </ion-label>
+          </ion-item>
+
+          <!-- Delivery Address -->
+          <ion-item-divider>Delivery Address</ion-item-divider>
+          <ion-item  *ngFor="let address of order.OrderDeliveryAddresses" >
+            <ion-label>
+              <p>Customer Name: {{address.name}}</p>
+              <p>Email: {{address.name}}</p>
+              <p>Mobile: {{address.mobileNumber}}</p>
+              <p>Address Type: {{address.addressType}}</p>
+              <p>Building No: {{address.buildingName_No}}</p>
+              <p>Zone No{{address.zoneNo}}</p>
+              <p>Street Name{{address.streetName_No}}</p>
+              <p>LandMark{{address.landMark}}</p>
+              <p>City: {{address.city}}</p>
+
+   
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-accordion>
+
+      <!-- Add additional orders as separate accordions -->
+    </ion-accordion-group>
+  </div>
+  <div class="no-past-orders" *ngIf="!orders">
+    <h2>No Previous Orders</h2>
+  </div>
+</ion-content>

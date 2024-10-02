@@ -1,11 +1,21 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-
+import { AuthGuard } from './guards/auth.guard';
 const routes: Routes = [
+  // {
+  //   path: '',
+  //   redirectTo: 'tabs',
+  //   pathMatch: 'full'
+  // },
   {
     path: '',
-    redirectTo: 'tabs',
-    pathMatch: 'full'
+    redirectTo: 'splash',
+    pathMatch: 'full',
+  },
+  {
+    path: 'splash',
+    loadChildren: () =>
+      import('./splash/splash.module').then((m) => m.SplashPageModule),
   },
   {
     path: 'login',
@@ -25,12 +35,22 @@ const routes: Routes = [
   },
   {
     path: 'logintype',
-    loadChildren: () => import('./logintype/logintype.module').then( m => m.LogintypePageModule)
+    loadChildren: () => import('./logintype/logintype.module').then(m => m.LogintypePageModule)
   },
   {
     path: 'shipping-info',
-    loadChildren: () => import('./shipping-info/shipping-info.module').then( m => m.ShippingInfoPageModule)
-  }
+    loadChildren: () => import('./shipping-info/shipping-info.module').then(m => m.ShippingInfoPageModule)
+  },
+  {
+    path: 'splash',
+    loadChildren: () => import('./splash/splash.module').then(m => m.SplashPageModule)
+  },
+  {
+    path: 'orders',
+    loadChildren: () => import('./orders/orders.module').then(m => m.OrdersPageModule),
+    'canActivate': [AuthGuard]
+  },
+
 ];
 
 @NgModule({
@@ -39,4 +59,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

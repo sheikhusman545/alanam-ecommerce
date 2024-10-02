@@ -1,6 +1,7 @@
 <ion-content>
   <div class="image-container">
-    <img *ngIf="productData" [src]="'https://shopapi.alanaam.qa/' + productData.mainImageUrl" alt="{{ productData.en_ProductName }}">
+    <img *ngIf="productData" [src]="'https://shopapi.alanaam.qa/' + productData.mainImageUrl"
+      alt="{{ productData.en_ProductName }}">
     <ion-button class="back-button" (click)="onBack()">
       <ion-icon name="arrow-back-outline"></ion-icon>
     </ion-button>
@@ -22,7 +23,7 @@
           </p>
           <div class="divider"></div>
 
-          <div class="attributes" *ngIf="attributes">
+          <!-- <div class="attributes" *ngIf="attributes">
             <div *ngFor="let attribute of attributes">
               <ion-item lines="none">
                 <ion-label>- Select the {{ attribute.en_atributeName }} -</ion-label>
@@ -33,11 +34,24 @@
                 </ion-select>
               </ion-item>
             </div>
+          </div> -->
+          <div class="attributes" *ngIf="attributes">
+            <div *ngFor="let attribute of attributes">
+              <ion-item lines="none">
+                <ion-label>- Select the {{ attribute.en_atributeName }} -</ion-label>
+                <ion-select (ionChange)="onAttributeChange(attribute, $event.detail.value)">
+                  <ion-select-option *ngFor="let item of attribute.items" [value]="item.atributeItemID">
+                    {{ item.en_itemName }} ({{ item.extraCost | currency:'USD':true }})
+                  </ion-select-option>
+                </ion-select>
+              </ion-item>
+            </div>
           </div>
 
           <ion-row class="cart-button">
             <ion-col>
-              <ion-label class="sub_heading availability">{{ productData.status ? "In Stock" : "Out Of Stock" }}</ion-label>
+              <ion-label class="sub_heading availability">{{ productData.status ? "In Stock" : "Out Of Stock"
+                }}</ion-label>
               <div class="btn">
                 <ion-buttons slot="start">
                   <ion-button (click)="onRemove()" [disabled]="quantity <= productData.minQuantity">
@@ -60,11 +74,13 @@
             </ion-col>
           </ion-row>
 
-          <ion-button *ngIf="productData.type == 'Booking'" class="content_button" (click)="onOrder('booking')" expand="block">
+          <ion-button *ngIf="productData.type == 'Booking'" class="content_button" (click)="onOrder('booking')"
+            expand="block">
             <ion-icon name="cart-outline"></ion-icon>
             Book Now
           </ion-button>
-          <ion-button *ngIf="productData.type != 'Booking'" class="content_button" (click)="onOrder('cart')" expand="block">
+          <ion-button *ngIf="productData.type != 'Booking'" class="content_button" (click)="onOrder('cart')"
+            expand="block">
             <ion-icon name="cart-outline"></ion-icon>
             Add to Cart
           </ion-button>

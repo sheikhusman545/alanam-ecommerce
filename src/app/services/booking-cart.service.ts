@@ -7,15 +7,26 @@ import { BehaviorSubject } from 'rxjs';
 export class BookingCartService {
   // BehaviorSubject to hold the state of the booking cart
   private bookingCartSubject = new BehaviorSubject<any[]>([]);
+
   bookingCart$ = this.bookingCartSubject.asObservable();  // Observable to expose the data
 
   constructor() {}
 
   // Add a booking and emit the updated cart
+  // addBooking(booking: any) {
+  //   console.log('booking in cart',booking);
+  //   const currentCart = this.bookingCartSubject.getValue();
+  //   this.bookingCartSubject.next([...currentCart, booking]);
+  //   console.log('currentCart',this.bookingCartSubject.getValue());
+  // }
   addBooking(booking: any) {
-    const currentCart = this.bookingCartSubject.getValue();
-    this.bookingCartSubject.next([...currentCart, booking]);
+    console.log('booking in cart', booking);
+  
+    // Replace the old booking with the new one
+    this.bookingCartSubject.next([booking]);
+    console.log('currentCart', this.bookingCartSubject.getValue());
   }
+  
 
   // Remove a booking and emit the updated cart
   removeBooking(index: number) {

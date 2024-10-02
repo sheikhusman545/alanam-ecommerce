@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
+import { HttpClientService } from '../services/http.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -10,8 +10,13 @@ export class LoginPage {
   phoneForm: FormGroup;
   otpForm: FormGroup;
   showOtpModal = false; // Toggle OTP modal visibility
+  userDetails: any;
+  jwtToken: any;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClientService
+  ) {
     // Initialize phone number form
     this.phoneForm = this.fb.group({
       phoneNumber: ['', [Validators.required, Validators.pattern('^\\+?[1-9]\\d{1,14}$')]], // Phone number regex
@@ -32,6 +37,11 @@ export class LoginPage {
   sendOTP() {
     if (this.phoneForm.valid) {
       const phoneNumber = this.phoneForm.get('phoneNumber')?.value;
+      const formData = new FormData();
+      formData.append('username', phoneNumber);
+      this.http.post('ecom/generateotp', formData).subscribe((response) => {
+        console.log(response);
+      }); // Adjust the URL
       console.log('Sending OTP to:', phoneNumber);
       // Implement the OTP sending logic here
       this.showOtpModal = true; // Show OTP modal after sending OTP
@@ -53,8 +63,23 @@ export class LoginPage {
   verifyOTP() {
     if (this.otpForm.valid) {
       const otp = Object.values(this.otpForm.value).join('');
-      console.log('Verifying OTP:', otp);
-      // Implement the OTP verification logic here
+      const formData = new FormData();
+      formData.append('mobileNumber', this.phoneForm.get('phoneNumber')?.value);
+      formData.append('otp', otp);
+      formData.append('devicetype', 'app-anrdoid');
+      this.http.post('ecom/login', formData).subscribe((response) => {
+        this.userDetails = response.requestedData.userDetails;
+        this.jwtToken = response.requestedData.JWT_Token;
+        localStorage.setItem("userDetails", JSON.stringify(this.userDetails));
+        localStorage.setItem("JWT_Token", this.jwtToken);
+
+      }); // Adjust the URL
+      const userDetails = localStorage.getItem('userDetails');
+      if (userDetails) {
+        console.log(JSON.parse(userDetails));
+      } else {
+        console.log('No user details found in localStorage');
+      }
     }
   }
 
@@ -63,3 +88,11 @@ export class LoginPage {
     this.showOtpModal = false;
   }
 }
+
+
+
+
+// private generateOtpUrl = 'https://shopapi.alanaam.qa/api/ecom/generateotp';
+// private verifyOtpUrl = 'https://shopapi.alanaam.qa/api/ecom/verifyotp'; // Adjust if necessary
+
+// constructor(private http: HttpClient) {}
