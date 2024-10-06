@@ -50,6 +50,14 @@ const routes: Routes = [
     loadChildren: () => import('./orders/orders.module').then(m => m.OrdersPageModule),
     'canActivate': [AuthGuard]
   },
+  {
+    path: 'homepage-2',
+    loadChildren: () => import('./homepage-2/homepage-2.module').then( m => m.Homepage2PageModule)
+  },
+  {
+    path: 'payment',
+    loadChildren: () => import('./payment/payment.module').then( m => m.PaymentPageModule)
+  },
 
 ];
 

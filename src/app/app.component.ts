@@ -3,6 +3,7 @@ import { register } from 'swiper/element/bundle';
 import { Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 
+
 register();
  
 @Component({
