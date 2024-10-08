@@ -23,8 +23,7 @@ export class AppComponent {
     this.platform.ready().then(() => {
       // Handle back button for Android
       this.platform.backButton.subscribeWithPriority(10, () => {
-        if (this.router.url === '/home') {
-          // If the user is on the home page, exit the app
+        if (this.router.url === '/tabs/home') {
           (navigator as any).app.exitApp();
         } else {
           // Otherwise, navigate back to the previous page

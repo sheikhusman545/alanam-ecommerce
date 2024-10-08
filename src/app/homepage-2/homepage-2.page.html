@@ -1,16 +1,35 @@
-<ion-header translucent>
-  <ion-toolbar color="primary">
-    <ion-title>Meat Shop</ion-title>
-    <ion-buttons slot="end">
-      <ion-button>
-        <ion-icon name="cart"></ion-icon>
-      </ion-button>
-    </ion-buttons>
+
+<ion-header>
+  <ion-toolbar color="transparent" class="custom-header-toolbar">
+    <ion-grid>
+      <ion-row class="ion-align-items-center">
+        <ion-col size="6">
+          <img src="assets/images/alanam-logo.png" alt="Logo" class="logo">
+        </ion-col>
+        <ion-col size="6" class="ion-text-end">
+          <ion-button fill="clear">
+            <ion-icon name="cart-outline"></ion-icon>
+            <app-cart-count>1</app-cart-count>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col lines="none" class="custom-search">
+          <ion-searchbar placeholder="Search for 'Meet'" class="searchbar-custom"></ion-searchbar>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="ion-text-center">
+          <p class="location-text">Current Location</p>
+          <p class="address-text">#123, Doha, Qatar</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-toolbar>
 </ion-header>
+<ion-content [fullscreen]="true" class="home-page"  class="ion-padding">
+  <app-custom-loader [isLoading]="isLoading"></app-custom-loader>
 
-<ion-content [fullscreen]="true" class="home-page" padding>
-  <!-- Main Banner -->
   <div class="swiper-container">
     <swiper-container [slidesPerView]="1" [autoplay]="true" [loop]="true" class="swiper-wrapper">
       <swiper-slide swiperSlide>
@@ -22,31 +41,32 @@
     </swiper-container>
   </div>
 
-  <!-- Categories Section with Grid -->
-<section class="categories-section">
-  <h2 class="section-title">Shop by Category</h2>
-  <div class="categories-grid">
-    <div class="category-card" *ngFor="let category of categories">
-      <ion-img 
-        [src]="'https://shopapi.alanaam.qa/' + category.categoryUrl" 
-        alt="{{category.en_CategoryName}}"
-        class="category-image"
-      ></ion-img>
-      <p class="category-name">{{ category.en_CategoryName }}</p>
-    </div>
+  <div class="main_content_div">
+
+    <ion-label class="title_lbl">Premium Quality, Fresh Flavor</ion-label>
+    <ion-label class="title_lbl">Crafted with care, raised with respect</ion-label>
+
+    <ion-row>
+      <ion-col size="4" *ngFor="let category of categories">
+        <div class="cat-img" (click)="navigateToCategory(category.categoryID)">
+          <ion-img
+          [src]="'https://shopapi.alanaam.qa/' + category.categoryUrl" alt="{{category.en_CategoryName}}"
+            class="category-image"></ion-img>
+          <ion-label class="cat-label">{{ category.en_CategoryName }}</ion-label>
+        </div>
+      </ion-col>
+    </ion-row>
   </div>
-</section>
-
-
-  <!-- Featured Products -->
+ 
   <section class="featured-products">
     <h2 class="section-title">Featured Products</h2>
     <div class="swiper-container">
       <swiper-container [slidesPerView]="2" [spaceBetween]="15" [loop]="true" class="swiper-wrapper">
         <swiper-slide swiperSlide *ngFor="let product of featuredProducts">
-          <div class="product-card">
+          <div class="product-card" (click)="navigateToProduct(product.productID)">
             <div class="product-image">
-              <ion-img [src]="'https://shopapi.alanaam.qa/' + product.mainImageUrl" alt="{{ product.en_ProductName }}"></ion-img>
+              <ion-img class="s-image" [src]="'https://shopapi.alanaam.qa/' + product.mainImageUrl"
+                alt="{{ product.en_ProductName }}"></ion-img>
             </div>
             <div class="product-details">
               <h3 class="product-name">{{ product.en_ProductName }}</h3>
@@ -57,16 +77,17 @@
       </swiper-container>
     </div>
   </section>
+  
 
-  <!-- New Products -->
   <section class="new-products">
     <h2 class="section-title">New Products</h2>
     <div class="swiper-container">
       <swiper-container [slidesPerView]="2" [spaceBetween]="15" [loop]="true" class="swiper-wrapper">
         <swiper-slide swiperSlide *ngFor="let product of newProduct">
           <div class="product-card">
-            <div class="product-image">
-              <ion-img [src]="'https://shopapi.alanaam.qa/' + product.mainImageUrl" alt="{{ product.en_ProductName }}"></ion-img>
+            <div class="product-image" (click)="navigateToProduct(product.productID)">
+              <ion-img class="p-image" [src]="'https://shopapi.alanaam.qa/' + product.mainImageUrl"
+                alt="{{ product.en_ProductName }}"></ion-img>
             </div>
             <div class="product-details">
               <h3 class="product-name">{{ product.en_ProductName }}</h3>
@@ -78,9 +99,3 @@
     </div>
   </section>
 </ion-content>
-
-<ion-footer>
-  <ion-toolbar>
-    <ion-title>© Meat Shop 2024</ion-title>
-  </ion-toolbar>
-</ion-footer>

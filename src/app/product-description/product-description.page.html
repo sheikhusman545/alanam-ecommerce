@@ -39,15 +39,15 @@
             <div *ngFor="let attribute of attributes">
               <ion-item lines="none">
                 <ion-label>- Select the {{ attribute.en_atributeName }} -</ion-label>
-                <ion-select (ionChange)="onAttributeChange(attribute, $event.detail.value)">
-                  <ion-select-option *ngFor="let item of attribute.items" [value]="item.atributeItemID">
+                <ion-select (ionChange)="onAttributeChange(attribute, $event)">
+                  <ion-select-option *ngFor="let item of attribute.items" [value]="item">
                     {{ item.en_itemName }} ({{ item.extraCost | currency:'USD':true }})
                   </ion-select-option>
                 </ion-select>
               </ion-item>
             </div>
           </div>
-
+          
           <ion-row class="cart-button">
             <ion-col>
               <ion-label class="sub_heading availability">{{ productData.status ? "In Stock" : "Out Of Stock"
@@ -74,12 +74,12 @@
             </ion-col>
           </ion-row>
 
-          <ion-button *ngIf="productData.type == 'Booking'" class="content_button" (click)="onOrder('booking')"
+          <ion-button [disabled]="quantity == 0" *ngIf="productData.type == 'Booking' " class="content_button" (click)="onOrder('booking')"
             expand="block">
             <ion-icon name="cart-outline"></ion-icon>
             Book Now
           </ion-button>
-          <ion-button *ngIf="productData.type != 'Booking'" class="content_button" (click)="onOrder('cart')"
+          <ion-button  [disabled]="quantity == 0" *ngIf="productData.type != 'Booking' " class="content_button" (click)="onOrder('cart')"
             expand="block">
             <ion-icon name="cart-outline"></ion-icon>
             Add to Cart

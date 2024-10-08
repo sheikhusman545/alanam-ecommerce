@@ -14,4 +14,8 @@ export class CategoriesService {
   getCategories(): Observable<any> {
     return this.http.get<any>(this.apiUrl + 'getcategories?maincategories=YES');
   }
+  
+  getSubCategories(categoryId: string): Observable<any> {
+    return this.http.get<any>(this.apiUrl + 'getcategories?parentcategoryid=' + categoryId);
+  }
 }

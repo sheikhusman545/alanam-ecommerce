@@ -26,6 +26,10 @@ const routes: Routes = [
     loadChildren: () => import('./product-description/product-description.module').then(m => m.ProductDescriptionPageModule)
   },
   {
+    path: 'search-product/:id',
+    loadChildren: () => import('./search-product/search-product.module').then( m => m.SearchProductPageModule)
+  },
+  {
     path: 'checkout',
     loadChildren: () => import('./checkout/checkout.module').then(m => m.CheckoutPageModule)
   },
@@ -58,6 +62,7 @@ const routes: Routes = [
     path: 'payment',
     loadChildren: () => import('./payment/payment.module').then( m => m.PaymentPageModule)
   },
+ 
 
 ];
 

@@ -84,7 +84,7 @@ export class SplashPage implements OnInit {
 
   constructor(private platform: Platform, private navCtrl: NavController
   ) {
-    this.audio = new Audio('assets/images/allah_akbar.mp3'); // Set the path to your audio file
+    this.audio = new Audio('assets/images/start.mp3'); // Set the path to your audio file
   }
 
   async ngOnInit() {

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClientService } from '../services/http.service';
+import { NavController } from '@ionic/angular';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -11,11 +12,12 @@ export class LoginPage {
   otpForm: FormGroup;
   showOtpModal = false; // Toggle OTP modal visibility
   userDetails: any;
-  jwtToken: any;
+  jwtToken: any = null;
 
   constructor(
     private fb: FormBuilder,
-    private http: HttpClientService
+    private http: HttpClientService,
+    private navCtrl: NavController
   ) {
     // Initialize phone number form
     this.phoneForm = this.fb.group({
@@ -72,6 +74,11 @@ export class LoginPage {
         this.jwtToken = response.requestedData.JWT_Token;
         localStorage.setItem("userDetails", JSON.stringify(this.userDetails));
         localStorage.setItem("JWT_Token", this.jwtToken);
+        if (this.jwtToken !== null) {
+         // this.navCtrl.navigate(['/tabs/home']);
+          console.log('User logged in:', this.userDetails);
+          console.log('JWT Token:', this.jwtToken);
+        }
 
       }); // Adjust the URL
       const userDetails = localStorage.getItem('userDetails');
@@ -86,6 +93,9 @@ export class LoginPage {
   // Close modal when clicking outside the OTP box
   closeModal(event: any) {
     this.showOtpModal = false;
+  }
+  onBack(){
+    this.navCtrl.back();
   }
 }
 

@@ -1,36 +1,42 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CategoriesService } from '../services/categories.service';
 import { ProductsService } from '../services/products.service';
 import { HttpClient } from '@angular/common/http';
 import { NavController } from '@ionic/angular';
-
 @Component({
-  selector: 'app-categories',
-  templateUrl: './categories.page.html',
-  styleUrls: ['./categories.page.scss'],
+  selector: 'app-search-product',
+  templateUrl: './search-product.page.html',
+  styleUrls: ['./search-product.page.scss'],
 })
-export class CategoriesPage implements OnInit {
+export class SearchProductPage implements OnInit {
 
   categories: any[] = [];
   products: any[] = [];
   selectedCategory: any = null;
   allProducts: any[] = [];
-  public imagePath: 'https://shopapi.alanaam.qa/' | undefined;
-  subCategory: any;
+  categoryId: string | null = null;
+  ngOnInit(): void {
+    // get id from the URL
+    this.route.paramMap.subscribe((params: any) => {
+      this.categoryId = params.get('id');
+      if (this.categoryId) {
+        this.loadProductsByCategory(this.categoryId);
+        this.loadProductsByCategory(this.categoryId);
+      }
+    });
+
+    
+  }
   constructor(
     private http: HttpClient,
     private categoriesService: CategoriesService,
     private productsService: ProductsService,
     private router: Router,
-    private navCtrl: NavController
-  ) {}
-
-  ngOnInit() {
-    this.loadCategories();
-    this.loadAllProducts();
-  }
-
+    private navCtrl: NavController,
+    private route: ActivatedRoute
+  ) { }
+  
   loadCategories() {
     this.categoriesService.getCategories().subscribe((data: any) => {
       this.categories = data.requestedData.Categories; // Adjust based on your API response
@@ -48,23 +54,16 @@ export class CategoriesPage implements OnInit {
   loadProductsByCategory(categoryId: string) {
     this.productsService.getProductsByCategory(categoryId).subscribe((data: any) => {
       this.products = data.requestedData.Products; // Adjust based on your API response
+      console.log(this.products);
     });
   }
-  getSubCategories(categoryId: string) { 
-    console.log('sub Category ID:', categoryId);
-    this.categoriesService.getSubCategories(categoryId).subscribe((data: any) => {
-      console.log('Sub Categories:', data);
-      this.subCategory = data.requestedData.Categories;
-    });
-  }
+
 
   onCategoryClick(category: any) {
     if (category.categoryID === 'all') {
       this.products = this.allProducts;
     } else {
       this.loadProductsByCategory(category.categoryID);
-      this.getSubCategories(category.categoryID);
-    
     }
     this.selectedCategory = category;
   }

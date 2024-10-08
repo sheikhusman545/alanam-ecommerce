@@ -3,10 +3,14 @@ import { BehaviorSubject } from 'rxjs';
 
 export interface CartItem {
   productId: number;
-  name: string;
-  price: number;
   quantity: number;
-  attributes: { [key: string]: any }; // Add attributes like size, color, etc.
+  productAttributes: { [key: string]: any }; // Add productAttributes like size, color, etc.
+  product: any;
+  totalPrice: number;
+  cuttingAmount: '';
+  productName: string,
+  slaughterCharge: any;
+  price: any;
 }
 
 @Injectable({
@@ -33,18 +37,18 @@ export class CartService {
     localStorage.setItem('cart', JSON.stringify(cart));
   }
 
-  // Add product to the cart with attributes
+  // Add product to the cart with productAttributes
   addProduct(product: CartItem) {
     const currentCart = this.cart.value;
     const index = currentCart.findIndex(
-      (item) => item.productId === product.productId && this.matchAttributes(item.attributes, product.attributes)
+      (item) => item.productId === product.productId && this.matchproductAttributes(item.productAttributes, product.productAttributes)
     );
 
     if (index > -1) {
-      // If the product with the same attributes already exists, increase the quantity
+      // If the product with the same productAttributes already exists, increase the quantity
       currentCart[index].quantity += 1;
     } else {
-      // Add the new product with attributes and set quantity to 1
+      // Add the new product with productAttributes and set quantity to 1
       product.quantity = 1;
       currentCart.push(product);
     }
@@ -52,13 +56,14 @@ export class CartService {
     this.cart.next(currentCart);
     this.saveCartToStorage(currentCart); // Save updated cart to localStorage
     this.updateCartCount();
+    console.log('Cart updated:', currentCart);
   }
 
   // Remove product or decrease quantity
-  removeProduct(productId: number, attributes: { [key: string]: any }) {
+  removeProduct(productId: number, productAttributes: { [key: string]: any }) {
     const currentCart = this.cart.value;
     const index = currentCart.findIndex(
-      (item) => item.productId === productId && this.matchAttributes(item.attributes, attributes)
+      (item) => item.productId === productId && this.matchproductAttributes(item.productAttributes, productAttributes)
     );
 
     if (index > -1) {
@@ -81,9 +86,9 @@ export class CartService {
     this.cartItemCount.next(0); // Reset cart count
   }
 
-  // Check if product attributes match
-  private matchAttributes(attr1: { [key: string]: any }, attr2: { [key: string]: any }): boolean {
-    return JSON.stringify(attr1) === JSON.stringify(attr2); // Simplified comparison of attributes
+  // Check if product productAttributes match
+  private matchproductAttributes(attr1: { [key: string]: any }, attr2: { [key: string]: any }): boolean {
+    return JSON.stringify(attr1) === JSON.stringify(attr2); // Simplified comparison of productAttributes
   }
 
   // Update cart count by summing up all item quantities

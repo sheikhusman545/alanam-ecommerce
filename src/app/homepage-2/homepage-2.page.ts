@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ProductsService } from '../services/products.service';
 import { CategoriesService } from '../services/categories.service';
 import Swiper from 'swiper';
+
 @Component({
   selector: 'app-homepage-2',
   templateUrl: './homepage-2.page.html',
@@ -15,7 +16,8 @@ export class Homepage2Page implements OnInit {
   featuredProducts: any[] = [];
   newProduct: any[] = [];
   categories: any[] = [];
-
+  
+  isLoading = false;
 
   constructor(
     private router: Router,
@@ -25,9 +27,11 @@ export class Homepage2Page implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.showLoader();
     this.getFeaturedProducts();
     this.getNewProducts();
     this.getCategories();
+    this.hideLoader();
   }
 
   getFeaturedProducts() {
@@ -48,5 +52,25 @@ export class Homepage2Page implements OnInit {
       console.log('Categories: ', data);
       this.categories = data.requestedData.Categories;
     });
+  }
+  onCategoryClick(category: any) {
+    console.log('Category clicked', category);
+    this.router.navigate(['/search-product', category.categoryID ]);
+  }
+
+  showLoader() {
+    this.isLoading = true;
+  }
+
+  hideLoader() {
+    this.isLoading = false;
+  }
+
+  navigateToCategory(CategoryId: any) {
+    this.router.navigate(['/tabs/categories']);
+  }
+
+  navigateToProduct(productId: string) {
+    this.router.navigate(['/product-description', productId]);
   }
 }

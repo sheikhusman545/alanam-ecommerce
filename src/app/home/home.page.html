@@ -1,50 +1,55 @@
 <ion-content>
 
-<ion-header>
-  <!-- Background color for header -->
-  <ion-toolbar color="transparent" class="custom-header-toolbar">
-    <ion-grid>
-      <ion-row class="ion-align-items-center">
-        <!-- Left column for logo -->
-        <ion-col size="6">
-          <img src="assets/images/alanam-logo.png" alt="Logo" class="logo">
-        </ion-col>
-        <!-- Right column for cart icon -->
-        <ion-col size="6" class="ion-text-end">
-          <ion-button fill="clear">
-            <ion-icon name="cart-outline"></ion-icon>
-            <app-cart-count>1</app-cart-count>
-          </ion-button>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col lines="none" class="custom-search">
-          <ion-searchbar placeholder="Search for 'Meet'" class="searchbar-custom"></ion-searchbar>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col class="ion-text-center">
-          <p class="location-text">Current Location</p>
-          <p class="address-text">#123, Doha, Qatar</p>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-    <div class="curved-slider">
-      <swiper-container [pager]="true" [autoplay]="2000" [slidesPerView]="3" [spaceBetween]="10" [loop]="true"
-      [centeredSlides]="true" [breakpoints]="" class="featured-swiper">
-      <swiper-slide  *ngFor="let category of categories">
-        <div class="slider-item">
-          <img [src]="'https://shopapi.alanaam.qa/' +category.categoryUrl" alt="{{category.en_CategoryName}}">
-          <p>{{category.en_CategoryName}}</p>
-        </div>
-      </swiper-slide>
-      </swiper-container>
-    </div>
-  </ion-toolbar>
-</ion-header>
+  <ion-header>
+    <!-- Background color for header -->
+    <ion-toolbar color="transparent" class="custom-header-toolbar">
+      <ion-grid>
+        <ion-row class="ion-align-items-center">
+          <!-- Left column for logo -->
+          <ion-col size="6">
+            <img src="assets/images/alanam-logo.png" alt="Logo" class="logo">
+          </ion-col>
+          <!-- Right column for cart icon -->
+          <ion-col size="6" class="ion-text-end">
+            <ion-button fill="clear">
+              <ion-icon name="cart-outline"></ion-icon>
+              <app-cart-count>1</app-cart-count>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col lines="none" class="custom-search">
+            <ion-searchbar placeholder="Search for 'Meet'" class="searchbar-custom"></ion-searchbar>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col class="ion-text-center">
+            <p class="location-text">Current Location</p>
+            <p class="address-text">#123, Doha, Qatar</p>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
 
- 
+    </ion-toolbar>
+  </ion-header>
+
+
   <ion-grid>
+    <ion-row>
+      <ion-col>
+        <div class="categories">
+          <swiper-container [pager]="true" [autoplay]="2000" [slidesPerView]="3" [spaceBetween]="10" [loop]="true"
+            [centeredSlides]="true" [breakpoints]="" class="featured-swiper">
+            <swiper-slide *ngFor="let category of categories">
+              <div class="slider-item">
+                <img [src]="'https://shopapi.alanaam.qa/' +category.categoryUrl" alt="{{category.en_CategoryName}}">
+                <p>{{category.en_CategoryName}}</p>
+              </div>
+            </swiper-slide>
+          </swiper-container>
+        </div>
+      </ion-col>
+    </ion-row>
     <ion-row>
       <ion-col>
         <ion-toolbar color="primary">

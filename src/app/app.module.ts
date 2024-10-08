@@ -8,13 +8,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CartCountComponent } from './components/cart-count/cart-count.component';
-
+import { CustomLoaderComponent } from './custom-loader/custom-loader.component';
 
 @NgModule({
-  declarations: [AppComponent, CartCountComponent],
+  declarations: [AppComponent, CartCountComponent,CustomLoaderComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
-  exports: [CartCountComponent]
+  exports: [CartCountComponent,CustomLoaderComponent]
 })
 export class AppModule {}

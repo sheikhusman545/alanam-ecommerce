@@ -4,6 +4,7 @@ import { NavController } from '@ionic/angular';
 import { ProductsService } from '../services/products.service';
 import { BookingCartService } from '../services/booking-cart.service';
 import { AuthService } from '../services/auth.service';
+import { CartService } from '../services/cart.service';
 @Component({
   selector: 'app-product-description',
   templateUrl: './product-description.page.html',
@@ -12,17 +13,20 @@ import { AuthService } from '../services/auth.service';
 export class ProductDescriptionPage implements OnInit {
   id: string | null = null;
   productData: any = null;
-  attributes: any;
   quantity: number = 1; // Default quantity
   attribute_id: any = null;
   attrubite_item_id: any = null;
-  is_user = this.authService.check();
+//  is_user = this.authService.check();
+  attributes: any[] = [];
+  productAttributes: any[] = [];
+
   constructor(
     private NavCtrl: NavController,
     private router: Router,
     private route: ActivatedRoute,
     private productService: ProductsService,
     private bookingCartService: BookingCartService,
+    private cartService: CartService,
     private authService: AuthService
   ) { }
 
@@ -61,17 +65,54 @@ export class ProductDescriptionPage implements OnInit {
     }
   }
 
-  onAttributeChange(attribute: any, event: any) {
-    console.log('Attribute change:', attribute.atributeID);
-    console.log('Attribute event:', event);
-    this.attribute_id = attribute.atributeID;
-    this.attrubite_item_id = event;
+  // onAttributeChange(attribute: any, event: any) {
+  //   const selectedItem = event.detail.value; // This contains the selected item data
+  //   console.log('Attribute:', attribute);
+  //   console.log('Selected Item:', selectedItem);
+  // }
+
+  isAuthenticated() {
+    this.authService.check().subscribe(isAuthenticated => {
+      if (isAuthenticated) {
+        this.router.navigate(['shipping-info']);
+      } else {
+        this.router.navigate(['logintype']);
+      }
+    });
   }
+
+  onAttributeChange(attribute: any, event: any) {
+    const selectedItem = event.detail.value; // This contains the selected item data
+    console.log('Attribute:', attribute);
+    // Find if attribute already exists in productAttributes
+    const existingAttribute = this.productAttributes.find(
+      (attr) => attr.atributeID === attribute.atributeID
+    );
+
+    const newAttribute = {
+      atributeID: attribute.atributeID,
+      en_atributeName: attribute.en_atributeName,
+      ar_atributeName: attribute.ar_atributeName,
+      items: selectedItem // Replace `items` array with the selected item
+    };
+
+    if (existingAttribute) {
+      // Update the existing attribute with the selected item
+      const index = this.productAttributes.indexOf(existingAttribute);
+      this.productAttributes[index] = newAttribute;
+    } else {
+      // Add the new attribute if it doesn't already exist
+      this.productAttributes.push(newAttribute);
+    }
+
+    console.log('productAttributes:', this.productAttributes);
+  }
+
 
   onOrder(booking: string) {
     console.log(booking);
     if (booking === 'booking') {
-      
+
       const totalPrice = this.quantity * this.productData.productPrice;
       const orderData = {
         product: this.productData,
@@ -85,13 +126,42 @@ export class ProductDescriptionPage implements OnInit {
         atributeItemID: ''
       };
       console.log('orderData', orderData);
-      
+
       this.bookingCartService.addBooking(orderData);
-      if (this.is_user) {
-        this.router.navigate(['shipping-info']);
-      } else {
-        this.router.navigate(['logintype']);
-      }
+      this.isAuthenticated();
+      // if (this.is_user) {
+      //   console.log(this.is_user)
+      //   this.router.navigate(['shipping-info']);
+      // } else {
+      //   this.router.navigate(['logintype']);
+      // }
+    } else {
+      const totalPrice = this.quantity * this.productData.productPrice;
+      const orderDataCart = {
+        prodductId: this.productData.productID,
+        product: this.productData,
+        quantity: this.quantity,
+        totalPrice: totalPrice,
+        price: this.productData.productPrice,
+        cuttingAmount: '',
+        productName: this.productData.en_ProductName,
+        slaughterCharge: this.productData.SlaughterCharge,
+        productAttributes: this.productAttributes
+      };
+      this.cartService.addProduct( {
+        product: this.productData,
+        quantity: this.quantity,
+        totalPrice: totalPrice,
+        price: this.productData.productPrice,
+        cuttingAmount: '',
+        productName: this.productData.en_ProductName,
+        slaughterCharge: this.productData.SlaughterCharge,
+        productAttributes: this.productAttributes,
+        productId: this.productData.productID
+      });
+      ;
+
+
     }
   }
   /*
