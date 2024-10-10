@@ -1,320 +1,203 @@
-<!-- <ion-header>
-  <ion-toolbar>
-    <ion-title>Order Form</ion-title>
+<ion-header class="header-menu" [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="onBack()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>Booking Form</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon name="cart-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-grid>
-  
+<ion-content class="ion-padding">
+  <img src="assets/images/raw-meat.jpg" alt="Meat " class="">
+
+  <ion-accordion-group *ngIf="bookingCart">
+    <ion-accordion value="first" *ngFor="let booking of bookingCart">
+      <ion-item slot="header" color="light">
+        <ion-label>Booking Information</ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Your Shopping Bag</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-item lines="none">
+              <ion-label>
+                <h2>  {{ isArabic ? booking.product.ar_ProductName : booking.product.en_ProductName }}</h2>
+                <p> {{booking.quantity}} x {{booking.price}} QAR</p>
+              </ion-label>
+            </ion-item>
     
-  <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
-    <h2>Shipping Info</h2>
-    <ion-item>
-      <ion-label>Address Type</ion-label>
-      <ion-select formControlName="addressType" (ionChange)="onAddressTypeChange($event)">
-        <ion-select-option value="individual">Individual</ion-select-option>
-        <ion-select-option value="company">Company</ion-select-option>
-      </ion-select>
-    </ion-item>
+            <ion-item lines="none">
+              <ion-label>
+                <p>{{booking.quantity}} - item(s)</p>
+              </ion-label>
+            </ion-item>
     
-    <ion-item>
-      <ion-label position="floating">Customer Name</ion-label>
-      <ion-input formControlName="customerName"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="floating">Email</ion-label>
-      <ion-input formControlName="emailID"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="floating">Phone Number</ion-label>
-      <ion-input type="tel" formControlName="phoneNo"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="floating">City</ion-label>
-      <ion-input formControlName="city"></ion-input>
-    </ion-item>
-
-  
-
-    <ion-item>
-      <ion-label position="">Delivery Method</ion-label>
-    </ion-item>
+            <ion-item lines="none">
+              <ion-label>
+                <p>Slaughter charge</p>
+              </ion-label>
+              <ion-label slot="end">{{booking.slaughterCharge}} QAR</ion-label>
+            </ion-item>
     
-    <ion-radio-group formControlName="deliveryMethod">
-      <ion-item>
-        <ion-label>Self Pickup</ion-label>
-        <ion-radio slot="start" value="selfPickup"></ion-radio>
-      </ion-item>
+            <ion-item lines="none">
+              <ion-label>
+                <p>Cutting charge</p>
+              </ion-label>
+              <ion-label slot="end">{{booking.slaughterCharge}} QAR</ion-label>
+            </ion-item>
     
-      <ion-item>
-        <ion-label>Home Delivery</ion-label>
-        <ion-radio slot="start" value="homeDelivery"></ion-radio>
-      </ion-item>
-    </ion-radio-group>
-    
-   
-
-    <div *ngIf="isCompany">
-      <ion-item>
-        <ion-label position="floating">Company Name</ion-label>
-        <ion-input formControlName="companyName"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">Building/No</ion-label>
-        <ion-input formControlName="buildingName_No"></ion-input>
-      </ion-item>
-    </div>
-
-    <div *ngIf="!isCompany">
-      <ion-item>
-        <ion-label position="floating">Building/No</ion-label>
-        <ion-input formControlName="buildingName_No"></ion-input>
-      </ion-item>
-    </div>
-
-    <ion-item>
-      <ion-label position="floating">Street Name/No</ion-label>
-      <ion-input formControlName="streetName_No"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="floating">Landmark</ion-label>
-      <ion-input formControlName="landMark"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label>Delivery Time</ion-label>
-      <ion-select formControlName="deliveryTime">
-        <ion-select-option value="10AM-12PM">10AM-12PM</ion-select-option>
-        <ion-select-option value="12PM-2PM">12PM-2PM</ion-select-option>
-        <ion-select-option value="2PM-4PM">2PM-4PM</ion-select-option>
-      </ion-select>
-    </ion-item>
-
-    <ion-button expand="full" type="submit">Submit</ion-button>
-  </form>
-</ion-grid>
-<ion-card>
-  <ion-card-header>
-    <ion-card-title>Your Shopping Bag</ion-card-title>
-  </ion-card-header>
-
-  <ion-card-content>
-    <ion-item lines="none">
-      <ion-label>
-        <h2>COLOMBIAN BONELESS BEEF</h2>
-        <p>10 X 35 QAR</p>
-      </ion-label>
-    </ion-item>
-
-    <ion-item lines="none">
-      <ion-label>
-        <p>10 - item(s)</p>
-      </ion-label>
-    </ion-item>
-
-    <ion-item lines="none">
-      <ion-label>
-        <p>Slaughter charge</p>
-      </ion-label>
-      <ion-label slot="end">0.00 QAR</ion-label>
-    </ion-item>
-
-    <ion-item lines="none">
-      <ion-label>
-        <p>Cutting charge</p>
-      </ion-label>
-      <ion-label slot="end">0 QAR</ion-label>
-    </ion-item>
-
-    <ion-item lines="none">
-      <ion-label>
-        <h2>Order Total</h2>
-      </ion-label>
-      <ion-label slot="end">
-        <h2>350.00 QAR</h2>
-      </ion-label>
-    </ion-item>
-  </ion-card-content>
-</ion-card>
-</ion-content> -->
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Order Form</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-  <ion-grid>
-    <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
-      <h2>Shipping Info</h2>
-      
-      <!-- Address Type -->
-      <ion-item>
-        <ion-label>Address Type</ion-label>
-        <ion-select formControlName="addressType" (ionChange)="onAddressTypeChange($event)">
-          <ion-select-option value="individual">Individual</ion-select-option>
-          <ion-select-option value="company">Company</ion-select-option>
-        </ion-select>
-      </ion-item>
-      <ion-note *ngIf="orderForm.get('addressType')?.touched && orderForm.get('addressType')?.invalid" color="danger">
-        Address Type is required.
-      </ion-note>
-
-      <!-- Customer Name -->
-      <ion-item>
-        <ion-label position="floating">Customer Name</ion-label>
-        <ion-input formControlName="customerName"></ion-input>
-      </ion-item>
-      <ion-note *ngIf="orderForm.get('customerName')?.touched && orderForm.get('customerName')?.invalid" color="danger">
-        Customer Name is required.
-      </ion-note>
-
-      <!-- Email -->
-      <ion-item>
-        <ion-label position="floating">Email</ion-label>
-        <ion-input formControlName="emailID"></ion-input>
-      </ion-item>
-      <ion-note *ngIf="orderForm.get('emailID')?.touched && orderForm.get('emailID')?.invalid" color="danger">
-        <span *ngIf="orderForm.get('emailID')?.errors?.['required']">Email is required.</span>
-        <span *ngIf="orderForm.get('emailID')?.errors?.['email']">Invalid email format.</span>
-      </ion-note>
-
-      <!-- Phone Number -->
-      <ion-item>
-        <ion-label position="floating">Phone Number</ion-label>
-        <ion-input type="tel" formControlName="phoneNo"></ion-input>
-      </ion-item>
-      <ion-note *ngIf="orderForm.get('phoneNo')?.touched && orderForm.get('phoneNo')?.invalid" color="danger">
-        <span *ngIf="orderForm.get('phoneNo')?.errors?.['required']">Phone Number is required.</span>
-        <span *ngIf="orderForm.get('phoneNo')?.errors?.['minlength']">Phone Number must be at least 12 digits.</span>
-      </ion-note>
-
-      <!-- City -->
-      <ion-item>
-        <ion-label position="floating">City</ion-label>
-        <ion-input formControlName="city"></ion-input>
-      </ion-item>
-      <ion-note *ngIf="orderForm.get('city')?.touched && orderForm.get('city')?.invalid" color="danger">
-        City is required.
-      </ion-note>
-
-      <!-- Delivery Method -->
-      <ion-item>
-        <ion-label>Delivery Method</ion-label>
-      </ion-item>
-      <ion-radio-group formControlName="deliveryMethod">
-        <ion-item>
-          <ion-label>Self Pickup</ion-label>
-          <ion-radio slot="start" value="selfPickup"></ion-radio>
-        </ion-item>
-        <ion-item>
-          <ion-label>Home Delivery</ion-label>
-          <ion-radio slot="start" value="homeDelivery"></ion-radio>
-        </ion-item>
-      </ion-radio-group>
-      <ion-note *ngIf="orderForm.get('deliveryMethod')?.touched && orderForm.get('deliveryMethod')?.invalid" color="danger">
-        Delivery Method is required.
-      </ion-note>
-
-      <!-- Company Name (Visible only if address type is "company") -->
-      <div *ngIf="isCompany">
-        <ion-item>
-          <ion-label position="floating">Company Name</ion-label>
-          <ion-input formControlName="companyName"></ion-input>
-        </ion-item>
+            <ion-item lines="none">
+              <ion-label>
+                <h2>Order Total</h2>
+              </ion-label>
+              <ion-label slot="end">
+                <h2>{{ booking.quantity * booking.price}} QAR</h2>
+              </ion-label>
+            </ion-item>
+          </ion-card-content>
+        </ion-card>
       </div>
+    </ion-accordion>
+    </ion-accordion-group>
 
-      <!-- Building/No -->
-      <ion-item>
-        <ion-label position="floating">Building/No</ion-label>
-        <ion-input formControlName="buildingName_No"></ion-input>
-      </ion-item>
-      <ion-note *ngIf="orderForm.get('buildingName_No')?.touched && orderForm.get('buildingName_No')?.invalid" color="danger">
-        Building/No is required.
-      </ion-note>
+    <ion-grid>
+      <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+        <h2>User Info <ion-icon name="information-circle" color="primary" (click)="showDeliveryToast()"></ion-icon>
+        </h2>
 
-      <!-- Street Name/No -->
-      <ion-item>
-        <ion-label position="floating">Street Name/No</ion-label>
-        <ion-input formControlName="streetName_No"></ion-input>
-      </ion-item>
-      <ion-note *ngIf="orderForm.get('streetName_No')?.touched && orderForm.get('streetName_No')?.invalid" color="danger">
-        Street Name/No is required.
-      </ion-note>
+        <!-- Address Type -->
+        <ion-item>
+          <ion-label>Address Type</ion-label>
+          <ion-select formControlName="addressType" (ionChange)="onAddressTypeChange($event)">
+            <ion-select-option value="individual">Individual</ion-select-option>
+            <ion-select-option value="company">Company</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-note *ngIf="orderForm.get('addressType')?.touched && orderForm.get('addressType')?.invalid" color="danger">
+          Address Type is required.
+        </ion-note>
 
-      <!-- Landmark -->
-      <ion-item>
-        <ion-label position="floating">Landmark</ion-label>
-        <ion-input formControlName="landMark"></ion-input>
-      </ion-item>
-      <ion-note *ngIf="orderForm.get('landMark')?.touched && orderForm.get('landMark')?.invalid" color="danger">
-        Landmark is required.
-      </ion-note>
+        <!-- Customer Name -->
+        <ion-item>
+          <ion-label position="floating">Customer Name</ion-label>
+          <ion-input formControlName="customerName"></ion-input>
+        </ion-item>
+        <ion-note *ngIf="orderForm.get('customerName')?.touched && orderForm.get('customerName')?.invalid"
+          color="danger">
+          Customer Name is required.
+        </ion-note>
 
-      <!-- Delivery Time -->
-      <ion-item>
-        <ion-label>Delivery Time</ion-label>
-        <ion-select formControlName="deliveryTime">
-          <ion-select-option value="10AM-12PM">10AM-12PM</ion-select-option>
-          <ion-select-option value="12PM-2PM">12PM-2PM</ion-select-option>
-          <ion-select-option value="2PM-4PM">2PM-4PM</ion-select-option>
-        </ion-select>
-      </ion-item>
-      <ion-note *ngIf="orderForm.get('deliveryTime')?.touched && orderForm.get('deliveryTime')?.invalid" color="danger">
-        Delivery Time is required.
-      </ion-note>
+        <!-- Email -->
+        <ion-item>
+          <ion-label position="floating">Email</ion-label>
+          <ion-input formControlName="emailID"></ion-input>
+        </ion-item>
+        <ion-note *ngIf="orderForm.get('emailID')?.touched && orderForm.get('emailID')?.invalid" color="danger">
+          <span *ngIf="orderForm.get('emailID')?.errors?.['required']">Email is required.</span>
+          <span *ngIf="orderForm.get('emailID')?.errors?.['email']">Invalid email format.</span>
+        </ion-note>
 
-      <!-- Submit Button -->
-      <ion-button expand="full" type="submit">Submit</ion-button>
-    </form>
-  </ion-grid>
+        <!-- Phone Number -->
+        <ion-item>
+          <ion-label position="floating">Phone Number</ion-label>
+          <ion-input type="tel" formControlName="phoneNo"></ion-input>
+        </ion-item>
+        <ion-note *ngIf="orderForm.get('phoneNo')?.touched && orderForm.get('phoneNo')?.invalid" color="danger">
+          <span *ngIf="orderForm.get('phoneNo')?.errors?.['required']">Phone Number is required.</span>
+          <span *ngIf="orderForm.get('phoneNo')?.errors?.['minlength']">Phone Number must be at least 8 digits.</span>
+        </ion-note>
 
-  <!-- Shopping Bag (Example Static Content) -->
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Your Shopping Bag</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-item lines="none">
-        <ion-label>
-          <h2>COLOMBIAN BONELESS BEEF</h2>
-          <p>10 X 35 QAR</p>
-        </ion-label>
-      </ion-item>
+         <!-- Company Name (Visible only if address type is "company") -->
+         <div *ngIf="isCompany">
+          <ion-item>
+            <ion-label position="floating">Company Name</ion-label>
+            <ion-input formControlName="companyName"></ion-input>
+          </ion-item>
+        </div>
 
-      <ion-item lines="none">
-        <ion-label>
-          <p>10 - item(s)</p>
-        </ion-label>
-      </ion-item>
+        
+        <h2>Shipping Address</h2>
+        <!-- City -->
+        <ion-item>
+          <ion-label position="floating">City</ion-label>
+          <ion-input formControlName="city"></ion-input>
+        </ion-item>
+        <ion-note *ngIf="orderForm.get('city')?.touched && orderForm.get('city')?.invalid" color="danger">
+          City is required.
+        </ion-note>
 
-      <ion-item lines="none">
-        <ion-label>
-          <p>Slaughter charge</p>
-        </ion-label>
-        <ion-label slot="end">0.00 QAR</ion-label>
-      </ion-item>
+      
 
-      <ion-item lines="none">
-        <ion-label>
-          <p>Cutting charge</p>
-        </ion-label>
-        <ion-label slot="end">0 QAR</ion-label>
-      </ion-item>
+       
+        <!-- Building/No -->
+        <ion-item>
+          <ion-label position="floating">Building/No</ion-label>
+          <ion-input formControlName="buildingName_No"></ion-input>
+        </ion-item>
+        <ion-note *ngIf="orderForm.get('buildingName_No')?.touched && orderForm.get('buildingName_No')?.invalid"
+          color="danger">
+          Building/No is required.
+        </ion-note>
 
-      <ion-item lines="none">
-        <ion-label>
-          <h2>Order Total</h2>
-        </ion-label>
-        <ion-label slot="end">
-          <h2>350.00 QAR</h2>
-        </ion-label>
-      </ion-item>
-    </ion-card-content>
-  </ion-card>
+        <!-- Street Name/No -->
+        <ion-item>
+          <ion-label position="floating">Street Name/No</ion-label>
+          <ion-input formControlName="streetName_No"></ion-input>
+        </ion-item>
+        <ion-note *ngIf="orderForm.get('streetName_No')?.touched && orderForm.get('streetName_No')?.invalid"
+          color="danger">
+          Street Name/No is required.
+        </ion-note>
+
+        <!-- Landmark -->
+        <ion-item>
+          <ion-label position="floating">Landmark</ion-label>
+          <ion-input formControlName="landMark"></ion-input>
+        </ion-item>
+        <ion-note *ngIf="orderForm.get('landMark')?.touched && orderForm.get('landMark')?.invalid" color="danger">
+          Landmark is required.
+        </ion-note>
+
+          <!-- Delivery Method -->
+        <h2>Delivery Method</h2>
+     
+        <ion-radio-group formControlName="deliveryMethod">
+          <ion-radio slot="start" justify="space-between" value="selfPickup" id="selfPickup">Self Pickup</ion-radio><br />
+          <ion-radio slot="start" justify="space-between" value="homeDelivery" id="homeDelivery">Home Delivery</ion-radio> <br />
+        </ion-radio-group>
+        
+        <!-- Delivery Time -->
+        <ion-item>
+          <ion-label position="floating">Delivery Time</ion-label>
+          <ion-select formControlName="deliveryTime">
+            <ion-select-option value="09AM-11PM">10AM-12PM</ion-select-option>
+            <ion-select-option value="10AM-12PM">11AM-01PM</ion-select-option>
+            <ion-select-option value="12PM-2PM">01PM-3PM</ion-select-option>
+            <ion-select-option value="2PM-4PM">6PM-9PM</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-note *ngIf="orderForm.get('deliveryTime')?.touched && orderForm.get('deliveryTime')?.invalid"
+          color="danger">
+          Delivery Time is required.
+        </ion-note>
+
+        <!-- Submit Button -->
+        <ion-button expand="full" type="submit">Submit</ion-button>
+      </form>
+    </ion-grid>
+
+    <!-- Shopping Bag (Example Static Content) -->
+   
 </ion-content>

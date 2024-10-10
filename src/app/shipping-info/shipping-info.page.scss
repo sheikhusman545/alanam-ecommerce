@@ -6,3 +6,43 @@ ion-card {
   ion-item {
     --inner-padding-start: 0;
   }
+
+
+  .radio-inner{
+    width: 30px;
+    height: 30px;
+    background: lightblue;
+    border-radius: 50%;
+  }
+
+  ion-radio {
+    font-size: 20px;
+    padding: 5px;
+}
+
+.ion-color-danger{
+  padding: 0 10px;
+  font-size: 12px;
+}
+
+ion-radio {
+  --border-radius: 50%;          // Make radio button round
+  --size: 24px;                  // Set custom size
+  --color-checked: #6c2835;      // Set checked color
+  --color: #c4c4c4;              // Set default unselected color
+
+  &::part(radio-icon) {
+    background-color: #6c2835 !important;   // Color for the selected icon
+  }
+}
+
+/* Adjust the label styling if needed */
+ion-radio-group {
+  display: flex;
+  flex-direction: column;
+
+  ion-radio {
+    margin-bottom: 8px;
+    align-items: center;
+  }
+}

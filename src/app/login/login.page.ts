@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClientService } from '../services/http.service';
 import { NavController } from '@ionic/angular';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -17,11 +18,12 @@ export class LoginPage {
   constructor(
     private fb: FormBuilder,
     private http: HttpClientService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private router: Router
   ) {
     // Initialize phone number form
     this.phoneForm = this.fb.group({
-      phoneNumber: ['', [Validators.required, Validators.pattern('^\\+?[1-9]\\d{1,14}$')]], // Phone number regex
+      phoneNumber: ['', [Validators.required, Validators.pattern('^\\+?[1-9]\\d{1,14}$'),Validators.maxLength(8)]], // Phone number regex
     });
 
     // Initialize OTP form with 6 controls, each for a single digit
@@ -45,12 +47,10 @@ export class LoginPage {
         console.log(response);
       }); // Adjust the URL
       console.log('Sending OTP to:', phoneNumber);
-      // Implement the OTP sending logic here
       this.showOtpModal = true; // Show OTP modal after sending OTP
     }
   }
 
-  // Function to automatically move focus to the next input field
   moveToNext(event: any, nextControl: string) {
     const input = event.target.value;
     if (input.length === 1 && nextControl) {
@@ -61,7 +61,6 @@ export class LoginPage {
     }
   }
 
-  // Function to verify OTP after it's entered
   verifyOTP() {
     if (this.otpForm.valid) {
       const otp = Object.values(this.otpForm.value).join('');
@@ -75,7 +74,7 @@ export class LoginPage {
         localStorage.setItem("userDetails", JSON.stringify(this.userDetails));
         localStorage.setItem("JWT_Token", this.jwtToken);
         if (this.jwtToken !== null) {
-         // this.navCtrl.navigate(['/tabs/home']);
+          this.router.navigate(['/tabs/home']);
           console.log('User logged in:', this.userDetails);
           console.log('JWT Token:', this.jwtToken);
         }
@@ -99,10 +98,3 @@ export class LoginPage {
   }
 }
 
-
-
-
-// private generateOtpUrl = 'https://shopapi.alanaam.qa/api/ecom/generateotp';
-// private verifyOtpUrl = 'https://shopapi.alanaam.qa/api/ecom/verifyotp'; // Adjust if necessary
-
-// constructor(private http: HttpClient) {}

@@ -25,5 +25,8 @@ export class LogintypePage implements OnInit {
     this.router.navigate(['shipping-info']);
   }
 
+  onBack() {
+    this.navCtrl.back();
+  }
 
 }

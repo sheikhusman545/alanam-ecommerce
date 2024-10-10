@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { HttpHeaders } from '@angular/common/http';
 import { HttpClientService } from '../services/http.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-profile',
@@ -17,7 +18,8 @@ export class UserProfilePage implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private http: HttpClientService
+    private http: HttpClientService,
+    private router: Router
 
   ) { }
 
@@ -47,8 +49,8 @@ export class UserProfilePage implements OnInit {
       formData.append('customerEmail', this.userForm.get('email')?.value);
      
       const headers = new HttpHeaders({
-        'Authorization': `Bearer ${this.token}`,   // Authorization header
-        'X-Auth-Token': this.token || ''           // X-Auth-Token header
+        'Authorization': `Bearer ${this.token}`,   
+        'X-Auth-Token': this.token || ''           
       });
   
       return this.http.post('ecom/myaccount/updateprofile', formData, { headers }).subscribe((response) => {
@@ -57,5 +59,13 @@ export class UserProfilePage implements OnInit {
     } else {
       console.log('Form is not valid');
     }
+  }
+  navigateToOrders() {
+    this.router.navigate(['/orders']);
+  }
+
+   logout() {
+    this.authService.clearAuthData();
+    this.router.navigate(['/tabs/home']);
   }
 }

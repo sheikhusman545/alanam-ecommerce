@@ -16,9 +16,9 @@ export class ProductDescriptionPage implements OnInit {
   quantity: number = 1; // Default quantity
   attribute_id: any = null;
   attrubite_item_id: any = null;
-//  is_user = this.authService.check();
   attributes: any[] = [];
   productAttributes: any[] = [];
+  attr_id: any;
 
   constructor(
     private NavCtrl: NavController,
@@ -82,26 +82,26 @@ export class ProductDescriptionPage implements OnInit {
   }
 
   onAttributeChange(attribute: any, event: any) {
-    const selectedItem = event.detail.value; // This contains the selected item data
+    console.log('Event:', event.detail.value.atributeItemID);
+    this.attrubite_item_id = event.detail.value.atributeItemID;
+    this.attr_id = attribute.atributeID;
     console.log('Attribute:', attribute);
-    // Find if attribute already exists in productAttributes
+    const selectedItem = event.detail.value; 
+    console.log('Attribute:', attribute);
     const existingAttribute = this.productAttributes.find(
       (attr) => attr.atributeID === attribute.atributeID
     );
-
     const newAttribute = {
       atributeID: attribute.atributeID,
       en_atributeName: attribute.en_atributeName,
       ar_atributeName: attribute.ar_atributeName,
-      items: selectedItem // Replace `items` array with the selected item
+      items: selectedItem 
     };
 
     if (existingAttribute) {
-      // Update the existing attribute with the selected item
       const index = this.productAttributes.indexOf(existingAttribute);
       this.productAttributes[index] = newAttribute;
     } else {
-      // Add the new attribute if it doesn't already exist
       this.productAttributes.push(newAttribute);
     }
 
@@ -117,24 +117,19 @@ export class ProductDescriptionPage implements OnInit {
       const orderData = {
         product: this.productData,
         quantity: this.quantity,
-        totalPrice: totalPrice,
+        orderTotal: totalPrice,
+        payableAmount: totalPrice,
         price: this.productData.productPrice,
         cuttingAmount: '',
         productName: this.productData.en_ProductName,
         slaughterCharge: this.productData.SlaughterCharge,
-        atributeID: '',
-        atributeItemID: ''
+        atributeID: this.attr_id || '',
+        atributeItemID: this.attrubite_item_id || '',
       };
       console.log('orderData', orderData);
 
       this.bookingCartService.addBooking(orderData);
       this.isAuthenticated();
-      // if (this.is_user) {
-      //   console.log(this.is_user)
-      //   this.router.navigate(['shipping-info']);
-      // } else {
-      //   this.router.navigate(['logintype']);
-      // }
     } else {
       const totalPrice = this.quantity * this.productData.productPrice;
       const orderDataCart = {

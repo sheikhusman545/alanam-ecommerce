@@ -12,17 +12,8 @@ export class BookingCartService {
 
   constructor() {}
 
-  // Add a booking and emit the updated cart
-  // addBooking(booking: any) {
-  //   console.log('booking in cart',booking);
-  //   const currentCart = this.bookingCartSubject.getValue();
-  //   this.bookingCartSubject.next([...currentCart, booking]);
-  //   console.log('currentCart',this.bookingCartSubject.getValue());
-  // }
   addBooking(booking: any) {
     console.log('booking in cart', booking);
-  
-    // Replace the old booking with the new one
     this.bookingCartSubject.next([booking]);
     console.log('currentCart', this.bookingCartSubject.getValue());
   }

@@ -4,6 +4,9 @@ import { BookingCartService } from '../services/booking-cart.service';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { HttpClientService } from '../services/http.service';  // Assuming you have this service for HTTP calls
+import { AlertController, NavController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-shipping-info',
@@ -16,19 +19,26 @@ export class ShippingInfoPage implements OnInit {
   isCompany: boolean = false;
   bookingCart: any[] = [];
   cartSubscription!: Subscription;
+  isArabic = true;
+
+  
 
   constructor(
     private formBuilder: FormBuilder,
     private bookingCartService: BookingCartService,
     private authService: AuthService,
-    private httpClient: HttpClientService  // Injecting HttpClientService
+    private httpClient: HttpClientService,
+    private navCtrl: NavController,
+    private alertController: AlertController,
+    private router: Router,
+    private toastController: ToastController
   ) {
     this.orderForm = this.formBuilder.group({
       customerName: ['', Validators.required],
       emailID: ['', [Validators.required, Validators.email]],
-      phoneNo: ['', [Validators.required, Validators.minLength(12)]], // Ensures minimum length of 12 digits
+      phoneNo: ['', [Validators.required, Validators.minLength(8)]], // Ensures minimum length of 12 digits
       city: ['', Validators.required],
-      deliveryMethod: ['Doorstep Delivery', Validators.required],  // Defaulting to Doorstep Delivery
+      deliveryMethod: ['selfPickup', Validators.required],  // Defaulting to Doorstep Delivery
       addressType: ['individual', Validators.required],
       companyName: [''],
       buildingName_No: ['', Validators.required],
@@ -39,14 +49,12 @@ export class ShippingInfoPage implements OnInit {
   }
 
   ngOnInit() {
-    // Subscribe to the cart data and update when it changes
     this.cartSubscription = this.bookingCartService.bookingCart$.subscribe(
       (cart) => {
         this.bookingCart = cart;
         console.log('Cart updated:', this.bookingCart);
       });
 
-    // Autofill user details if logged in
     this.authService.getUserDetails$().subscribe((userDetails) => {
       console.log(userDetails);
       if (userDetails) {
@@ -59,11 +67,10 @@ export class ShippingInfoPage implements OnInit {
     });
   }
 
-  // Toggle company name field based on address type
   onAddressTypeChange(event: any) {
     this.isCompany = event.detail.value === 'company';
     if (!this.isCompany) {
-      this.orderForm.patchValue({ companyName: '' }); // Clear company name if switching to individual
+      this.orderForm.patchValue({ companyName: '' }); 
     }
   }
 
@@ -71,8 +78,6 @@ export class ShippingInfoPage implements OnInit {
   onSubmit() {
     if (this.orderForm.valid) {
       const formdata = new FormData();
-  
-      // Append booking cart items to formData without nesting
       this.bookingCart.map((cartItem) => {
         formdata.append(`productID`, cartItem.product.productID);
         formdata.append(`atributeID`, cartItem.atributeID || '');
@@ -83,26 +88,25 @@ export class ShippingInfoPage implements OnInit {
         formdata.append(`orderTotal`, cartItem.orderTotal || '0');
         formdata.append(`payableAmount`, cartItem.payableAmount || '0');
       });
-  
-      // Append user form fields to formdata
       formdata.append('customerName', this.orderForm.value.customerName);
       formdata.append('deliveryMethod', this.orderForm.value.deliveryMethod);
-      formdata.append('shippingCharge', '20');  // Assuming static
+      formdata.append('shippingCharge', '0');  // Assuming static
       formdata.append('addressType', this.orderForm.value.addressType);
       formdata.append('AddressTypeName', this.isCompany ? this.orderForm.value.companyName : '');
       formdata.append('buildingName_No', this.orderForm.value.buildingName_No);
       formdata.append('streetName_No', this.orderForm.value.streetName_No);
       formdata.append('landMark', this.orderForm.value.landMark);
       formdata.append('emailID', this.orderForm.value.emailID);
-      formdata.append('phoneNo', this.orderForm.value.phoneNo);
+      formdata.append('phoneNo', '+974' + this.orderForm.value.phoneNo);
       formdata.append('city', this.orderForm.value.city);
       formdata.append('deliveryTime', this.orderForm.value.deliveryTime);
       formdata.append('paymentType', 'Self Payment');  // Assuming static for now
   
-      // Submit the formData via your service
       this.httpClient.post('ecom/booking', formdata).subscribe(
-              (response) => {
+        (response) => {
+              if(response.respondStatus = 'SUCCESS')
                 console.log('Order submitted successfully:', response);
+                this.presentSuccessAlert(response.successMessages.bookNo);
               },
               (error) => {
                 console.error('Error submitting order:', error);
@@ -119,5 +123,38 @@ export class ShippingInfoPage implements OnInit {
     if (this.cartSubscription) {
       this.cartSubscription.unsubscribe();
     }
+  }
+
+  onBack() {
+    this.navCtrl.back();
+  }
+
+  async presentSuccessAlert(msg:string) {
+    const alert = await this.alertController.create({
+      header: 'Success',
+      message: 'Your order has been placed successfully. Your order ID is: ' + msg + 'Please wait for our confirmation call.',
+      buttons: [
+        {
+          text: 'Go to Home',
+          handler: () => {
+            this.router.navigate(['/tabs/home']); // Navigate to the home page
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  
+
+  async showDeliveryToast() {
+    const toast = await this.toastController.create({
+      message: 'Any order before 3 PM will be delivery on that day itself.Any order after 3PM will be delivery the next day.Estimated delivery time: 3-5 business days.',
+      duration: 5000,
+      position: 'top', // You can change this to 'top' or 'middle'
+      color: 'light', // Customize the toast color if needed
+    });
+
+    await toast.present();
   }
 }

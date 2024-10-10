@@ -220,6 +220,7 @@ ion-row {
   width: 90%;
   border-radius: 0;
   padding:20px;
+  z-index: 4344;
 }
 
 :host(.button-block) .button-native {
@@ -230,4 +231,7 @@ ion-row {
   contain: content;
   padding: 20px !important;
   border-radius: inherit;
+}
+.product-col{
+  margin-bottom: 80px;
 }
