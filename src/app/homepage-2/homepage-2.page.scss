@@ -1,32 +1,27 @@
 .custom-header-toolbar {
   background-color: #6c2835;
-  /* Set the background color */
   border-bottom-left-radius: 50px;
-  /* Create the curved bottom design */
   border-bottom-right-radius: 50px;
-  /* Create the curved bottom design */
+}
+ion-header{
+  border-bottom-left-radius: 50px;
+  border-bottom-right-radius: 50px;
 }
 
 .logo {
   width: 64px;
-  /* Adjust logo size */
 }
 
 .custom-search {
   margin: 0 10px;
   background-color: #6c2835;
-  /* Make search background blend with header */
 }
 
 .searchbar-custom {
   --background: white;
-  /* White background for search bar */
   --border-radius: 50px;
-  /* Rounded search bar */
   --color: black;
-  /* Search text color */
   --icon-color: black;
-  /* Icon color inside search bar */
   padding-left: 10px;
   background: white;
   padding: 10px;
@@ -149,64 +144,6 @@ ion-icon {
     margin-top: 20px;
   }
 
-  // .product-card {
-  //   display: flex;
-  //   flex-direction: column;
-  //   justify-content: space-between;
-  //   background-color: #f8f8f8;
-  //   border-radius: 10px;
-  //   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  //   transition: transform 0.3s, box-shadow 0.3s;
-  //   overflow: hidden;
-  //   width: 100%;
-  //   /* Full width */
-
-  //   &:hover {
-  //     transform: translateY(-5px);
-  //     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-  //   }
-
-  //   .product-image {
-  //     height: 160px;
-  //     /* Allocate 60% for image */
-  //     width: 100%;
-  //     overflow: hidden;
-
-  //   }
-
-  //   .product-details {
-  //     padding: 5px;
-
-  //     .product-name {
-  //       font-size: 0.8rem;
-  //       /* Small product name */
-  //       white-space: nowrap;
-  //       overflow: hidden;
-  //       text-overflow: ellipsis;
-  //       /* Hide overflow text */
-  //       margin: 0;
-  //       color: #333;
-
-  //     }
-
-  //     h3.product-name {
-  //       font-size: 16px;
-  //       color: gray;
-  //       padding: 0;
-  //       margin-bottom: 0;
-  //       padding-bottom: 0;
-  //   }
-  //     .product-price {
-  //       font-size: 0.9rem;
-  //       /* Slightly larger for price */
-  //       color: #6c2835;
-  //       margin: 0;
-  //       font-weight: bold;
-  //     }
-  //   }
-  // }
-
-  /* Featured and New Products Section */
   .featured-products .swiper-wrapper,
   .new-products .swiper-wrapper {
     display: flex;

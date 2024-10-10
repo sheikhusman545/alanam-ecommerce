@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClientService } from '../services/http.service';
 import { NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -19,11 +20,12 @@ export class LoginPage {
     private fb: FormBuilder,
     private http: HttpClientService,
     private navCtrl: NavController,
-    private router: Router
+    private router: Router,
+    public toastController: ToastController
   ) {
     // Initialize phone number form
     this.phoneForm = this.fb.group({
-      phoneNumber: ['', [Validators.required, Validators.pattern('^\\+?[1-9]\\d{1,14}$'),Validators.maxLength(8)]], // Phone number regex
+      phoneNumber: ['', [Validators.required, Validators.pattern('^\\+?[1-9]\\d{1,14}$'), Validators.maxLength(8), Validators.minLength(8)]], // Phone number regex
     });
 
     // Initialize OTP form with 6 controls, each for a single digit
@@ -69,15 +71,19 @@ export class LoginPage {
       formData.append('otp', otp);
       formData.append('devicetype', 'app-anrdoid');
       this.http.post('ecom/login', formData).subscribe((response) => {
-        this.userDetails = response.requestedData.userDetails;
-        this.jwtToken = response.requestedData.JWT_Token;
-        localStorage.setItem("userDetails", JSON.stringify(this.userDetails));
-        localStorage.setItem("JWT_Token", this.jwtToken);
-        if (this.jwtToken !== null) {
+        console.log(response);
+        if (response.respondStatus == 'SUCCESS') {
+          this.userDetails = response.requestedData.userDetails;
+          this.jwtToken = response.requestedData.JWT_Token;
+          localStorage.setItem("userDetails", JSON.stringify(this.userDetails));
+          localStorage.setItem("JWT_Token", this.jwtToken);
           this.router.navigate(['/tabs/home']);
           console.log('User logged in:', this.userDetails);
           console.log('JWT Token:', this.jwtToken);
+        } else {
+          this.toastMessage('Invalid OTP');
         }
+
 
       }); // Adjust the URL
       const userDetails = localStorage.getItem('userDetails');
@@ -93,8 +99,19 @@ export class LoginPage {
   closeModal(event: any) {
     this.showOtpModal = false;
   }
-  onBack(){
+  onBack() {
     this.navCtrl.back();
+  }
+  
+  async toastMessage(msg: string) {
+    const toast = await this.toastController.create({
+      message: 'OTP is invalid',
+      duration: 2000,
+      position: 'top', // You can change this to 'top' or 'middle'
+      color: 'light', // Customize the toast color if needed
+    });
+
+    await toast.present();
   }
 }
 
