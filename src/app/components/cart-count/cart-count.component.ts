@@ -3,18 +3,27 @@ import { CartService } from 'src/app/services/cart.service';
 
 @Component({
   selector: 'app-cart-count',
-  templateUrl: './cart-count.component.html',
-  styleUrls: ['./cart-count.component.scss'],
+  template: `
+    <ion-badge color="primary">{{ this.cartCount }} </ion-badge>
+  `,
+  styles: [`
+    ion-badge {
+      font-size: 1.2em;
+      padding: 8px;
+    }
+  `]
 })
 export class CartCountComponent implements OnInit {
-  cartItemCount: number = 0;
-
-  constructor(private cartService: CartService) {}
+  cartCount = 0;
+  constructor(private cartService: CartService) { }
 
   ngOnInit() {
-    // Subscribe to the cart item count changes
-    this.cartService.cartItemCount$.subscribe((count) => {
-      this.cartItemCount = count;
+    // Log to verify the component is initializing
+    console.log('CartCountComponent initialized');
+
+    this.cartService.cartItemCount$.subscribe(count => {
+      this.cartCount = count;
+      console.log('Updated cart count:', count); // Verify count changes
     });
   }
 }

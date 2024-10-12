@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ProductsService } from '../services/products.service';
 import { CategoriesService } from '../services/categories.service';
 import Swiper from 'swiper';
+import { CartService } from '../services/cart.service';
 
 @Component({
   selector: 'app-homepage-2',
@@ -16,18 +17,22 @@ export class Homepage2Page implements OnInit {
   featuredProducts: any[] = [];
   newProduct: any[] = [];
   categories: any[] = [];
-  
   isLoading = false;
+  cartCount = 0;
+
 
   constructor(
     private router: Router,
     private productsService: ProductsService,
-    private categoriesService: CategoriesService
+    private categoriesService: CategoriesService,
+    private cartService: CartService
 
   ) { }
 
   ngOnInit() {
-    this.showLoader();
+    this.cartService.cartItemCount$.subscribe(count => {
+      this.cartCount = count;
+    });
     this.getFeaturedProducts();
     this.getNewProducts();
     this.getCategories();
@@ -72,5 +77,8 @@ export class Homepage2Page implements OnInit {
 
   navigateToProduct(productId: string) {
     this.router.navigate(['/product-description', productId]);
+  }
+  goToCart() {
+    this.router.navigate(['/tabs/cart']);
   }
 }

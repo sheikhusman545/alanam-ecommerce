@@ -4,13 +4,15 @@ import { BehaviorSubject } from 'rxjs';
 export interface CartItem {
   productId: number;
   quantity: number;
-  productAttributes: { [key: string]: any }; // Add productAttributes like size, color, etc.
+  productAttributes: { [key: string]: any }; 
   product: any;
   totalPrice: number;
   cuttingAmount: '';
   productName: string,
   slaughterCharge: any;
   price: any;
+  atributeID?: any;
+  atributeItemID?: any;
 }
 
 @Injectable({
@@ -26,38 +28,37 @@ export class CartService {
 
   constructor() {}
 
-  // Get cart from localStorage or return an empty array
-  private getCartFromStorage(): CartItem[] {
+   getCartFromStorage(): CartItem[] {
     const storedCart = localStorage.getItem('cart');
     return storedCart ? JSON.parse(storedCart) : [];
   }
 
   // Save cart to localStorage
-  private saveCartToStorage(cart: CartItem[]) {
+   saveCartToStorage(cart: CartItem[]) {
     localStorage.setItem('cart', JSON.stringify(cart));
   }
 
-  // Add product to the cart with productAttributes
   addProduct(product: CartItem) {
     const currentCart = this.cart.value;
     const index = currentCart.findIndex(
       (item) => item.productId === product.productId && this.matchproductAttributes(item.productAttributes, product.productAttributes)
     );
-
+  
     if (index > -1) {
-      // If the product with the same productAttributes already exists, increase the quantity
       currentCart[index].quantity += 1;
+      currentCart[index].totalPrice = currentCart[index].price * currentCart[index].quantity + (currentCart[index].slaughterCharge * currentCart[index].quantity);
     } else {
-      // Add the new product with productAttributes and set quantity to 1
       product.quantity = 1;
+      product.totalPrice = product.price;  // Initialize totalPrice
       currentCart.push(product);
     }
-
+  
     this.cart.next(currentCart);
-    this.saveCartToStorage(currentCart); // Save updated cart to localStorage
+    this.saveCartToStorage(currentCart);
     this.updateCartCount();
-    console.log('Cart updated:', currentCart);
+    console.log(currentCart);
   }
+  
 
   // Remove product or decrease quantity
   removeProduct(productId: number, productAttributes: { [key: string]: any }) {
@@ -69,6 +70,7 @@ export class CartService {
     if (index > -1) {
       if (currentCart[index].quantity > 1) {
         currentCart[index].quantity -= 1;
+        currentCart[index].totalPrice = currentCart[index].price * currentCart[index].quantity + (currentCart[index].slaughterCharge * currentCart[index].quantity);
       } else {
         currentCart.splice(index, 1); // Remove the product if quantity is 0
       }

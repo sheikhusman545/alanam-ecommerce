@@ -23,18 +23,7 @@
           </p>
           <div class="divider"></div>
 
-          <!-- <div class="attributes" *ngIf="attributes">
-            <div *ngFor="let attribute of attributes">
-              <ion-item lines="none">
-                <ion-label>- Select the {{ attribute.en_atributeName }} -</ion-label>
-                <ion-select>
-                  <ion-select-option *ngFor="let item of attribute.items" [value]="item.atributeItemID">
-                    {{ item.en_itemName }} ({{ item.extraCost | currency:'USD':true }})
-                  </ion-select-option>
-                </ion-select>
-              </ion-item>
-            </div>
-          </div> -->
+        
           <div class="attributes" *ngIf="attributes">
             <div *ngFor="let attribute of attributes">
               <ion-item lines="none">

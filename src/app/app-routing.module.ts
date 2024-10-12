@@ -66,6 +66,10 @@ const routes: Routes = [
     path: 'success',
     loadChildren: () => import('./success/success.module').then( m => m.SuccessPageModule)
   },
+  {
+    path: 'guest',
+    loadChildren: () => import('./guest/guest.module').then( m => m.GuestPageModule)
+  },
  
 
 ];

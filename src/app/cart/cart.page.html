@@ -3,75 +3,45 @@
     <ion-buttons slot="start">
       <ion-button (click)="goBack()">
         <ion-icon name="arrow-back-outline"></ion-icon>
-        <ion-label>Back</ion-label>
+        <ion-label></ion-label>
       </ion-button>
     </ion-buttons>
-
     <ion-title>Cart</ion-title>
-
     <ion-buttons slot="end">
       <ion-button>
-        <ion-icon name="cart-outline"></ion-icon>
-        <ion-label>Cart</ion-label>
+        <ion-icon name="cart"></ion-icon>
+        <ion-label></ion-label>
+        <ion-badge color="light">{{ count }}</ion-badge>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<!-- <ion-header>
-  <ion-toolbar color="primary">
-    <ion-title>My Cart</ion-title>
-    <ion-buttons slot="end">
-      <ion-button>
-        <ion-icon slot="icon-only" name="cart"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header> -->
-
 <ion-content>
   <ion-list class="cart-list">
-    <!-- Sample Cart Item -->
-    <ion-item class="cart-item">
+    <ion-item *ngFor="let item of cartItems" class="cart-item">
       <ion-thumbnail slot="start">
-        <img src="assets/images/raw-meat.jpg" />
+        <img [src]="'https://shopapi.alanaam.qa/' +item.product.mainImageUrl" />
       </ion-thumbnail>
       <ion-label>
-        <h2>Product Name</h2>
-        <p>$29.99</p>
+        <h2>{{ item.product.en_ProductName }}</h2>
+        <p>QAR {{ item.price }}</p>
+        <p>slaughterCharge:{{item.product.SlaughterCharge}}</p>
         <div class="quantity">
-          <ion-button color="" size="small">-</ion-button>
-          <span>1</span>
-          <ion-button color="success" size="small">+</ion-button>
+          <ion-button size="small" (click)="decreaseQuantity(item)">-</ion-button>
+          <span>{{ item.quantity }}</span>
+          <ion-button size="small" color="success" (click)="increaseQuantity(item)">+</ion-button>
         </div>
       </ion-label>
-      <ion-icon name="trash-outline" slot="end" color="danger"></ion-icon>
+      <ion-icon name="trash-outline" slot="end" color="danger" (click)="removeItem(item)"></ion-icon>
     </ion-item>
-    <ion-item class="cart-item">
-      <ion-thumbnail slot="start">
-        <img src="assets/images/raw-meat.jpg" />
-      </ion-thumbnail>
-      <ion-label>
-        <h2>Product Name</h2>
-        <p>$29.99</p>
-        <div class="quantity">
-          <ion-button color="" size="small">-</ion-button>
-          <span>1</span>
-          <ion-button color="success" size="small">+</ion-button>
-        </div>
-      </ion-label>
-      <ion-icon name="trash-outline" slot="end" color="danger"></ion-icon>
-    </ion-item>
-    
   </ion-list>
 
   <div class="total-section">
     <ion-item>
       <ion-label>Total:</ion-label>
-      <ion-note slot="end">$120.00</ion-note>
+      <ion-note slot="end">${{ totalAmount }}</ion-note>
     </ion-item>
-
-    <ion-button expand="block"  class="update-cart-btn">Update Cart</ion-button>
-    <ion-button expand="block" color="success" class="checkout-btn">Proceed to Checkout</ion-button>
+    <ion-button expand="block" color="" (click)="proceedToCheckout()" class="checkout-btn">Proceed to Checkout</ion-button>
   </div>
 </ion-content>

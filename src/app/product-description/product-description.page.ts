@@ -86,7 +86,7 @@ export class ProductDescriptionPage implements OnInit {
     this.attrubite_item_id = event.detail.value.atributeItemID;
     this.attr_id = attribute.atributeID;
     console.log('Attribute:', attribute);
-    const selectedItem = event.detail.value; 
+    const selectedItem = event.detail.value;
     console.log('Attribute:', attribute);
     const existingAttribute = this.productAttributes.find(
       (attr) => attr.atributeID === attribute.atributeID
@@ -95,7 +95,7 @@ export class ProductDescriptionPage implements OnInit {
       atributeID: attribute.atributeID,
       en_atributeName: attribute.en_atributeName,
       ar_atributeName: attribute.ar_atributeName,
-      items: selectedItem 
+      items: selectedItem
     };
 
     if (existingAttribute) {
@@ -132,18 +132,18 @@ export class ProductDescriptionPage implements OnInit {
       this.isAuthenticated();
     } else {
       const totalPrice = this.quantity * this.productData.productPrice;
-      const orderDataCart = {
-        prodductId: this.productData.productID,
-        product: this.productData,
-        quantity: this.quantity,
-        totalPrice: totalPrice,
-        price: this.productData.productPrice,
-        cuttingAmount: '',
-        productName: this.productData.en_ProductName,
-        slaughterCharge: this.productData.SlaughterCharge,
-        productAttributes: this.productAttributes
-      };
-      this.cartService.addProduct( {
+      // const orderDataCart = {
+      //   prodductId: this.productData.productID,
+      //   product: this.productData,
+      //   quantity: this.quantity,
+      //   totalPrice: totalPrice,
+      //   price: this.productData.productPrice,
+      //   cuttingAmount: '',
+      //   productName: this.productData.en_ProductName,
+      //   slaughterCharge: this.productData.SlaughterCharge,
+      //   productAttributes: this.productAttributes
+      // };
+      this.cartService.addProduct({
         product: this.productData,
         quantity: this.quantity,
         totalPrice: totalPrice,
@@ -152,11 +152,11 @@ export class ProductDescriptionPage implements OnInit {
         productName: this.productData.en_ProductName,
         slaughterCharge: this.productData.SlaughterCharge,
         productAttributes: this.productAttributes,
-        productId: this.productData.productID
+        productId: this.productData.productID,
+        atributeID: this.attr_id || '',
+        atributeItemID: this.attrubite_item_id || '',
       });
-      ;
-
-
+      this.router.navigate(['/tabs/cart']);
     }
   }
   /*
