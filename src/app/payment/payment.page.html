@@ -8,10 +8,9 @@
 
     <ion-title>Booking Form</ion-title>
 
-    <ion-buttons slot="end">
-      <ion-button>
+    <ion-buttons slot="end" (click)="goToCheckout()">
         <ion-icon name="cart-outline"></ion-icon>
-      </ion-button>
+        <ion-badge>{{ count }}</ion-badge>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -167,6 +166,15 @@
         </ion-item>
         <ion-note *ngIf="orderForm.get('landMark')?.touched && orderForm.get('landMark')?.invalid" color="danger">
           Landmark is required.
+        </ion-note>
+
+        <!--ZoneNo-->
+        <ion-item>
+          <ion-label position="floating">Zone No</ion-label>
+          <ion-input formControlName="zoneNo"></ion-input>
+        </ion-item>
+        <ion-note *ngIf="orderForm.get('zoneNo')?.touched && orderForm.get('zoneNo')?.invalid" color="danger">
+          Zone No is required.
         </ion-note>
 
           <!-- Delivery Method -->

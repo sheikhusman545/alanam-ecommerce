@@ -3,20 +3,17 @@
   border-bottom-left-radius: 50px;
   border-bottom-right-radius: 50px;
 }
-ion-header{
+ion-header {
   border-bottom-left-radius: 50px;
   border-bottom-right-radius: 50px;
 }
-
 .logo {
   width: 64px;
 }
-
 .custom-search {
   margin: 0 10px;
   background-color: #6c2835;
 }
-
 .searchbar-custom {
   --background: white;
   --border-radius: 50px;
@@ -27,28 +24,35 @@ ion-header{
   padding: 10px;
   border-radius: 20px;
 }
-
 .address-grid {
   padding-top: 10px;
   text-align: center;
 }
-
 .location-text {
   color: white;
   font-size: 14px;
+}
+.email-text {
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .address-text {
   color: white;
   font-size: 18px;
   font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
-
 ion-icon {
   color: white;
-  /* White cart icon */
+  margin-right: 3px;
 }
-
 .custom-search {
   --background: white;
   --border-radius: 50px;
@@ -75,7 +79,6 @@ ion-icon {
   color: white;
   font-size: 14px;
 }
-
 .home-page {
   --ion-background-color: #fff;
 
@@ -87,23 +90,18 @@ ion-icon {
       font-size: 1.5rem;
       text-align: center;
       color: #6c2835;
-      /* Theme color */
       margin-bottom: 10px;
     }
 
     .categories-grid {
       display: flex;
       flex-wrap: wrap;
-      /* Allows the items to wrap to the next line */
       justify-content: space-between;
-      /* Space between items */
       gap: 15px;
-      /* Space between grid items */
     }
 
     .category-card {
       flex: 1 1 calc(33.33% - 10px);
-      /* Three items per row with equal spacing */
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -121,23 +119,16 @@ ion-icon {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        /* Truncate long text */
         text-align: center;
-        /* Center the text */
       }
     }
-
   }
-
-
-
-  .swiper-container {
+ .swiper-container {
     width: 100%;
     height: auto;
 
   }
-
-  .section-title {
+ .section-title {
     font-size: 1.5rem;
     color: #6c2835; // Meat shop theme color
     text-align: center;
@@ -187,10 +178,7 @@ ion-icon {
   margin-top: 10px;
   text-align: center;
   font-size: 14px;
-  }
-
-
-
+}
 .main_content_div ion-col {
   margin-bottom: 16px;
   text-align: center;
@@ -235,19 +223,16 @@ h3.product-name {
 
 .product-price {
   font-size: 0.9rem;
-  /* Slightly larger for price */
   color: #6c2835;
   margin: 0;
   font-weight: bold;
 }
+
 .main_content_div .cat-label {
   margin-top: 10px;
   text-align: center;
   font-size: 14px;
   font-size: 16px;
   color: gray;
- 
+
 }
-
-
-  

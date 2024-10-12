@@ -8,7 +8,7 @@ import { PaymentPageRoutingModule } from './payment-routing.module';
 
 import { PaymentPage } from './payment.page';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { DatePipe } from '@angular/common';
 @NgModule({
   imports: [
     CommonModule,
@@ -17,6 +17,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     PaymentPageRoutingModule,
     ReactiveFormsModule
   ],
-  declarations: [PaymentPage]
+  declarations: [PaymentPage],
+  providers: [DatePipe]
 })
 export class PaymentPageModule {}

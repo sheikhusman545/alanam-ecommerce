@@ -8,6 +8,9 @@ import { AlertController, NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { CartService } from '../services/cart.service';
+import { DatePipe } from '@angular/common';
+import { Browser } from '@capacitor/browser';
+
 @Component({
   selector: 'app-payment',
   templateUrl: './payment.page.html',
@@ -15,7 +18,7 @@ import { CartService } from '../services/cart.service';
 })
 export class PaymentPage implements OnInit {
 
- 
+
   orderForm: FormGroup;
   isCompany: boolean = false;
   bookingCart: any[] = [];
@@ -24,9 +27,9 @@ export class PaymentPage implements OnInit {
   cartItems: CartItem[] = [];
   totalAmount = 0;
   cartCount = this.cartService.cartItemCount$ || 0;
-  count = 0;
+  count: any = 0;
+  formattedDate: string;
 
-  
 
   constructor(
     private formBuilder: FormBuilder,
@@ -36,8 +39,12 @@ export class PaymentPage implements OnInit {
     private alertController: AlertController,
     private router: Router,
     private toastController: ToastController,
-    private cartService: CartService
+    private cartService: CartService,
+    private datePipe: DatePipe
   ) {
+    const now = new Date();
+    this.formattedDate = this.datePipe.transform(now, 'dd-MM-yyyy EEE') as string;
+
     this.orderForm = this.formBuilder.group({
       customerName: ['', Validators.required],
       emailID: ['', [Validators.required, Validators.email]],
@@ -49,7 +56,8 @@ export class PaymentPage implements OnInit {
       buildingName_No: ['', Validators.required],
       streetName_No: ['', Validators.required],
       landMark: ['', Validators.required],
-      deliveryTime: ['10AM-12PM', Validators.required], // Defaulting delivery time for simplicity
+      deliveryTime: ['10AM-12PM', Validators.required],
+      zoneNo: ['', Validators.required]
     });
   }
 
@@ -57,12 +65,14 @@ export class PaymentPage implements OnInit {
     this.cartSubscription = this.cartService.cart$.subscribe((items) => {
       this.cartItems = items;
     });
-      console.log('Cart updated:', this.cartItems);
-      this.cartCount.subscribe((count: any) => {
-        this.count = count;
-      });
+    console.log('Cart updated:', this.cartItems);
+    this.cartCount.subscribe((count: any) => {
+      this.count = count;
+    });
+    this.totalAmount = this.cartItems.reduce((sum: number, item) => {
+      return sum + Number(item.totalPrice) + Number(item.slaughterCharge) * Number(item.quantity); // Convert to number
+    }, 0);
 
-      this.calculateTotal();
     this.authService.getUserDetails$().subscribe((userDetails) => {
       console.log(userDetails);
       if (userDetails) {
@@ -74,16 +84,14 @@ export class PaymentPage implements OnInit {
       }
     });
   }
-  calculateTotal(): void { 
-    this.totalAmount = this.cartItems.reduce((sum: number, item) => {
-      return sum + Number(item.totalPrice) + Number(item.slaughterCharge) * Number(item.quantity); // Convert to number
-    }, 0);
-  }
+
+
+
 
   onAddressTypeChange(event: any) {
     this.isCompany = event.detail.value === 'company';
     if (!this.isCompany) {
-      this.orderForm.patchValue({ companyName: '' }); 
+      this.orderForm.patchValue({ companyName: '' });
     }
   }
 
@@ -139,17 +147,17 @@ export class PaymentPage implements OnInit {
   //     formData.append(`products[${index}][productID]`, product.productID.toString());
   //     formData.append(`products[${index}][productPrice]`, product.productPrice.toString());
   //     formData.append(`products[${index}][SlaughterCharge]`, product.SlaughterCharge.toString());
-      
+
   //     // Handle undefined packingCharge
   //     formData.append(`products[${index}][packingCharge]`, product.packingCharge ? product.packingCharge : '0');   
-    
+
   //     formData.append(`products[${index}][productQuantity]`, product.productQuantity.toString());
   //     formData.append(`products[${index}][productAmount]`, product.productAmount.toString());
-    
+
   //     // Stringify the productAttributes array and append as a single JSON string
   //     formData.append(`products[${index}][productAttributes]`, JSON.stringify(product.productAttributes));
   //   });
-    
+
   //   // Append other data
   //   formData.append("totalProductsQuantity", "4");
   //   formData.append("totalProductPrice", "3020");
@@ -179,15 +187,97 @@ export class PaymentPage implements OnInit {
   //   //   console.log('Redirecting to:', link);
   //   //    await Browser.open({ url: link });
 
-    
+
   //   // }, error => {
   //   //   console.error('Error submitting order', error);
   //   // });
   //  }
   onSubmit() {
+    if (this.orderForm.valid) {
+      let formData = new FormData();
 
+      this.cartItems.forEach((product, index) => {
+        formData.append(`products[${index}][productID]`, product.product.productID.toString());
+        formData.append(`products[${index}][productPrice]`, product.product.productPrice.toString());
+        formData.append(`products[${index}][SlaughterCharge]`, product.product.SlaughterCharge.toString());
+
+        // Handle undefined packingCharge
+        formData.append(`products[${index}][packingCharge]`, product.product.packingCharge ? product.product.packingCharge : '0');
+
+        formData.append(`products[${index}][productQuantity]`, product.quantity.toString());
+        let amount = 0;
+        amount = 
+        Number(product.totalPrice) + 
+        Number(product.slaughterCharge) * 
+        Number(product.quantity);
+      
+      formData.append(`products[${index}][productAmount]`, amount.toFixed(2).toString());  
+        // Stringify the productAttributes array and append as a single JSON string
+        formData.append(`products[${index}][productAttributes]`, JSON.stringify(product.productAttributes));
+      });
+
+
+      formData.append("totalProductsQuantity", this.count);
+      formData.append("totalProductPrice", this.totalAmount.toString());
+      formData.append("shippingCharge", "0");
+      formData.append("shippingDiscount", "0");
+      formData.append("couponDiscount", "0");
+      formData.append("otherDiscount", "0");
+      formData.append("grantTotal", this.totalAmount.toString());
+      formData.append("paymentType", "Online");
+      formData.append("DeliveryMethod", this.orderForm.value.deliveryMethod);
+      formData.append("DeliveryDate", this.formattedDate);
+      formData.append("DeliveryTime", this.orderForm.value.deliveryTime);
+      formData.append("paymentMethod", "card");
+      formData.append("addressType", this.orderForm.value.addressType);
+      formData.append("AddressTypeName", this.isCompany ? this.orderForm.value.companyName : '');
+      formData.append("name", this.orderForm.value.customerName);
+      formData.append("buildingName_No", this.orderForm.value.buildingName_No);
+      formData.append("zoneNo", this.orderForm.value.zoneNo);
+      formData.append("streetName_No", this.orderForm.value.streetName_No);
+      formData.append("landMark", this.orderForm.value.landMark);
+      formData.append("emailID", this.orderForm.value.emailID);
+      formData.append("mobileNumber", this.orderForm.value.phoneNo);
+      formData.append("city", this.orderForm.value.city);
+      this.httpClient.post('ecom/cart', formData).subscribe(async response => {
+        console.log('Order submitted successfully', response);
+        if (response.respondStatus = 'SUCCESS') {
+          let link = response.successMessages.redirectionURL;
+          console.log('Redirecting to:', link);
+          this.cartService.clearCart();
+          await Browser.open({ url: link });
+          this.cartService.clearCart();
+          this.presentSuccessAlert("You are redirecting to payment gateway Please Make Payment");
+          this.router.navigate(['/tabs/home']);
+        } else {
+          console.error('Error submitting order', response);
+         }
+
+      
+
+
+      }, error => {
+        console.error('Error submitting order', error);
+      });
+      // formdata.append('customerName', this.orderForm.value.customerName);
+      // formdata.append('deliveryMethod', this.orderForm.value.deliveryMethod);
+      // formdata.append('shippingCharge', '0');  // Assuming static
+      // formdata.append('addressType', this.orderForm.value.addressType);
+      // formdata.append('AddressTypeName', this.isCompany ? this.orderForm.value.companyName : '');
+      // formdata.append('buildingName_No', this.orderForm.value.buildingName_No);
+      // formdata.append('streetName_No', this.orderForm.value.streetName_No);
+      // formdata.append('landMark', this.orderForm.value.landMark);
+      // formdata.append('emailID', this.orderForm.value.emailID);
+      // formdata.append('phoneNo', '+974' + this.orderForm.value.phoneNo);
+      // formdata.append('city', this.orderForm.value.city);
+      // formdata.append('deliveryTime', this.orderForm.value.deliveryTime);
+      // formdata.append('paymentType', 'Self Payment');
+    } else {
+      this.orderForm.markAllAsTouched();
+      console.log('Form is invalid');
+    }
   }
-   ngOnDestroy() {
+  ngOnDestroy() {
     // Unsubscribe to avoid memory leaks
     if (this.cartSubscription) {
       this.cartSubscription.unsubscribe();
@@ -198,10 +288,10 @@ export class PaymentPage implements OnInit {
     this.navCtrl.back();
   }
 
-  async presentSuccessAlert(msg:string) {
+  async presentSuccessAlert(msg: string) {
     const alert = await this.alertController.create({
       header: 'Success',
-      message: 'Your order has been placed successfully. Your order ID is: ' + msg + 'Please wait for our confirmation call.',
+      message: msg,
       buttons: [
         {
           text: 'Go to Home',
@@ -214,7 +304,7 @@ export class PaymentPage implements OnInit {
     await alert.present();
   }
 
-  
+
 
   async showDeliveryToast() {
     const toast = await this.toastController.create({
@@ -226,7 +316,12 @@ export class PaymentPage implements OnInit {
 
     await toast.present();
   }
+
+  goToCheckout() {
+    console.log('Navigating to checkout page');
+    this.router.navigate(['/tabs/cart']);
+  }
 }
-  
+
 
 

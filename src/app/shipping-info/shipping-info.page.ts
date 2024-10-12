@@ -132,7 +132,7 @@ export class ShippingInfoPage implements OnInit {
   async presentSuccessAlert(msg:string) {
     const alert = await this.alertController.create({
       header: 'Success',
-      message: 'Your order has been placed successfully. Your order ID is: ' + msg + 'Please wait for our confirmation call.',
+      message: 'Your order has been placed successfully. Your order ID is: ' + msg + ' Please wait for our confirmation call.',
       buttons: [
         {
           text: 'Go to Home',
