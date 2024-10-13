@@ -14,6 +14,7 @@ import { forkJoin } from 'rxjs';
 })
 export class Homepage2Page implements OnInit {
   @ViewChild('swiper') swiperRef: ElementRef | undefined;
+
   swiper?: Swiper;
   featuredProducts: any[] = [];
   newProduct: any[] = [];
