@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { NavController, LoadingController } from '@ionic/angular'; // Import LoadingController
 import { ProductsService } from '../services/products.service';
 import { BookingCartService } from '../services/booking-cart.service';
 import { AuthService } from '../services/auth.service';
 import { CartService } from '../services/cart.service';
+
 @Component({
   selector: 'app-product-description',
   templateUrl: './product-description.page.html',
@@ -19,6 +20,7 @@ export class ProductDescriptionPage implements OnInit {
   attributes: any[] = [];
   productAttributes: any[] = [];
   attr_id: any;
+  loading: any; // Add a loading variable
 
   constructor(
     private NavCtrl: NavController,
@@ -27,7 +29,8 @@ export class ProductDescriptionPage implements OnInit {
     private productService: ProductsService,
     private bookingCartService: BookingCartService,
     private cartService: CartService,
-    private authService: AuthService
+    private authService: AuthService,
+    private loadingController: LoadingController
   ) { }
 
   ngOnInit(): void {
@@ -39,24 +42,29 @@ export class ProductDescriptionPage implements OnInit {
     });
   }
 
-  getProductDetails(productId: string) {
+  async getProductDetails(productId: string) {
+    this.loading = await this.loadingController.create({
+      message: 'Loading product details...', // Optional message
+      spinner: 'crescent' // You can choose different spinner styles
+    });
+    await this.loading.present(); // Present the loader
+
     this.productService.getProductById(productId).subscribe(
       (response) => {
         this.productData = response.requestedData.Product[0];
         this.attributes = response.requestedData.Attributes;
-        console.log('Attributes:', this.attributes);
         this.quantity = this.productData.minQuantity;
-        console.log('Product details:', this.productData);
+        this.loading.dismiss(); // Dismiss the loader when done
       },
       (error) => {
         console.error('Error fetching product details:', error);
+        this.loading.dismiss(); // Dismiss the loader on error
       }
     );
   }
 
   onAdd() {
     this.quantity++;
-
   }
 
   onRemove() {
@@ -64,12 +72,6 @@ export class ProductDescriptionPage implements OnInit {
       this.quantity--;
     }
   }
-
-  // onAttributeChange(attribute: any, event: any) {
-  //   const selectedItem = event.detail.value; // This contains the selected item data
-  //   console.log('Attribute:', attribute);
-  //   console.log('Selected Item:', selectedItem);
-  // }
 
   isAuthenticated() {
     this.authService.check().subscribe(isAuthenticated => {
@@ -80,14 +82,15 @@ export class ProductDescriptionPage implements OnInit {
       }
     });
   }
+  isAttributeSelected(): boolean {
+    return this.attributes.every(attribute => attribute.selectedItem !== null);
+  }
+  
 
   onAttributeChange(attribute: any, event: any) {
-    console.log('Event:', event.detail.value.atributeItemID);
     this.attrubite_item_id = event.detail.value.atributeItemID;
     this.attr_id = attribute.atributeID;
-    console.log('Attribute:', attribute);
     const selectedItem = event.detail.value;
-    console.log('Attribute:', attribute);
     const existingAttribute = this.productAttributes.find(
       (attr) => attr.atributeID === attribute.atributeID
     );
@@ -105,14 +108,11 @@ export class ProductDescriptionPage implements OnInit {
       this.productAttributes.push(newAttribute);
     }
 
-    console.log('productAttributes:', this.productAttributes);
   }
-
 
   onOrder(booking: string) {
     console.log(booking);
     if (booking === 'booking') {
-
       const totalPrice = this.quantity * this.productData.productPrice;
       const orderData = {
         product: this.productData,
@@ -132,17 +132,6 @@ export class ProductDescriptionPage implements OnInit {
       this.isAuthenticated();
     } else {
       const totalPrice = this.quantity * this.productData.productPrice;
-      // const orderDataCart = {
-      //   prodductId: this.productData.productID,
-      //   product: this.productData,
-      //   quantity: this.quantity,
-      //   totalPrice: totalPrice,
-      //   price: this.productData.productPrice,
-      //   cuttingAmount: '',
-      //   productName: this.productData.en_ProductName,
-      //   slaughterCharge: this.productData.SlaughterCharge,
-      //   productAttributes: this.productAttributes
-      // };
       this.cartService.addProduct({
         product: this.productData,
         quantity: this.quantity,
@@ -159,32 +148,7 @@ export class ProductDescriptionPage implements OnInit {
       this.router.navigate(['/tabs/cart']);
     }
   }
-  /*
-  productID: 132
-atributeID: 
-atributeItemID: 
-quantity: 5
-customerName: ali
-slaughterCharge: 0.00
-cuttingAmount: 0
-deliveryMethod: Doorstep Delivery
-shippingCharge: 20
-orderTotal: 220.00
-payableAmount: 200
-addressType: Individual
-AddressTypeName: 
-name: ali
-buildingName_No: 
-zoneNo: 
-streetName_No: 
-landMark: 
-emailID: SHEIKHUSMAN545@GMAIL.COM
-phoneNo: 33272357
-city: 
-deliveryTime: 10AM-12PM
-paymentType: Self Payment
-  */
-
+  
   onBack() {
     this.NavCtrl.back();
   }

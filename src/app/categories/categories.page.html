@@ -11,16 +11,27 @@
     <ion-buttons slot="end">
       <ion-button>
         <ion-icon name="cart-outline"></ion-icon>
+        <ion-badge *ngIf="cartCount > 0">{{ cartCount }}</ion-badge>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <img src="assets/images/raw-meat.jpg" alt="Meat " class="">
-  <ion-grid>
+  <swiper-container [loop]="true" [autoplay]="{ delay: 2000, disableOnInteraction: false }"
+    [pagination]="{ clickable: true }" [slidesPerView]="1" [slidesPerGroup]="1" [loopFillGroupWithBlank]="true">
+    <swiper-slide swiperSlide>
+      <img src="assets/images/4alanam.jpeg" alt="Promo 1">
+    </swiper-slide>
+    <swiper-slide swiperSlide>
+      <img src="assets/images/5alanam.jpeg" alt="Promo 2">
+    </swiper-slide>
+    <swiper-slide swiperSlide>
+      <img src="assets/images/6alanam.jpeg" alt="Promo 2">
+    </swiper-slide>
+  </swiper-container> <ion-grid>
     <ion-row>
-    
+
       <ion-col size="3" class="categories-col">
         <ion-list class="categories-list">
           <ion-item class="category-item-all" (click)="onCategoryClick({ id: 'all' })">
@@ -28,7 +39,7 @@
               <ion-thumbnail class="category-thumbnail">
                 <ion-img src="assets/images/all.png" alt="All"></ion-img>
               </ion-thumbnail>
-              <div class="category-name">All</div>
+              <div class="category-name">ALL</div>
             </div>
           </ion-item>
           <ion-item class="category-item" *ngFor="let category of categories" (click)="onCategoryClick(category)">
@@ -37,7 +48,7 @@
                 <ion-img [src]="'https://shopapi.alanaam.qa/' + category.categoryUrl"
                   alt="{{ category.en_CategoryName }}"></ion-img>
               </ion-thumbnail>
-              <div class="category-name">{{category.en_CategoryName}}</div>
+              <div class="category-name">{{category.en_CategoryName | uppercase}}</div>
             </div>
           </ion-item>
         </ion-list>
@@ -49,8 +60,8 @@
             <ion-item class="sub-category-item" *ngFor="let sub of subCategory" (click)="onCategoryClick(sub)">
               <ion-row>
                 <ion-img [src]="'https://shopapi.alanaam.qa/' + sub.categoryUrl"
-                  alt="{{ sub.en_CategoryName }}"></ion-img>
-                <p>{{ sub.en_CategoryName}}</p>
+                  alt="{{ sub.en_CategoryName  }}"></ion-img>
+                <p>{{ sub.en_CategoryName | uppercase }}</p>
               </ion-row>
             </ion-item>
           </ion-col>

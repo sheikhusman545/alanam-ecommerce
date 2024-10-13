@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { CategoriesService } from '../services/categories.service';
 import { ProductsService } from '../services/products.service';
 import { HttpClient } from '@angular/common/http';
-import { NavController } from '@ionic/angular';
+import { NavController, LoadingController } from '@ionic/angular';
+import { CartService } from '../services/cart.service';
+import Swiper from 'swiper';
 
 @Component({
   selector: 'app-categories',
@@ -11,46 +13,91 @@ import { NavController } from '@ionic/angular';
   styleUrls: ['./categories.page.scss'],
 })
 export class CategoriesPage implements OnInit {
-
   categories: any[] = [];
   products: any[] = [];
   selectedCategory: any = null;
   allProducts: any[] = [];
-  public imagePath: 'https://shopapi.alanaam.qa/' | undefined;
   subCategory: any;
+  cartCount: number = 0;
+  @ViewChild('swiper') swiperRef: ElementRef | undefined;
+  swiper?: Swiper;
+
   constructor(
     private http: HttpClient,
     private categoriesService: CategoriesService,
     private productsService: ProductsService,
     private router: Router,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private cartService: CartService,
+    private loadingController: LoadingController 
   ) {}
 
   ngOnInit() {
+    this.cartService.cartItemCount$.subscribe((count) => (this.cartCount = count));
     this.loadCategories();
     this.loadAllProducts();
   }
 
-  loadCategories() {
-    this.categoriesService.getCategories().subscribe((data: any) => {
-      this.categories = data.requestedData.Categories; // Adjust based on your API response
-      console.log(this.categories);
+  async loadCategories() {
+    const loader = await this.loadingController.create({
+      message: 'Loading categories...',
     });
-  }
-  loadAllProducts() {
-    this.productsService.getAllProducts().subscribe((data: any) => {
-      this.allProducts = data.requestedData.Products; // Adjust based on your API response
-      console.log(this.allProducts);
-      this.products = this.allProducts;
+    await loader.present(); 
+
+    this.categoriesService.getCategories().subscribe({
+      next: (data: any) => {
+        this.categories = data.requestedData.Categories; 
+        console.log(this.categories);
+      },
+      error: (error) => {
+        console.error('Error loading categories:', error);
+      },
+      complete: () => {
+        loader.dismiss(); 
+      },
     });
   }
 
-  loadProductsByCategory(categoryId: string) {
-    this.productsService.getProductsByCategory(categoryId).subscribe((data: any) => {
-      this.products = data.requestedData.Products; // Adjust based on your API response
+  async loadAllProducts() {
+    const loader = await this.loadingController.create({
+      message: 'Loading products...',
+    });
+    await loader.present(); 
+
+    this.productsService.getAllProducts().subscribe({
+      next: (data: any) => {
+        this.allProducts = data.requestedData.Products; 
+        console.log(this.allProducts);
+        this.products = this.allProducts;
+      },
+      error: (error) => {
+        console.error('Error loading products:', error);
+      },
+      complete: () => {
+        loader.dismiss(); 
+      },
     });
   }
-  getSubCategories(categoryId: string) { 
+
+  async loadProductsByCategory(categoryId: string) {
+    const loader = await this.loadingController.create({
+      message: 'Loading products for category...',
+    });
+    await loader.present(); 
+    this.productsService.getProductsByCategory(categoryId).subscribe({
+      next: (data: any) => {
+        this.products = data.requestedData.Products; 
+      },
+      error: (error) => {
+        console.error('Error loading products by category:', error);
+      },
+      complete: () => {
+        loader.dismiss(); 
+      },
+    });
+  }
+
+  getSubCategories(categoryId: string) {
     console.log('sub Category ID:', categoryId);
     this.categoriesService.getSubCategories(categoryId).subscribe((data: any) => {
       console.log('Sub Categories:', data);
@@ -64,7 +111,6 @@ export class CategoriesPage implements OnInit {
     } else {
       this.loadProductsByCategory(category.categoryID);
       this.getSubCategories(category.categoryID);
-    
     }
     this.selectedCategory = category;
   }
@@ -76,15 +122,7 @@ export class CategoriesPage implements OnInit {
   onCart() {
     this.router.navigate(['cart']);
   }
-
-  onRemove() {
-
-  }
-
-  onAdd() {
-
-  }
-
+  
   onOrder() {
     this.router.navigate(['checkout']);
   }
@@ -92,5 +130,4 @@ export class CategoriesPage implements OnInit {
   navigateToProduct(productId: string) {
     this.router.navigate(['/product-description', productId]);
   }
-
 }

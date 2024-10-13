@@ -15,6 +15,7 @@
       d="M44.1319 131.879C-3.66682 159.118 -6.17693 75.772 9.27349 41.0698C24.7239 6.36764 65.3806 -9.23903 100.083 6.21139C134.785 21.6618 150.392 62.3185 134.941 97.0207C119.491 131.723 91.9307 104.641 44.1319 131.879Z"
       fill="#6c2835" />
   </svg>
+  <img class="logo" src="assets/images/alanam-logo-dark.png" alt="logo" class="logo" />
   <ion-button class="back-button" (click)="onBack()">
     <ion-icon name="arrow-back-outline"></ion-icon>
   </ion-button>
@@ -31,25 +32,6 @@
     </form>
   </div>
 
-  <!-- OTP Input Section -->
-  <!-- <div class="otp-dialog" *ngIf="showOtpModal">
-    <div class="otp-container">
-      <h2 class="otp-title">Enter the 6-digit code</h2>
-
-      <form [formGroup]="otpForm" (ngSubmit)="verifyOTP()">
-        <div class="otp-input-box">
-          <input type="text" maxlength="1" formControlName="otp1" (input)="moveToNext($event, 'otp2')" />
-          <input type="text" maxlength="1" formControlName="otp2" (input)="moveToNext($event, 'otp3')" />
-          <input type="text" maxlength="1" formControlName="otp3" (input)="moveToNext($event, 'otp4')" />
-          <input type="text" maxlength="1" formControlName="otp4" (input)="moveToNext($event, 'otp5')" />
-          <input type="text" maxlength="1" formControlName="otp5" (input)="moveToNext($event, 'otp6')" />
-          <input type="text" maxlength="1" formControlName="otp6" />
-        </div>
-
-        <ion-button class="submit-btn" expand="block" type="submit" [disabled]="!otpForm.valid">Verify OTP</ion-button>
-      </form>
-    </div>
-  </div> -->
   <div *ngIf="showOtpModal" class="otp-dialog" (click)="closeModal($event)">
     <div class="otp-container" (click)="$event.stopPropagation()">
       <h2 class="otp-title">Enter OTP</h2>

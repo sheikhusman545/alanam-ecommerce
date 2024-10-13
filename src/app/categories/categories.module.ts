@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { CategoriesPageRoutingModule } from './categories-routing.module';
 import { CategoriesPage } from './categories.page';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 
 @NgModule({
@@ -13,6 +14,7 @@ import { CategoriesPage } from './categories.page';
     IonicModule,
     CategoriesPageRoutingModule,
   ],
-  declarations: [CategoriesPage]
+  declarations: [CategoriesPage],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class CategoriesPageModule {}

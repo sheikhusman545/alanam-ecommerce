@@ -16,59 +16,18 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <img src="assets/images/raw-meat.jpg" alt="Meat " class="">
-
-  <!-- <ion-accordion-group *ngIf="bookingCart">
-    <ion-accordion value="first" *ngFor="let booking of bookingCart">
-      <ion-item slot="header" color="light">
-        <ion-label>Booking Information</ion-label>
-      </ion-item>
-      <div class="ion-padding" slot="content">
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>Your Shopping Bag</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-            <ion-item lines="none">
-              <ion-label>
-                <h2>  {{ isArabic ? booking.product.ar_ProductName : booking.product.en_ProductName }}</h2>
-                <p> {{booking.quantity}} x {{booking.price}} QAR</p>
-              </ion-label>
-            </ion-item>
-    
-            <ion-item lines="none">
-              <ion-label>
-                <p>{{booking.quantity}} - item(s)</p>
-              </ion-label>
-            </ion-item>
-    
-            <ion-item lines="none">
-              <ion-label>
-                <p>Slaughter charge</p>
-              </ion-label>
-              <ion-label slot="end">{{booking.slaughterCharge}} QAR</ion-label>
-            </ion-item>
-    
-            <ion-item lines="none">
-              <ion-label>
-                <p>Cutting charge</p>
-              </ion-label>
-              <ion-label slot="end">{{booking.slaughterCharge}} QAR</ion-label>
-            </ion-item>
-    
-            <ion-item lines="none">
-              <ion-label>
-                <h2>Order Total</h2>
-              </ion-label>
-              <ion-label slot="end">
-                <h2>{{ booking.quantity * booking.price}} QAR</h2>
-              </ion-label>
-            </ion-item>
-          </ion-card-content>
-        </ion-card>
-      </div>
-    </ion-accordion>
-    </ion-accordion-group> -->
+    <swiper-container [loop]="true" [autoplay]="{ delay: 2000, disableOnInteraction: false }"
+      [pagination]="{ clickable: true }" [slidesPerView]="1" [slidesPerGroup]="1" [loopFillGroupWithBlank]="true">
+      <swiper-slide swiperSlide>
+        <img src="assets/images/7alanam.jpeg" alt="Promo 1">
+      </swiper-slide>
+      <swiper-slide swiperSlide>
+        <img src="assets/images/5alanam.jpeg" alt="Promo 2">
+      </swiper-slide>
+      <swiper-slide swiperSlide>
+        <img src="assets/images/1alanam.jpeg" alt="Promo 2">
+      </swiper-slide>
+    </swiper-container>
 
     <ion-grid>
       <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
@@ -201,11 +160,9 @@
           Delivery Time is required.
         </ion-note>
 
-        <!-- Submit Button -->
-        <ion-button expand="full" type="submit">Submit</ion-button>
+        <ion-button expand="full" type="submit">Submit ({{totalAmount}} QAR)</ion-button>
       </form>
     </ion-grid>
 
-    <!-- Shopping Bag (Example Static Content) -->
    
 </ion-content>

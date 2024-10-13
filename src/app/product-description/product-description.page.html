@@ -22,9 +22,8 @@
             <ion-label class="sub_heading d-block">Packing: Normal</ion-label>
           </p>
           <div class="divider"></div>
-
-        
-          <div class="attributes" *ngIf="attributes">
+          
+          <div class="attributes" *ngIf="attributes.length > 0">
             <div *ngFor="let attribute of attributes">
               <ion-item lines="none">
                 <ion-label>- Select the {{ attribute.en_atributeName }} -</ion-label>
@@ -36,7 +35,7 @@
               </ion-item>
             </div>
           </div>
-          
+
           <ion-row class="cart-button">
             <ion-col>
               <ion-label class="sub_heading availability">{{ productData.status ? "In Stock" : "Out Of Stock"
@@ -63,16 +62,20 @@
             </ion-col>
           </ion-row>
 
-          <ion-button [disabled]="quantity == 0" *ngIf="productData.type == 'Booking' " class="content_button" (click)="onOrder('booking')"
-            expand="block">
+      
+          <ion-button [disabled]="(attributes.length > 0 && !isAttributeSelected()) || quantity == 0"
+            *ngIf="productData.type == 'Booking'" class="content_button" (click)="onOrder('booking')" expand="block">
             <ion-icon name="cart-outline"></ion-icon>
             Book Now
           </ion-button>
-          <ion-button  [disabled]="quantity == 0" *ngIf="productData.type != 'Booking' " class="content_button" (click)="onOrder('cart')"
-            expand="block">
+
+          <ion-button [disabled]="!isAttributeSelected() || quantity == 0"
+            *ngIf="attributes.length > 0 && productData.type != 'Booking'" class="content_button"
+            (click)="onOrder('cart')" expand="block">
             <ion-icon name="cart-outline"></ion-icon>
-            Add to Cart
+            Add to Cart 
           </ion-button>
+
         </div>
       </ion-col>
     </ion-row>

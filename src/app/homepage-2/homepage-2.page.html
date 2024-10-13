@@ -1,4 +1,3 @@
-
 <ion-header>
   <ion-toolbar color="transparent" class="custom-header-toolbar">
     <ion-grid>
@@ -7,6 +6,7 @@
           <img src="assets/images/alanam-logo.png" alt="Logo" class="logo">
         </ion-col>
         <ion-col size="6" class="ion-text-end">
+          <ion-label class="phone-text"><ion-icon name="call-outline"></ion-icon> +974 50375555 </ion-label>
           <ion-button fill="clear" (click)="goToCart()">
             <ion-icon name="cart-outline"></ion-icon>
             {{ cartCount }}
@@ -21,27 +21,28 @@
       <ion-row>
         <ion-col class="ion-text-center">
           <p class="location-text">Al Anaam Livestock Factory</p>
-          <p class="address-text"><ion-icon name="location-outline"></ion-icon>  Bu Fass, Doha-QATARBu Fass,<br /> Doha-QATAR</p>
-          <ion-label class="email-text"><ion-icon name="mail-outline"></ion-icon>  info&#64;alanaam.qa</ion-label>
-
+          <p class="address-text"><ion-icon name="location-outline"></ion-icon> Bu Fass, Doha-QATARBu Fass,<br />
+            Doha-QATAR</p>
+          <ion-label class="email-text"><ion-icon name="mail-outline"></ion-icon> info&#64;alanaam.qa</ion-label>
         </ion-col>
       </ion-row>
     </ion-grid>
   </ion-toolbar>
 </ion-header>
-<ion-content [fullscreen]="true" class="home-page"  class="ion-padding">
-  <app-custom-loader [isLoading]="isLoading"></app-custom-loader>
+<ion-content [fullscreen]="true" class="home-page" class="ion-padding">
 
-  <div class="swiper-container">
-    <swiper-container [slidesPerView]="1" [autoplay]="true" [loop]="true" class="swiper-wrapper">
-      <swiper-slide swiperSlide>
-        <img src="assets/images/raw-meat.jpg" alt="Promo 1">
-      </swiper-slide>
-      <swiper-slide swiperSlide>
-        <img src="assets/images/raw-meat.jpg" alt="Promo 2">
-      </swiper-slide>
-    </swiper-container>
-  </div>
+  <swiper-container [loop]="true" [autoplay]="{ delay: 2000, disableOnInteraction: false }"
+    [pagination]="{ clickable: true }" [slidesPerView]="1" [slidesPerGroup]="1" [loopFillGroupWithBlank]="true">
+    <swiper-slide swiperSlide>
+      <img src="assets/images/1alanam.jpeg" alt="Promo 1">
+    </swiper-slide>
+    <swiper-slide swiperSlide>
+      <img src="assets/images/2alanam.jpeg" alt="Promo 2">
+    </swiper-slide>
+    <swiper-slide swiperSlide>
+      <img src="assets/images/3alanam.jpeg" alt="Promo 2">
+    </swiper-slide>
+  </swiper-container>
 
   <div class="main_content_div">
 
@@ -51,15 +52,14 @@
     <ion-row>
       <ion-col size="4" *ngFor="let category of categories">
         <div class="cat-img" (click)="navigateToCategory(category.categoryID)">
-          <ion-img
-          [src]="'https://shopapi.alanaam.qa/' + category.categoryUrl" alt="{{category.en_CategoryName}}"
+          <ion-img [src]="'https://shopapi.alanaam.qa/' + category.categoryUrl" alt="{{category.en_CategoryName}}"
             class="category-image"></ion-img>
-          <ion-label class="cat-label">{{ category.en_CategoryName }}</ion-label>
+          <ion-label class="cat-label">{{ category.en_CategoryName | uppercase  }}</ion-label>
         </div>
       </ion-col>
     </ion-row>
   </div>
- 
+
   <section class="featured-products">
     <h2 class="section-title">Featured Products</h2>
     <div class="swiper-container">
@@ -79,7 +79,7 @@
       </swiper-container>
     </div>
   </section>
-  
+
 
   <section class="new-products">
     <h2 class="section-title">New Products</h2>
