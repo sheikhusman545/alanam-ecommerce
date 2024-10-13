@@ -64,8 +64,7 @@ export class ShippingInfoPage implements OnInit {
     );
 
     this.authService.getUserDetails$().subscribe(async (userDetails) => {
-      console.log(userDetails);
-      if (userDetails) {
+      if (userDetails.customerName) {
         this.orderForm.patchValue({
           customerName: userDetails.customerName || '',
           emailID: userDetails.customerEmail || '',

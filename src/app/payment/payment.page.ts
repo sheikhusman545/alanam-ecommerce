@@ -76,7 +76,7 @@ export class PaymentPage implements OnInit {
     }, 0);
 
     this.authService.getUserDetails$().subscribe((userDetails) => {
-      if (userDetails) {
+      if (userDetails.customerName) {
         this.orderForm.patchValue({
           customerName: userDetails.customerName || '',
           emailID: userDetails.customerEmail || '',

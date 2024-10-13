@@ -2,11 +2,13 @@
   <ion-toolbar color="transparent" class="custom-header-toolbar">
     <ion-grid>
       <ion-row class="ion-align-items-center">
-        <ion-col size="6">
+        <ion-col size="2">
           <img src="assets/images/alanam-logo.png" alt="Logo" class="logo">
         </ion-col>
-        <ion-col size="6" class="ion-text-end">
-          <ion-label class="phone-text"><ion-icon name="call-outline"></ion-icon> +974 50375555 </ion-label>
+        <ion-col size="8">
+          <p class="location-text">Alanaam Factory For Animals Production</p>
+        </ion-col>
+        <ion-col size="2" class="ion-text-end">
           <ion-button fill="clear" (click)="goToCart()">
             <ion-icon name="cart-outline"></ion-icon>
             {{ cartCount }}
@@ -20,10 +22,11 @@
       </ion-row>
       <ion-row>
         <ion-col class="ion-text-center">
-          <p class="location-text">Al Anaam Livestock Factory</p>
-          <p class="address-text"><ion-icon name="location-outline"></ion-icon> Bu Fass, Doha-QATARBu Fass,<br />
-            Doha-QATAR</p>
-          <ion-label class="email-text"><ion-icon name="mail-outline"></ion-icon> info&#64;alanaam.qa</ion-label>
+          <p class="address-text"><ion-icon name="location-outline"></ion-icon> Bu Fass, Doha-QATAR</p>
+          <div class="info">
+            <ion-label class="email-text"><ion-icon name="mail-outline"></ion-icon> info&#64;alanaam.qa</ion-label>
+            <ion-label class="phone-text"><ion-icon name="call-outline"></ion-icon> +974 50375555 </ion-label>
+          </div>
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -54,7 +57,7 @@
         <div class="cat-img" (click)="navigateToCategory(category.categoryID)">
           <ion-img [src]="'https://shopapi.alanaam.qa/' + category.categoryUrl" alt="{{category.en_CategoryName}}"
             class="category-image"></ion-img>
-          <ion-label class="cat-label">{{ category.en_CategoryName | uppercase  }}</ion-label>
+          <ion-label class="cat-label">{{ category.en_CategoryName | uppercase }}</ion-label>
         </div>
       </ion-col>
     </ion-row>

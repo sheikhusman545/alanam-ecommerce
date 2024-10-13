@@ -25,13 +25,14 @@ export class CartPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.cartSubscription = this.cartService.cart$.subscribe((items) => {
       this.cartItems = items;
+      this.calculateTotal();
+
     });
       console.log('Cart updated:', this.cartItems);
       this.cartCount.subscribe((count: any) => {
         this.count = count;
       });
 
-      this.calculateTotal();
    
   }
 
@@ -45,6 +46,7 @@ export class CartPage implements OnInit, OnDestroy {
 
   increaseQuantity(item: CartItem) {
     this.cartService.addProduct(item);
+    this.calculateTotal();
   }
 
   decreaseQuantity(item: CartItem) {
@@ -58,7 +60,7 @@ export class CartPage implements OnInit, OnDestroy {
   }
 
   
-  private calculateTotal(): void {
+  private calculateTotal(){
     this.totalAmount = this.cartItems.reduce((sum: number, item) => {
       return sum + Number(item.totalPrice) + Number(item.slaughterCharge) * Number(item.quantity); // Convert to number
     }, 0);

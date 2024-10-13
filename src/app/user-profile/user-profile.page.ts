@@ -31,8 +31,7 @@ export class UserProfilePage implements OnInit {
     });
 
     this.authService.getUserDetails$().subscribe((userDetails) => {
-      console.log(userDetails);
-      if (userDetails) {
+      if (userDetails.customerName) {
         this.userForm.patchValue({
           fullName: userDetails.customerName || '',
           email: userDetails.customerEmail || '',

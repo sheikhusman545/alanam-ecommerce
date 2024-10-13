@@ -32,7 +32,7 @@ ion-header {
   color: white;
   font-size: 14px;
 }
-.email-text {
+.email-text,.phone-text {
   color: white;
   font-size: 14px;
   font-weight: bold;
@@ -78,6 +78,11 @@ ion-icon {
 .address-text {
   color: white;
   font-size: 14px;
+}
+.location-text{
+  font-weight: bolder;
+  text-transform: uppercase;
+  text-align: center;
 }
 .home-page {
   --ion-background-color: #fff;
@@ -241,4 +246,9 @@ h3.product-name {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+.info{
+  display: flex ;
+  justify-content: center;
+  gap: 20px;
 }
