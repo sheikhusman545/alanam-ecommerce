@@ -76,12 +76,19 @@ export class PaymentPage implements OnInit {
     }, 0);
 
     this.authService.getUserDetails$().subscribe((userDetails) => {
-      if (userDetails.customerName) {
+      if (userDetails && userDetails.customerName) {
         this.orderForm.patchValue({
           customerName: userDetails.customerName || '',
           emailID: userDetails.customerEmail || '',
           phoneNo: userDetails.customerMobile || ''
         });
+      } else {
+        this.orderForm.patchValue({
+          customerName: '',
+          emailID: '',
+          phoneNo: ''
+        });
+        
       }
     });
     this.loadingController.dismiss();

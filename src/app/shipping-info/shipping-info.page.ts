@@ -64,12 +64,14 @@ export class ShippingInfoPage implements OnInit {
     );
 
     this.authService.getUserDetails$().subscribe(async (userDetails) => {
-      if (userDetails.customerName) {
+      if (userDetails && userDetails.customerName) {
         this.orderForm.patchValue({
           customerName: userDetails.customerName || '',
           emailID: userDetails.customerEmail || '',
           phoneNo: userDetails.customerMobile || ''
         });
+      } else {
+        
       }
       await loading.dismiss(); // Dismiss the loader when data is loaded
     });
