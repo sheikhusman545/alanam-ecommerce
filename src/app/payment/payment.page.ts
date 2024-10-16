@@ -50,7 +50,7 @@ export class PaymentPage implements OnInit {
     this.orderForm = this.formBuilder.group({
       customerName: ['', Validators.required],
       emailID: ['', [Validators.required, Validators.email]],
-      phoneNo: ['', [Validators.required, Validators.minLength(8)],Validators.maxLength(8)],
+      phoneNo: ['', [Validators.required, Validators.minLength(8)]],
       city: ['', Validators.required],
       deliveryMethod: ['selfPickup', Validators.required],
       addressType: ['individual', Validators.required],

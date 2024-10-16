@@ -101,10 +101,10 @@
       <!-- Customer Name -->
       <ion-item>
         <ion-label position="floating">Customer Name</ion-label>
-        <ion-input formControlName="customerName"></ion-input>
+        <ion-input minlength="3" formControlName="customerName"></ion-input>
       </ion-item>
       <ion-note *ngIf="orderForm.get('customerName')?.touched && orderForm.get('customerName')?.invalid" color="danger">
-        Customer Name is required.
+        Customer Name is required and must be atleast 3 character long .
       </ion-note>
 
       <!-- Email -->
@@ -120,7 +120,7 @@
       <!-- Phone Number -->
       <ion-item>
         <ion-label position="floating">Phone Number</ion-label>
-        <ion-input type="tel" formControlName="phoneNo"></ion-input>
+        <ion-input maxlength="8" type="tel" formControlName="phoneNo"></ion-input>
       </ion-item>
       <ion-note *ngIf="orderForm.get('phoneNo')?.touched && orderForm.get('phoneNo')?.invalid" color="danger">
         <span *ngIf="orderForm.get('phoneNo')?.errors?.['required']">Phone Number is required.</span>
@@ -203,7 +203,7 @@
       </ion-note>
 
       <!-- Submit Button -->
-      <ion-button expand="full" type="submit">Submit</ion-button>
+      <ion-button expand="full" type="submit">Book Now</ion-button>
     </form>
   </ion-grid>
 
