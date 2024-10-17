@@ -6,6 +6,13 @@
 ion-header {
   border-bottom-left-radius: 50px;
   border-bottom-right-radius: 50px;
+  .language{
+    text-decoration: underline; 
+    cursor: pointer;
+    font-size: 20px;
+    color: white;
+    font-weight: bolder;
+  }
 }
 .logo {
   width: 64px;

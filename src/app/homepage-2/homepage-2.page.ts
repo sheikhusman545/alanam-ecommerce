@@ -4,8 +4,10 @@ import { ProductsService } from '../services/products.service';
 import { CategoriesService } from '../services/categories.service';
 import Swiper from 'swiper';
 import { CartService } from '../services/cart.service';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController ,PopoverController} from '@ionic/angular';
 import { forkJoin } from 'rxjs';
+import { LanguageService } from '../services/language.service';
+import { LanguagePopoverComponent } from '../components/language-popover/language-popover.component';
 
 @Component({
   selector: 'app-homepage-2',
@@ -20,6 +22,8 @@ export class Homepage2Page implements OnInit {
   newProduct: any[] = [];
   categories: any[] = [];
   cartCount = 0;
+  currentLanguage: string;
+
 
   swiperConfig = {
     autoplay: { delay: 3000, disableOnInteraction: false },
@@ -35,8 +39,12 @@ export class Homepage2Page implements OnInit {
     private productsService: ProductsService,
     private categoriesService: CategoriesService,
     private cartService: CartService,
-    private loadingController: LoadingController
-  ) {}
+    private loadingController: LoadingController,
+    private popoverController: PopoverController,
+    private languageService: LanguageService
+  ) {
+    this.currentLanguage = this.languageService.getCurrentLanguage(); // Get the current language
+  }
 
   async ngOnInit() {
     this.cartService.cartItemCount$.subscribe((count) => (this.cartCount = count));
@@ -83,101 +91,21 @@ export class Homepage2Page implements OnInit {
   goToCart() {
     this.router.navigate(['/tabs/cart']);
   }
+  switchLanguage(language: string) {
+    this.currentLanguage = this.languageService.switchLanguage(language);
+  }
+
+  async openPopover(event: Event) {
+    const popover = await this.popoverController.create({
+      component: LanguagePopoverComponent, // Optional: or use ng-template inline in HTML
+      event,
+      translucent: true,
+    });
+    await popover.present();
+    const { data } = await popover.onDidDismiss();
+    if (data) {
+      this.currentLanguage = data; // Assign popover returned language to currentLanguage
+    }
+  }
+
 }
-
-// import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-// import { Router } from '@angular/router';
-// import { ProductsService } from '../services/products.service';
-// import { CategoriesService } from '../services/categories.service';
-// import Swiper from 'swiper';
-// import { CartService } from '../services/cart.service';
-// import { LoadingController } from '@ionic/angular';
-
-// @Component({
-//   selector: 'app-homepage-2',
-//   templateUrl: './homepage-2.page.html',
-//   styleUrls: ['./homepage-2.page.scss'],
-// })
-// export class Homepage2Page implements OnInit {
-//   @ViewChild('swiper')
-//   swiperRef: ElementRef | undefined;
-//   swiper?: Swiper;
-//   featuredProducts: any[] = [];
-//   newProduct: any[] = [];
-//   categories: any[] = [];
-//   isLoading = false;
-//   cartCount = 0;
-  
-//   swiperConfig = {
-//     autoplay: {
-//       delay: 3000,
-//       disableOnInteraction: false,
-//     },
-//     loop: true,
-//     loopFillGroupWithBlank: true,
-//     pagination: { clickable: true },
-//     slidesPerView: 1,
-//     slidesPerGroup: 1,
-//   };
-
-//   constructor(
-//     private router: Router,
-//     private productsService: ProductsService,
-//     private categoriesService: CategoriesService,
-//     private cartService: CartService
-
-//   ) { }
-
-//   ngOnInit() {
-//     this.cartService.cartItemCount$.subscribe(count => {
-//       this.cartCount = count;
-//     });
-//     this.getFeaturedProducts();
-//     this.getNewProducts();
-//     this.getCategories();
-//     this.hideLoader();
-//   }
-
-//   getFeaturedProducts() {
-//     this.productsService.getFeaturedProducts().subscribe((data) => {
-//       this.featuredProducts = data.requestedData.Products;
-//       console.log('Featured Products: ', data);
-//     });
-//   }
-//   getNewProducts() {
-//     this.productsService.getNewProducts().subscribe((data) => {
-//       this.newProduct = data.requestedData.Products;
-//       console.log('New Products: ', data);
-//     });
-//   }
-
-//   getCategories() {
-//     this.categoriesService.getCategories().subscribe((data) => {
-//       console.log('Categories: ', data);
-//       this.categories = data.requestedData.Categories;
-//     });
-//   }
-//   onCategoryClick(category: any) {
-//     console.log('Category clicked', category);
-//     this.router.navigate(['/search-product', category.categoryID ]);
-//   }
-
-//   showLoader() {
-//     this.isLoading = true;
-//   }
-
-//   hideLoader() {
-//     this.isLoading = false;
-//   }
-
-//   navigateToCategory(CategoryId: any) {
-//     this.router.navigate(['/tabs/categories']);
-//   }
-
-//   navigateToProduct(productId: string) {
-//     this.router.navigate(['/product-description', productId]);
-//   }
-//   goToCart() {
-//     this.router.navigate(['/tabs/cart']);
-//   }
-// }

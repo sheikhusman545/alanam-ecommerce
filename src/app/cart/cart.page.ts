@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { CartItem, CartService } from '../services/cart.service';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../services/auth.service';
+import { LanguageService } from '../services/language.service';
 
 @Component({
   selector: 'app-cart',
@@ -15,20 +16,24 @@ export class CartPage implements OnInit, OnDestroy {
   cartSubscription!: Subscription;
   cartCount = this.cartService.cartItemCount$ || 0;
   count = 0;
+  currentLanguage: string | 'en' | undefined;
+  
 
   constructor(
     private router: Router,
     private cartService: CartService,
-    private authService: AuthService
+    private authService: AuthService,
+    private languageService: LanguageService
+
   ) { }
 
   ngOnInit() {
+    this.currentLanguage = this.languageService.getCurrentLanguage();
     this.cartSubscription = this.cartService.cart$.subscribe((items) => {
       this.cartItems = items;
       this.calculateTotal();
 
     });
-      console.log('Cart updated:', this.cartItems);
       this.cartCount.subscribe((count: any) => {
         this.count = count;
       });

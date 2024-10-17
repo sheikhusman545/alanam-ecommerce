@@ -8,6 +8,7 @@ import { ShippingInfoPageRoutingModule } from './shipping-info-routing.module';
 
 import { ShippingInfoPage } from './shipping-info.page';
 import { ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     IonicModule,
     ShippingInfoPageRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TranslateModule
   ],
   declarations: [ShippingInfoPage],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

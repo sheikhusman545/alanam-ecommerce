@@ -8,7 +8,7 @@ import { AlertController, NavController, LoadingController } from '@ionic/angula
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import Swiper from 'swiper';
-
+import { LanguageService } from '../services/language.service';
 @Component({
   selector: 'app-shipping-info',
   templateUrl: './shipping-info.page.html',
@@ -23,6 +23,7 @@ export class ShippingInfoPage implements OnInit {
   isArabic = true;
   @ViewChild('swiper') swiperRef: ElementRef | undefined;
   swiper?: Swiper;
+  currentLanguage: string | 'en' | undefined;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -33,7 +34,8 @@ export class ShippingInfoPage implements OnInit {
     private alertController: AlertController,
     private router: Router,
     private toastController: ToastController,
-    private loadingController: LoadingController // Inject LoadingController
+    private loadingController: LoadingController,
+    private languageService: LanguageService
   ) {
     this.orderForm = this.formBuilder.group({
       customerName: ['', Validators.required],
@@ -51,6 +53,7 @@ export class ShippingInfoPage implements OnInit {
   }
 
   async ngOnInit() {
+    this.currentLanguage =  this.languageService.getCurrentLanguage();
     const loading = await this.loadingController.create({
       message: 'Loading...',
       spinner: 'crescent',

@@ -6,15 +6,18 @@
           <img src="assets/images/alanam-logo.png" alt="Logo" class="logo">
         </ion-col>
         <ion-col size="8">
-          <p class="location-text">Alanaam Factory For Animals Production</p>
+          <p class="location-text">{{'Alanaam Factory For Animals Production' | translate}}</p>
         </ion-col>
         <ion-col size="2" class="ion-text-end">
-          <ion-button fill="clear" (click)="goToCart()">
-            <ion-icon name="cart-outline"></ion-icon>
-            {{ cartCount }}
-          </ion-button>
+
+          <ion-label class="language" (click)="openPopover($event)">
+            {{currentLanguage}}
+          </ion-label>
+
         </ion-col>
+
       </ion-row>
+
       <ion-row>
         <ion-col lines="none" class="custom-search">
           <ion-searchbar placeholder="Search for 'Meet'" class="searchbar-custom"></ion-searchbar>
@@ -22,7 +25,8 @@
       </ion-row>
       <ion-row>
         <ion-col class="ion-text-center">
-          <p class="address-text"><ion-icon name="location-outline"></ion-icon> Bu Fass, Doha-QATAR</p>
+          <p class="address-text"><ion-icon name="location-outline"></ion-icon> {{'Bu Fass, Doha-QATAR' | translate}}
+          </p>
           <div class="info">
             <ion-label class="email-text"><ion-icon name="mail-outline"></ion-icon> info&#64;alanaam.qa</ion-label>
             <ion-label class="phone-text"><ion-icon name="call-outline"></ion-icon> +974 50375555 </ion-label>
@@ -34,8 +38,8 @@
 </ion-header>
 <ion-content [fullscreen]="true" class="home-page" class="ion-padding">
 
-  <swiper-container [loop]="true" autoplay="true"
-    [pagination]="{ clickable: true }" [slidesPerView]="1" [slidesPerGroup]="1" [loopFillGroupWithBlank]="true">
+  <swiper-container rtl="true" dir="rtl" [loop]="true" autoplay="true" [pagination]="{ clickable: true }"
+    [slidesPerView]="1" [slidesPerGroup]="1" [loopFillGroupWithBlank]="true">
     <swiper-slide swiperSlide>
       <img src="assets/images/1alanam.jpeg" alt="Promo 1">
     </swiper-slide>
@@ -49,32 +53,35 @@
 
   <div class="main_content_div">
 
-    <ion-label class="title_lbl">Premium Quality, Fresh Flavor</ion-label>
-    <ion-label class="title_lbl">Crafted with care, raised with respect</ion-label>
+    <ion-label class="title_lbl">{{'Premium Quality, Fresh Flavor' | translate}}</ion-label>
+    <ion-label class="title_lbl">{{'Crafted with care, raised with respect' | translate}}</ion-label>
 
     <ion-row>
       <ion-col size="4" *ngFor="let category of categories">
         <div class="cat-img" (click)="navigateToCategory(category.categoryID)">
           <ion-img [src]="'https://shopapi.alanaam.qa/' + category.categoryUrl" alt="{{category.en_CategoryName}}"
             class="category-image"></ion-img>
-          <ion-label class="cat-label">{{ category.en_CategoryName | uppercase }}</ion-label>
+          <ion-label class="cat-label">{{ currentLanguage === 'ar' ? category.ar_CategoryName : category.en_CategoryName
+            | uppercase}}</ion-label>
         </div>
       </ion-col>
     </ion-row>
   </div>
 
   <section class="featured-products">
-    <h2 class="section-title">Featured Products</h2>
+    <h2 class="section-title">{{'Featured Products' | translate}}</h2>
     <div class="swiper-container">
-      <swiper-container [slidesPerView]="2" [spaceBetween]="15" [loop]="true"  autoplay="true" class="swiper-wrapper">
+      <swiper-container dir="rtl" rtl="true" [slidesPerView]="2" [spaceBetween]="15" [loop]="true" autoplay="true"
+        class="swiper-wrapper">
         <swiper-slide swiperSlide *ngFor="let product of featuredProducts">
           <div class="product-card" (click)="navigateToProduct(product.productID)">
             <div class="product-image">
               <ion-img class="s-image" [src]="'https://shopapi.alanaam.qa/' + product.mainImageUrl"
-                alt="{{ product.en_ProductName }}"></ion-img>
+                alt="{{ currentLanguage === 'ar' ? product.ar_ProductName : product.en_ProductName }}"></ion-img>
             </div>
             <div class="product-details">
-              <h3 class="product-name">{{ product.en_ProductName }}</h3>
+              <h3 class="product-name">{{ currentLanguage === 'ar' ? product.ar_ProductName : product.en_ProductName }}
+              </h3>
               <p class="product-price">QAR {{ product.productPrice }}</p>
             </div>
           </div>
@@ -85,17 +92,19 @@
 
 
   <section class="new-products">
-    <h2 class="section-title">New Products</h2>
+    <h2 class="section-title">{{'New Products' | translate}}</h2>
     <div class="swiper-container">
-      <swiper-container [slidesPerView]="2" [spaceBetween]="15" [loop]="true" autoplay="true" class="swiper-wrapper">
+      <swiper-container dir="rtl" rtl="true" [slidesPerView]="2" [spaceBetween]="15" [loop]="true" autoplay="true"
+        class="swiper-wrapper">
         <swiper-slide swiperSlide *ngFor="let product of newProduct">
           <div class="product-card">
             <div class="product-image" (click)="navigateToProduct(product.productID)">
               <ion-img class="p-image" [src]="'https://shopapi.alanaam.qa/' + product.mainImageUrl"
-                alt="{{ product.en_ProductName }}"></ion-img>
+                alt="{{ currentLanguage === 'ar' ? product.ar_ProductName : product.en_ProductName }}"></ion-img>
             </div>
             <div class="product-details">
-              <h3 class="product-name">{{ product.en_ProductName }}</h3>
+              <h3 class="product-name"> {{ currentLanguage === 'ar' ? product.ar_ProductName : product.en_ProductName }}
+              </h3>
               <p class="product-price">QAR {{ product.productPrice }}</p>
             </div>
           </div>

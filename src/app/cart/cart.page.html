@@ -6,7 +6,7 @@
         <ion-label></ion-label>
       </ion-button>
     </ion-buttons>
-    <ion-title>Cart</ion-title>
+    <ion-title>{{'Cart' | translate}}</ion-title>
     <ion-buttons slot="end">
       <ion-button>
         <ion-icon name="cart"></ion-icon>
@@ -24,9 +24,9 @@
         <img [src]="'https://shopapi.alanaam.qa/' +item.product.mainImageUrl" />
       </ion-thumbnail>
       <ion-label>
-        <h2>{{ item.product.en_ProductName }}</h2>
+        <h2>{{ currentLanguage === 'ar' ? item.product.ar_ProductName : item.product.en_ProductName }}</h2>
         <p>QAR {{ item.price }}</p>
-        <p>slaughterCharge:{{item.product.SlaughterCharge}}</p>
+        <p>{{'Slaughter Charge' | translate }}:{{item.product.SlaughterCharge}}</p>
         <div class="quantity">
           <ion-button size="small" (click)="decreaseQuantity(item)">-</ion-button>
           <span>{{ item.quantity }}</span>
@@ -39,9 +39,9 @@
 
   <div class="total-section">
     <ion-item>
-      <ion-label>Total:</ion-label>
+      <ion-label>{{'Total' | translate}}:</ion-label>
       <ion-note slot="end">QAR {{ totalAmount }}</ion-note>
     </ion-item>
-    <ion-button expand="block" color="" (click)="proceedToCheckout()" class="checkout-btn">Proceed to Checkout</ion-button>
+    <ion-button expand="block" color="" (click)="proceedToCheckout()" class="checkout-btn">{{'Proceed to Checkout' | translate}}</ion-button>
   </div>
 </ion-content>

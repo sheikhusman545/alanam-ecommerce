@@ -6,7 +6,7 @@
       </ion-button>
     </ion-buttons>
 
-    <ion-title>Booking Form</ion-title>
+    <ion-title>{{'Booking Form' | translate}}</ion-title>
 
     <ion-buttons slot="end">
       <ion-button>
@@ -17,7 +17,7 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <swiper-container [loop]="true" autoplay="true"
+  <swiper-container dir="rtl" rtl="true" [loop]="true" autoplay="true"
     [pagination]="{ clickable: true }" [slidesPerView]="1" [slidesPerGroup]="1" [loopFillGroupWithBlank]="true">
     <swiper-slide swiperSlide>
       <img src="assets/images/2alanam.jpeg" alt="Promo 1">
@@ -32,12 +32,12 @@
   <ion-accordion-group *ngIf="bookingCart">
     <ion-accordion value="first" *ngFor="let booking of bookingCart">
       <ion-item slot="header" color="light">
-        <ion-label>Booking Information</ion-label>
+        <ion-label>{{'Booking Information' | translate}}</ion-label>
       </ion-item>
       <div class="ion-padding" slot="content">
         <ion-card>
           <ion-card-header>
-            <ion-card-title>Your Shopping Bag</ion-card-title>
+            <ion-card-title>{{'Your Shopping Bag' | translate}}</ion-card-title>
           </ion-card-header>
           <ion-card-content>
             <ion-item lines="none">
@@ -49,27 +49,27 @@
 
             <ion-item lines="none">
               <ion-label>
-                <p>{{booking.quantity}} - item(s)</p>
+                <p>{{booking.quantity}} - {{'item(s)' | translate}}</p>
               </ion-label>
             </ion-item>
 
             <ion-item lines="none">
               <ion-label>
-                <p>Slaughter charge</p>
-              </ion-label>
-              <ion-label slot="end">{{booking.slaughterCharge}} QAR</ion-label>
-            </ion-item>
-
-            <ion-item lines="none">
-              <ion-label>
-                <p>Cutting charge</p>
+                <p>{{'Slaughter Charge' | translate}}</p>
               </ion-label>
               <ion-label slot="end">{{booking.slaughterCharge}} QAR</ion-label>
             </ion-item>
 
             <ion-item lines="none">
               <ion-label>
-                <h2>Order Total</h2>
+                <p>{{'Cutting Charge' | translate}}</p>
+              </ion-label>
+              <ion-label slot="end">{{booking.slaughterCharge}} QAR</ion-label>
+            </ion-item>
+
+            <ion-item lines="none">
+              <ion-label>
+                <h2>{{'Order Total' | translate}}</h2>
               </ion-label>
               <ion-label slot="end">
                 <h2>{{ booking.quantity * booking.price}} QAR</h2>
@@ -83,15 +83,15 @@
 
   <ion-grid>
     <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
-      <h2>User Info <ion-icon name="information-circle" color="primary" (click)="showDeliveryToast()"></ion-icon>
+      <h2>{{'User Info' | translate}} <ion-icon name="information-circle" color="primary" (click)="showDeliveryToast()"></ion-icon>
       </h2>
 
       <!-- Address Type -->
       <ion-item>
-        <ion-label>Address Type</ion-label>
+        <ion-label>{{'Address Type' | translate}}</ion-label>
         <ion-select formControlName="addressType" (ionChange)="onAddressTypeChange($event)">
-          <ion-select-option value="individual">Individual</ion-select-option>
-          <ion-select-option value="company">Company</ion-select-option>
+          <ion-select-option value="individual">{{'Individual' | translate}}</ion-select-option>
+          <ion-select-option value="company">{{'Company' | translate}}</ion-select-option>
         </ion-select>
       </ion-item>
       <ion-note *ngIf="orderForm.get('addressType')?.touched && orderForm.get('addressType')?.invalid" color="danger">
@@ -100,7 +100,7 @@
 
       <!-- Customer Name -->
       <ion-item>
-        <ion-label position="floating">Customer Name</ion-label>
+      <ion-label position="floating">{{'Customer Name' | translate}}</ion-label>
         <ion-input minlength="3" formControlName="customerName"></ion-input>
       </ion-item>
       <ion-note *ngIf="orderForm.get('customerName')?.touched && orderForm.get('customerName')?.invalid" color="danger">
@@ -109,7 +109,7 @@
 
       <!-- Email -->
       <ion-item>
-        <ion-label position="floating">Email</ion-label>
+        <ion-label position="floating">{{'Email' | translate}}</ion-label>
         <ion-input formControlName="emailID"></ion-input>
       </ion-item>
       <ion-note *ngIf="orderForm.get('emailID')?.touched && orderForm.get('emailID')?.invalid" color="danger">
@@ -119,7 +119,7 @@
 
       <!-- Phone Number -->
       <ion-item>
-        <ion-label position="floating">Phone Number</ion-label>
+        <ion-label position="floating">{{'Phone Number' | translate}}</ion-label>
         <ion-input maxlength="8" type="tel" formControlName="phoneNo"></ion-input>
       </ion-item>
       <ion-note *ngIf="orderForm.get('phoneNo')?.touched && orderForm.get('phoneNo')?.invalid" color="danger">
@@ -130,16 +130,16 @@
       <!-- Company Name (Visible only if address type is "company") -->
       <div *ngIf="isCompany">
         <ion-item>
-          <ion-label position="floating">Company Name</ion-label>
+          <ion-label position="floating">{{'Company Name' | translate}}</ion-label>
           <ion-input formControlName="companyName"></ion-input>
         </ion-item>
       </div>
 
 
-      <h2>Shipping Address</h2>
+      <h2>{{'Shipping Address' | translate}}</h2>
       <!-- City -->
       <ion-item>
-        <ion-label position="floating">City</ion-label>
+        <ion-label position="floating">{{'City' | translate}}</ion-label>
         <ion-input formControlName="city"></ion-input>
       </ion-item>
       <ion-note *ngIf="orderForm.get('city')?.touched && orderForm.get('city')?.invalid" color="danger">
@@ -151,7 +151,7 @@
 
       <!-- Building/No -->
       <ion-item>
-        <ion-label position="floating">Building/No</ion-label>
+        <ion-label position="floating">{{'Building/No' | translate}}</ion-label>
         <ion-input formControlName="buildingName_No"></ion-input>
       </ion-item>
       <ion-note *ngIf="orderForm.get('buildingName_No')?.touched && orderForm.get('buildingName_No')?.invalid"
@@ -161,7 +161,7 @@
 
       <!-- Street Name/No -->
       <ion-item>
-        <ion-label position="floating">Street Name/No</ion-label>
+        <ion-label position="floating">{{'Street Name/No' | translate}}</ion-label>
         <ion-input formControlName="streetName_No"></ion-input>
       </ion-item>
       <ion-note *ngIf="orderForm.get('streetName_No')?.touched && orderForm.get('streetName_No')?.invalid"
@@ -171,7 +171,7 @@
 
       <!-- Landmark -->
       <ion-item>
-        <ion-label position="floating">Landmark</ion-label>
+        <ion-label position="floating">{{'Landmark' | translate}}</ion-label>
         <ion-input formControlName="landMark"></ion-input>
       </ion-item>
       <ion-note *ngIf="orderForm.get('landMark')?.touched && orderForm.get('landMark')?.invalid" color="danger">
@@ -179,17 +179,16 @@
       </ion-note>
 
       <!-- Delivery Method -->
-      <h2>Delivery Method</h2>
+      <h2>{{'Delivery Method' | translate}}</h2>
 
       <ion-radio-group formControlName="deliveryMethod">
-        <ion-radio slot="start" justify="space-between" value="selfPickup" id="selfPickup">Self Pickup</ion-radio><br />
-        <ion-radio slot="start" justify="space-between" value="homeDelivery" id="homeDelivery">Home Delivery</ion-radio>
-        <br />
+        <ion-radio slot="start" justify="space-between" value="selfPickup" id="selfPickup">{{'Self Pickup' | translate}}</ion-radio>
+        <ion-radio slot="start" justify="space-between" value="homeDelivery" id="homeDelivery">{{'Home Delivery' | translate}}</ion-radio>
       </ion-radio-group>
 
       <!-- Delivery Time -->
       <ion-item>
-        <ion-label position="floating">Delivery Time</ion-label>
+        <ion-label position="floating">{{'Delivery Time' | translate}}</ion-label>
         <ion-select formControlName="deliveryTime">
           <ion-select-option value="09AM-11PM">10AM-12PM</ion-select-option>
           <ion-select-option value="10AM-12PM">11AM-01PM</ion-select-option>
@@ -203,7 +202,7 @@
       </ion-note>
 
       <!-- Submit Button -->
-      <ion-button expand="full" type="submit">Book Now</ion-button>
+      <ion-button expand="full" type="submit">{{'Book Now' | translate}}</ion-button>
     </form>
   </ion-grid>
 
