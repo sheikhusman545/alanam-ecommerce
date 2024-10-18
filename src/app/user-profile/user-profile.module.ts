@@ -8,6 +8,8 @@ import { UserProfilePageRoutingModule } from './user-profile-routing.module';
 
 import { UserProfilePage } from './user-profile.page';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -15,8 +17,10 @@ import { ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     IonicModule,
     UserProfilePageRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TranslateModule
   ],
-  declarations: [UserProfilePage]
+  declarations: [UserProfilePage],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class UserProfilePageModule {}

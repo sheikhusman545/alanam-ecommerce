@@ -89,7 +89,8 @@
       <!-- Address Type -->
       <ion-item>
         <ion-label>{{'Address Type' | translate}}</ion-label>
-        <ion-select formControlName="addressType" (ionChange)="onAddressTypeChange($event)">
+        <ion-select [okText]="okButtonText"
+        [cancelText]="cancelButtonText" formControlName="addressType" (ionChange)="onAddressTypeChange($event)">
           <ion-select-option value="individual">{{'Individual' | translate}}</ion-select-option>
           <ion-select-option value="company">{{'Company' | translate}}</ion-select-option>
         </ion-select>
@@ -189,7 +190,8 @@
       <!-- Delivery Time -->
       <ion-item>
         <ion-label position="floating">{{'Delivery Time' | translate}}</ion-label>
-        <ion-select formControlName="deliveryTime">
+        <ion-select formControlName="deliveryTime" [okText]="okButtonText"
+        [cancelText]="cancelButtonText">
           <ion-select-option value="09AM-11PM">10AM-12PM</ion-select-option>
           <ion-select-option value="10AM-12PM">11AM-01PM</ion-select-option>
           <ion-select-option value="12PM-2PM">01PM-3PM</ion-select-option>

@@ -7,14 +7,17 @@ import { IonicModule } from '@ionic/angular';
 import { LogintypePageRoutingModule } from './logintype-routing.module';
 
 import { LogintypePage } from './logintype.page';
-
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    LogintypePageRoutingModule
+    LogintypePageRoutingModule,
+    TranslateModule
   ],
-  declarations: [LogintypePage]
+  declarations: [LogintypePage],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class LogintypePageModule {}

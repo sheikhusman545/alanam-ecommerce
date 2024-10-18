@@ -7,14 +7,18 @@ import { IonicModule } from '@ionic/angular';
 import { GuestPageRoutingModule } from './guest-routing.module';
 
 import { GuestPage } from './guest.page';
+import { TranslateModule } from '@ngx-translate/core';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    GuestPageRoutingModule
+    GuestPageRoutingModule,
+    TranslateModule
   ],
-  declarations: [GuestPage]
+  declarations: [GuestPage],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class GuestPageModule {}

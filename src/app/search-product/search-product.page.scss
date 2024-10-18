@@ -1,3 +1,96 @@
 .search-input,input.searchbar-input.sc-ion-searchbar-ios{
     background-color: white;
 }
+.split-layout {
+    display: flex;
+    flex-direction: row;
+    // height: 100vh;
+  }
+  
+  .categories-section {
+    width: 25%; /* 25% width for the categories */
+    height: 120vh; /* Full viewport height */
+    position: sticky;
+    top: 0; /* Sticks the categories at the top */
+    background-color: #f8f8f8;
+    border-right: 1px solid #ccc;
+    padding: 10px;
+  }
+  
+  .products-section {
+    width: 75%; /* 75% width for the products */
+    // height: 100vh;
+    overflow-y: scroll; /* Allows scrolling for the products */
+    padding: 10px;
+  }
+  
+  ion-avatar {
+    width: 64px;
+    height: 64px;
+  }
+  
+.categories{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+ion-list{
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  background: no-repeat;
+  margin-top: 50px;
+}
+.products-section {
+  padding: 10px;
+}
+.product-col{
+  padding: 0;
+}
+ion-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 0;
+  margin: 5px;
+}
+ion-card-content{
+  padding:5px
+}
+
+.image-container {
+  width: 100%;
+  height: 150px; /* Fixed height for the image */
+  overflow: hidden;
+  border-radius: 10px 10px 0 0; /* Rounded corners for top */
+}
+
+.image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures the image covers the area without distortion */
+}
+
+.product-name {
+  font-size: 14px;
+  text-align: center;
+  margin-top: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
+.product-price {
+  font-size: 14px;
+  text-align: center;
+  color: #888;
+  margin-bottom: 10px;
+}
+
+ion-button {
+  display: block;
+  margin: 0 auto; /* Center the button */
+}

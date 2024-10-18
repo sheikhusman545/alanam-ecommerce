@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CategoriesService } from '../services/categories.service';
 import { ProductsService } from '../services/products.service';
 import { HttpClient } from '@angular/common/http';
-import { NavController } from '@ionic/angular';
+import { LoadingController, NavController } from '@ionic/angular';
+import Swiper from 'swiper';
+import { CartService } from '../services/cart.service';
+import { LanguageService } from '../services/language.service';
 @Component({
   selector: 'app-search-product',
   templateUrl: './search-product.page.html',
@@ -15,55 +18,100 @@ export class SearchProductPage implements OnInit {
   products: any[] = [];
   selectedCategory: any = null;
   allProducts: any[] = [];
-  categoryId: string | null = null;
-  ngOnInit(): void {
-    // get id from the URL
-    this.route.paramMap.subscribe((params: any) => {
-      this.categoryId = params.get('id');
-      if (this.categoryId) {
-        this.loadProductsByCategory(this.categoryId);
-        this.loadProductsByCategory(this.categoryId);
-      }
-    });
+  subCategory: any;
+  cartCount: number = 0;
+  @ViewChild('swiper') swiperRef: ElementRef | undefined;
+  swiper?: Swiper;
+  currentLanguage: string | 'en' | undefined;
 
-    
-  }
   constructor(
     private http: HttpClient,
     private categoriesService: CategoriesService,
     private productsService: ProductsService,
     private router: Router,
     private navCtrl: NavController,
-    private route: ActivatedRoute
-  ) { }
-  
-  loadCategories() {
-    this.categoriesService.getCategories().subscribe((data: any) => {
-      this.categories = data.requestedData.Categories; // Adjust based on your API response
-      console.log(this.categories);
-    });
+    private cartService: CartService,
+    private loadingController: LoadingController,
+    private languageService: LanguageService
+  ) {}
+
+  ngOnInit() {
+    this.currentLanguage = this.languageService.getCurrentLanguage();
+    this.cartService.cartItemCount$.subscribe((count) => (this.cartCount = count));
+    this.loadCategories();
+    this.loadAllProducts();
   }
-  loadAllProducts() {
-    this.productsService.getAllProducts().subscribe((data: any) => {
-      this.allProducts = data.requestedData.Products; // Adjust based on your API response
-      console.log(this.allProducts);
-      this.products = this.allProducts;
+
+  async loadCategories() {
+    const loader = await this.loadingController.create({
+      message: 'Loading categories...',
+    });
+    await loader.present(); 
+
+    this.categoriesService.getCategories().subscribe({
+      next: (data: any) => {
+        this.categories = data.requestedData.Categories; 
+      },
+      error: (error) => {
+        console.error('Error loading categories:', error);
+      },
+      complete: () => {
+        loader.dismiss(); 
+      },
     });
   }
 
-  loadProductsByCategory(categoryId: string) {
-    this.productsService.getProductsByCategory(categoryId).subscribe((data: any) => {
-      this.products = data.requestedData.Products; // Adjust based on your API response
-      console.log(this.products);
+  async loadAllProducts() {
+    const loader = await this.loadingController.create({
+      message: 'Loading products...',
+    });
+    await loader.present(); 
+
+    this.productsService.getAllProducts().subscribe({
+      next: (data: any) => {
+        this.allProducts = data.requestedData.Products; 
+        this.products = this.allProducts;
+      },
+      error: (error) => {
+        console.error('Error loading products:', error);
+      },
+      complete: () => {
+        loader.dismiss(); 
+      },
     });
   }
 
+  async loadProductsByCategory(categoryId: string) {
+    const loader = await this.loadingController.create({
+      message: 'Loading products for category...',
+    });
+    await loader.present(); 
+    this.productsService.getProductsByCategory(categoryId).subscribe({
+      next: (data: any) => {
+        this.products = data.requestedData.Products; 
+      },
+      error: (error) => {
+        console.error('Error loading products by category:', error);
+      },
+      complete: () => {
+        loader.dismiss(); 
+      },
+    });
+  }
+
+  getSubCategories(categoryId: string) {
+    this.categoriesService.getSubCategories(categoryId).subscribe((data: any) => {
+      this.subCategory = data.requestedData.Categories;
+    });
+  }
 
   onCategoryClick(category: any) {
-    if (category.categoryID === 'all') {
-      this.products = this.allProducts;
-    } else {
+    if (category.categoryID !== undefined) {
       this.loadProductsByCategory(category.categoryID);
+      this.getSubCategories(category.categoryID);
+    } else {
+      this.loadAllProducts();
+      this.subCategory = null;
     }
     this.selectedCategory = category;
   }
@@ -75,15 +123,7 @@ export class SearchProductPage implements OnInit {
   onCart() {
     this.router.navigate(['cart']);
   }
-
-  onRemove() {
-
-  }
-
-  onAdd() {
-
-  }
-
+  
   onOrder() {
     this.router.navigate(['checkout']);
   }
@@ -91,5 +131,4 @@ export class SearchProductPage implements OnInit {
   navigateToProduct(productId: string) {
     this.router.navigate(['/product-description', productId]);
   }
-
 }

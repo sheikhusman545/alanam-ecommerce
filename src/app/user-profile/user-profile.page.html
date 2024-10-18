@@ -1,16 +1,17 @@
 <ion-header class="header-menu" [translucent]="true">
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-button>
+      <ion-button (click)="navigateToHome()">
         <ion-icon name="arrow-back-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
 
-    <ion-title>User Profile</ion-title>
+    <ion-title>{{'User Profile' | translate}}</ion-title>
 
     <ion-buttons slot="end">
-      <ion-button>
+      <ion-button (click)="navigateToCart()">
         <ion-icon class="filled" name="cart"></ion-icon>
+        <ion-badge>{{count}}</ion-badge>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -19,32 +20,32 @@
   <div class="user-profile">
     <div class="info-section">
       <div class="info-card">
-        <p>Need to show your order history?</p>
-        <a (click)="navigateToOrders()">Please click here</a>
+        <p>{{'Need to show your order history?' | translate}}</p>
+        <a (click)="navigateToOrders()">{{'Please click here' | translate}}</a>
       </div>
       <div class="info-card">
-        <p>Wanna Logout???</p>
-        <a (click)="logout()">Please click here</a>
+        <p>{{'Wanna Logout?' | translate}}</p>
+        <a (click)="logout()">{{'Please click here' | translate}}</a>
       </div>
     </div>
 
     <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
       <ion-item>
-        <ion-label position="floating">Full Name</ion-label>
+        <ion-label position="floating">{{'Full Name' | translate}}</ion-label>
         <ion-input formControlName="fullName"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label position="floating">Email</ion-label>
+        <ion-label position="floating">{{'Email' | translate}}</ion-label>
         <ion-input type="email" formControlName="email"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label position="floating">Mobile/Phone</ion-label>
+        <ion-label position="floating">{{'Mobile/Phone' | translate}}</ion-label>
         <ion-input type="tel" formControlName="mobilePhone"></ion-input>
       </ion-item>
 
-      <ion-button class="mt-5" expand="block" type="submit">Update</ion-button>
+      <ion-button class="mt-5" expand="block" type="submit">{{'Update' | translate}}</ion-button>
     </form>
   </div>
 </ion-content>

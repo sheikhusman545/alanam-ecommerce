@@ -11,7 +11,7 @@ import { CartService } from '../services/cart.service';
 import { DatePipe } from '@angular/common';
 import { Browser } from '@capacitor/browser';
 import Swiper from 'swiper';
-
+import {LanguageService} from '../services/language.service';
 @Component({
   selector: 'app-payment',
   templateUrl: './payment.page.html',
@@ -31,6 +31,7 @@ export class PaymentPage implements OnInit {
   formattedDate: string;
   @ViewChild('swiper') swiperRef: ElementRef | undefined;
   swiper?: Swiper;
+  currentLanguage: string | 'en' | undefined;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -42,7 +43,8 @@ export class PaymentPage implements OnInit {
     private toastController: ToastController,
     private cartService: CartService,
     private datePipe: DatePipe,
-    private loadingController: LoadingController
+    private loadingController: LoadingController,
+    private lan: LanguageService
   ) {
     const now = new Date();
     this.formattedDate = this.datePipe.transform(now, 'dd-MM-yyyy EEE') as string;
@@ -64,6 +66,7 @@ export class PaymentPage implements OnInit {
   }
 
   async ngOnInit() {
+    this.currentLanguage = this.lan.getCurrentLanguage();
     await this.presentLoading('Loading...');
     this.cartSubscription = this.cartService.cart$.subscribe((items) => {
       this.cartItems = items;

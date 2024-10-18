@@ -1,160 +1,106 @@
-.header-menu {
-  height: 60px;
+.search-input,
+input.searchbar-input.sc-ion-searchbar-ios {
+  background-color: white;
+}
+
+.split-layout {
   display: flex;
+  flex-direction: row;
+}
+
+.categories-section {
+  width: 25%;
+  height: 120vh;
+  position: sticky;
+  top: 0;
+  background-color: #f8f8f8;
+  border-right: 1px solid #ccc;
+  padding: 10px;
+}
+
+.products-section {
+  width: 75%;
+  // height: 100vh;
+  overflow-y: scroll;
+  padding: 10px;
+}
+
+ion-avatar {
+  width: 64px;
+  height: 64px;
+}
+
+.categories {
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 
-.categories-col {
-  padding: 0;
-  /* No padding */
+ion-list {
   display: flex;
   flex-direction: column;
-
+  gap: 40px;
+  background: no-repeat;
+  margin-top: 50px;
 }
 
-.categories-list {
-  width: 100%;
-  padding: 0;
-  /* No padding on the list */
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  align-items: flex-start;
+.products-section {
+  padding: 10px;
 }
-
-.category-item {
-  padding: 0;
-  /* No padding inside the item */
-  margin-bottom: 15px;
-  background: none;
-  /* Remove background */
-  border: none;
-  /* Remove borders */
-  --min-height: 0;
-  /* Optional: Adjust if needed */
-
-  ion-thumbnail {
-    width: 100%;
-    height: auto;
-    border-radius: 50%;
-    overflow: hidden;
-  }
-
-  ion-img {
-    width: 100px;
-    height: 100px;
-    object-fit: fill;
-    border-radius: 50%;
-  }
-}
-
-.sub-category-item {
-  display: flex;
-  flex-direction: column;
-}
-
 
 .product-col {
-
-  display: flex;
-
-  .product-card {
-    background-color: rgba(255, 255, 255, 0.8);
-    /* Very light background */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    /* Subtle shadow for depth */
-    border-radius: 12px;
-    /* Soft rounded corners */
-    padding: 20px;
-    /* Padding for content inside */
-    transition: transform 0.2s ease-in-out;
-    max-width: 300px;
-    /* Optional: set max width */
-  }
-
-  .product-card:hover {
-    transform: scale(1.05);
-    /* Slight scale on hover for effect */
-  }
-
-  .product-card .product-image {
-    width: 100%;
-    border-radius: 8px;
-    height: 150px;
-  }
-
-  .product-image {
-    width: 100%;
-    border-radius: 10px;
-
-  }
-
-  .product-name {
-    color: #000;
-    font-family: "Nunito Sans";
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 400;
-    margin: 5px;
-  }
-
-  .product-price {
-    color: #202020;
-    font-family: Raleway;
-    font-size: 17px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 21px;
-    letter-spacing: -0.17px;
-    padding: 0;
-    margin: 0;
-  }
-}
-
-.categories-col {
-  display: flex;
-  justify-content: flex-start;
-}
-
-.categories-list {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
   padding: 0;
 }
 
-.category-item {
-  background: none;
-  border: none;
-  text-align: center;
-}
-
-.category-content {
+ion-card {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: space-between;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 0;
+  margin: 5px;
 }
 
-.category-thumbnail {
-  --size: 80px;
-  width: var(--size);
-  height: var(--size);
+ion-card-content {
+  padding: 5px
+}
+
+.image-container {
+  width: 100%;
+  height: 150px;
   overflow: hidden;
-  border-radius: 50%;
-  /* Makes the image rounded */
-  margin-bottom: 8px;
+  border-radius: 10px 10px 0 0;
 }
 
-.category-thumbnail ion-img {
-  object-fit: cover;
+.image-container img {
   width: 100%;
   height: 100%;
+  object-fit: cover;
 }
 
-.category-name {
+.product-name {
   font-size: 14px;
-  font-weight: 500;
-  color: #333;
   text-align: center;
-  margin-top: 5px;
+  margin-top: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
+.product-price {
+  font-size: 14px;
+  text-align: center;
+  color: #888;
+  margin-bottom: 10px;
+}
+
+ion-button {
+  display: block;
+  margin: 0 auto;
+}
+
+.cat-label {
+  text-align: center;
+  color: #000;
 }

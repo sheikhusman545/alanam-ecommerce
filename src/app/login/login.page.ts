@@ -1,27 +1,30 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClientService } from '../services/http.service';
 import { NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
+import { LanguageService } from '../services/language.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage {
+export class LoginPage implements OnInit {
   phoneForm: FormGroup;
   otpForm: FormGroup;
   showOtpModal = false; // Toggle OTP modal visibility
   userDetails: any;
   jwtToken: any = null;
+  currentLanguage: string | 'en' | undefined;
 
   constructor(
     private fb: FormBuilder,
     private http: HttpClientService,
     private navCtrl: NavController,
     private router: Router,
-    public toastController: ToastController
+    public toastController: ToastController,
+    private languageService: LanguageService
   ) {
     // Initialize phone number form
     this.phoneForm = this.fb.group({
@@ -38,8 +41,10 @@ export class LoginPage {
       otp6: ['', [Validators.required, Validators.maxLength(1)]],
     });
   }
+  ngOnInit(): void {
+    this.currentLanguage = this.languageService.getCurrentLanguage();
+  }
 
-  // Function to send OTP after validating phone number
   sendOTP() {
     if (this.phoneForm.valid) {
       const phoneNumber = this.phoneForm.get('phoneNumber')?.value;

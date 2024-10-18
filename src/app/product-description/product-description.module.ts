@@ -7,13 +7,14 @@ import { IonicModule } from '@ionic/angular';
 import { ProductDescriptionPageRoutingModule } from './product-description-routing.module';
 
 import { ProductDescriptionPage } from './product-description.page';
-
+import { TranslateModule } from '@ngx-translate/core';
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ProductDescriptionPageRoutingModule
+    ProductDescriptionPageRoutingModule,
+    TranslateModule
   ],
   declarations: [ProductDescriptionPage]
 })

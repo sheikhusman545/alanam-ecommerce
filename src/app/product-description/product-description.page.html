@@ -11,35 +11,37 @@
       <ion-col size="12">
         <div class="main_content ion-padding product-col" *ngIf="productData">
           <div class="title">
-            <ion-label class="sub_heading" style="color: black;">{{ productData.en_ProductName }}</ion-label>
-            <ion-label class="sub_heading">QAR {{ productData.productPrice }}</ion-label>
-            <ion-label class="sub_ttl">Per Kg</ion-label>
+            <ion-label class="sub_heading" style="color: black;">{{ currentLanguage === 'ar' ? productData.ar_ProductName : productData.en_ProductName
+                  }}</ion-label>
+            <ion-label class="sub_heading">QAR {{ productData.productPrice }} ({{'Per Kg' | translate}})</ion-label>
+            <ion-label class="sub_ttl"></ion-label>
           </div>
 
-          <ion-label class="sub_heading desc">Description</ion-label>
-          <p class="desc-info">{{ productData.en_ProductDescription }}
-            <ion-label class="sub_heading d-block">Product Code: {{ productData.productCode }}</ion-label>
-            <ion-label class="sub_heading d-block">Packing: Normal</ion-label>
+          <ion-label class="sub_heading desc">{{'Description' | translate}}</ion-label>
+          <p class="desc-info">{{ currentLanguage == 'ar' ? productData.ar_ProductDescription  :productData.en_ProductDescription }}
+            <ion-label class="sub_heading d-block">{{'Product Code' | translate}}: {{ productData.productCode }}</ion-label>
+            <ion-label class="sub_heading d-block">{{'Packing' | translate}}: {{'Normal' | translate}}</ion-label>
+            <ion-label class="sub_heading availability">{{ productData.status ? "In Stock" : "Out Of Stock"
+                }}</ion-label>
           </p>
           <div class="divider"></div>
           
           <div class="attributes" *ngIf="attributes.length > 0">
             <div *ngFor="let attribute of attributes">
               <ion-item lines="none">
-                <ion-label>- Select the {{ attribute.en_atributeName }} -</ion-label>
+                <ion-label>- Select the {{ currentLanguage == 'ar' ? attribute.ar_atributeName  : attribute.en_atributeName }} </ion-label>
                 <ion-select (ionChange)="onAttributeChange(attribute, $event)">
                   <ion-select-option *ngFor="let item of attribute.items" [value]="item">
-                    {{ item.en_itemName }} ({{ item.extraCost | currency:'USD':true }})
+                    ({{ item.extraCost | currency:'QAR':true }} )-  {{ currentLanguage == 'ar' ? item.ar_itemName :  item.en_itemName }} 
                   </ion-select-option>
                 </ion-select>
               </ion-item>
             </div>
           </div>
+          <ion-note color="primary">{{attribute_msg}}</ion-note>
 
           <ion-row class="cart-button">
             <ion-col>
-              <ion-label class="sub_heading availability">{{ productData.status ? "In Stock" : "Out Of Stock"
-                }}</ion-label>
               <div class="btn">
                 <ion-buttons slot="start">
                   <ion-button (click)="onRemove()" [disabled]="quantity <= productData.minQuantity">
@@ -66,14 +68,14 @@
           <ion-button [disabled]="(attributes.length > 0 && !isAttributeSelected()) || quantity == 0"
             *ngIf="productData.type == 'Booking'" class="content_button" (click)="onOrder('booking')" expand="block">
             <ion-icon name="cart-outline"></ion-icon>
-            Book Now
+            {{'Book Now' | translate}}
           </ion-button>
 
           <ion-button [disabled]="!isAttributeSelected() || quantity == 0"
             *ngIf="attributes.length > 0 && productData.type != 'Booking'" class="content_button"
             (click)="onOrder('cart')" expand="block">
             <ion-icon name="cart-outline"></ion-icon>
-            Add to Cart 
+            {{'Add to Cart' | translate}} 
           </ion-button>
 
         </div>

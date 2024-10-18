@@ -21,12 +21,12 @@
   </ion-button>
 
   <div class="phone-container" *ngIf="!showOtpModal">
-    <h2>Login</h2>
-    <h6 class="phone-title">Enter your phone number</h6>
+    <h2>{{'Login' | translate}}</h2>
+    <h6 class="phone-title">{{'Enter your phone number'| translate}}</h6>
     <form [formGroup]="phoneForm" (ngSubmit)="sendOTP()">
       <ion-item>
-        <ion-input type="tel" formControlName="phoneNumber" label="Enter Phone Number" label-placement="floating"
-          fill="outline" placeholder="Enter Phone Number"></ion-input>
+        <ion-input type="tel" formControlName="phoneNumber" label="{{'Enter Phone Number' | translate}}" label-placement="floating"
+          fill="outline" placeholder="{{'Enter Phone Number' | translate}}"></ion-input>
       </ion-item>
       <ion-button class="submit-btn" expand="block" type="submit" [disabled]="!phoneForm.valid">Send OTP</ion-button>
     </form>
@@ -34,7 +34,7 @@
 
   <div *ngIf="showOtpModal" class="otp-dialog" (click)="closeModal($event)">
     <div class="otp-container" (click)="$event.stopPropagation()">
-      <h2 class="otp-title">Enter OTP</h2>
+      <h2 class="otp-title">{{'Enter OTP' | translate}}</h2>
 
       <form [formGroup]="otpForm" (ngSubmit)="verifyOTP()">
         <div class="otp-input-box">
@@ -45,7 +45,7 @@
           <input formControlName="otp5" maxlength="1" (input)="moveToNext($event, 'otp6')" />
           <input formControlName="otp6" maxlength="1" />
         </div>
-        <ion-button expand="full" type="submit" [disabled]="!otpForm.valid">Verify OTP</ion-button>
+        <ion-button expand="full" type="submit" [disabled]="!otpForm.valid">{{"Verify OTP" | translate}}</ion-button>
       </form>
     </div>
   </div>

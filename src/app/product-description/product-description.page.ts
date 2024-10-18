@@ -5,7 +5,7 @@ import { ProductsService } from '../services/products.service';
 import { BookingCartService } from '../services/booking-cart.service';
 import { AuthService } from '../services/auth.service';
 import { CartService } from '../services/cart.service';
-
+import { LanguageService } from '../services/language.service';
 @Component({
   selector: 'app-product-description',
   templateUrl: './product-description.page.html',
@@ -20,7 +20,11 @@ export class ProductDescriptionPage implements OnInit {
   attributes: any[] = [];
   productAttributes: any[] = [];
   attr_id: any;
-  loading: any; // Add a loading variable
+  loading: any; 
+  currentLanguage: string = 'en';
+  attribute_msg = '';
+
+
 
   constructor(
     private NavCtrl: NavController,
@@ -30,10 +34,13 @@ export class ProductDescriptionPage implements OnInit {
     private bookingCartService: BookingCartService,
     private cartService: CartService,
     private authService: AuthService,
-    private loadingController: LoadingController
+    private loadingController: LoadingController,
+    private languageService: LanguageService
+
   ) { }
 
   ngOnInit(): void {
+    this.currentLanguage = this.languageService.getCurrentLanguage();
     this.route.paramMap.subscribe(params => {
       this.id = params.get('id');
       if (this.id) {
@@ -53,12 +60,14 @@ export class ProductDescriptionPage implements OnInit {
       (response) => {
         this.productData = response.requestedData.Product[0];
         this.attributes = response.requestedData.Attributes;
+        console.log(this.productData);
+        console.log(this.attributes);
         this.quantity = this.productData.minQuantity;
-        this.loading.dismiss(); // Dismiss the loader when done
+        this.loading.dismiss(); 
       },
       (error) => {
         console.error('Error fetching product details:', error);
-        this.loading.dismiss(); // Dismiss the loader on error
+        this.loading.dismiss(); 
       }
     );
   }
@@ -88,6 +97,10 @@ export class ProductDescriptionPage implements OnInit {
   
 
   onAttributeChange(attribute: any, event: any) {
+    if (!event.detail.value) { 
+      this.attribute_msg = 'Please select an attribute';
+      return;
+    }
     this.attrubite_item_id = event.detail.value.atributeItemID;
     this.attr_id = attribute.atributeID;
     const selectedItem = event.detail.value;
