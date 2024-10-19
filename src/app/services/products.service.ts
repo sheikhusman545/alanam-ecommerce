@@ -10,26 +10,22 @@ export class ProductsService {
   private url = 'https://shopapi.alanaam.qa/api/';
 
   constructor(private http: HttpClient) { }
-//https://shopapi.alanaam.qa/api/ecom/shopping/getproducts?keyword=&sb=&newProductPriority=&featuredProductPriority=
 
   getAllProducts(): Observable<any> {
     return this.http.get<any>(this.url + 'ecom/shopping/getproducts');
   }
 
   getProductsByCategory(categoryId: string): Observable<any> {
-    console.log('cat_id',categoryId);
-    // return this.http.get<any>(`${this.url}ecom/shopping/getproducts?getproducts?categoryid=${categoryId}&keyword=&sb=&newProductPriority=&featuredProductPriority=`);
     return this.http.get<any>(`${this.url}ecom/shopping/getproducts?categoryid=${categoryId}&keyword=&sb=&newProductPriority=&featuredProductPriority=`);
   }
 
   getProductById(productId: string): Observable<any> {
-    console.log(productId);
     return this.http.get<any>(`${this.url}ecom/shopping/viewproduct?productid=${productId}`);
   }
   getFeaturedProducts(): Observable<any> {
     return this.http.get<any>(this.url + 'ecom/shopping/getproducts?featuredProductPriority=1');
   }
   getNewProducts(): Observable<any> {
-    return this.http.get<any>(this.url + 'ecom/shopping/getproducts?newProductPriority=1');
+    return this.http.get<any>(this.url + 'ecom/shopping/getproducts');
   }
 }

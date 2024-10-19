@@ -18,12 +18,8 @@ export class CartCountComponent implements OnInit {
   constructor(private cartService: CartService) { }
 
   ngOnInit() {
-    // Log to verify the component is initializing
-    console.log('CartCountComponent initialized');
-
     this.cartService.cartItemCount$.subscribe(count => {
       this.cartCount = count;
-      console.log('Updated cart count:', count); // Verify count changes
     });
   }
 }

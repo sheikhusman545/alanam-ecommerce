@@ -56,7 +56,6 @@ export class CartService {
     this.cart.next(currentCart);
     this.saveCartToStorage(currentCart);
     this.updateCartCount();
-    console.log(currentCart);
   }
   
 

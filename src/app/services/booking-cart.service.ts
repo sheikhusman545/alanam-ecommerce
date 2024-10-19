@@ -13,9 +13,7 @@ export class BookingCartService {
   constructor() {}
 
   addBooking(booking: any) {
-    console.log('booking in cart', booking);
     this.bookingCartSubject.next([booking]);
-    console.log('currentCart', this.bookingCartSubject.getValue());
   }
   
 

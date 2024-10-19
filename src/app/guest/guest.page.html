@@ -1,32 +1,18 @@
 <ion-content class="login-type">
-  <svg xmlns="http://www.w3.org/2000/svg" width="245" height="272" viewBox="0 0 245 272" fill="none">
-    <path
-      d="M42.9996 -131.222C138.438 -261.036 244.435 -41.0359 244.435 70.214C244.435 181.464 154.25 271.65 42.9996 271.65C-68.2502 271.65 -158.436 181.464 -158.436 70.214C-158.436 -41.0359 -52.4385 -1.40715 42.9996 -131.222Z"
-      fill="#6c2835" />
-  </svg>
-  <svg class="overlay" xmlns="http://www.w3.org/2000/svg" width="296" height="331" viewBox="0 0 296 331" fill="none">
-    <path
-      d="M201.008 266.33C161.149 422.443 -19.5441 258.17 -61.2191 155.021C-102.894 51.8718 -53.0593 -65.5313 50.0897 -107.206C153.239 -148.881 237.498 -79.7022 282.998 11.2978C328.498 102.298 240.867 110.216 201.008 266.33Z"
-      fill="rgba(108, 40, 53, 0.2)" />
-  </svg>
-  
+
+
   <ion-button class="back-button" (click)="onBack()">
     <ion-icon name="arrow-back-outline"></ion-icon>
   </ion-button>
 
-  <svg class="overlay-2" xmlns="http://www.w3.org/2000/svg" width="69" height="138" viewBox="0 0 69 138" fill="none">
-    <path
-      d="M44.1319 131.879C-3.66682 159.118 -6.17693 75.772 9.27349 41.0698C24.7239 6.36764 65.3806 -9.23903 100.083 6.21139C134.785 21.6618 150.392 62.3185 134.941 97.0207C119.491 131.723 91.9307 104.641 44.1319 131.879Z"
-      fill="#6c2835" />
-  </svg>
-  <img class="logo" src="assets/images/alanam-logo-dark.png" alt="logo" class="logo" />
-
-  <div class="button-container">
-    <ion-button class="continue-as-guest" (click)="navigateToShipping()">{{'Continue as Guest'| translate}}</ion-button>
-    <ion-button class="login-as-user" (click)="navigateToLogin()">{{'Login as User' | translate}}</ion-button>
+  <div class="phone-container">
+    <div class="logo-container">
+      <img class="logo" src="assets/images/alanam-logo-dark.png" alt="logo" class="logo" />
+    </div>
+    <div class="button-container">
+      <ion-button class="continue-as-guest" (click)="navigateToShipping()">{{'Continue as Guest'|
+        translate}}</ion-button>
+      <ion-button class="login-as-user" (click)="navigateToLogin()">{{'Login as User' | translate}}</ion-button>
+    </div>
   </div>
-
-  <svg class="overlay-3" xmlns="http://www.w3.org/2000/svg" width="236" height="310" viewBox="0 0 236 310" fill="none">
-    <path d="M393.592 235.646C487.561 366.528 245.573 399.354 139.768 364.976C33.9634 330.598 -23.9395 216.957 10.4386 111.152C44.8167 5.34728 151.971 -14.7313 250.928 8.90735C349.885 32.546 299.623 104.764 393.592 235.646Z" fill="rgba(108, 40, 53, 0.2)"/>
-  </svg>
 </ion-content>

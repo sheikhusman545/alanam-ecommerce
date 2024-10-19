@@ -51,10 +51,8 @@ export class LoginPage implements OnInit {
       const formData = new FormData();
       formData.append('username', phoneNumber);
       this.http.post('ecom/generateotp', formData).subscribe((response) => {
-        console.log(response);
-      }); // Adjust the URL
-      console.log('Sending OTP to:', phoneNumber);
-      this.showOtpModal = true; // Show OTP modal after sending OTP
+      }); 
+      this.showOtpModal = true; 
     }
   }
 
@@ -76,31 +74,19 @@ export class LoginPage implements OnInit {
       formData.append('otp', otp);
       formData.append('devicetype', 'app-anrdoid');
       this.http.post('ecom/login', formData).subscribe((response) => {
-        console.log(response);
         if (response.respondStatus == 'SUCCESS') {
           this.userDetails = response.requestedData.userDetails;
           this.jwtToken = response.requestedData.JWT_Token;
           localStorage.setItem("userDetails", JSON.stringify(this.userDetails));
           localStorage.setItem("JWT_Token", this.jwtToken);
           this.router.navigate(['/tabs/home']);
-          console.log('User logged in:', this.userDetails);
-          console.log('JWT Token:', this.jwtToken);
         } else {
           this.toastMessage('Invalid OTP');
         }
-
-
-      }); // Adjust the URL
-      const userDetails = localStorage.getItem('userDetails');
-      if (userDetails) {
-        console.log(JSON.parse(userDetails));
-      } else {
-        console.log('No user details found in localStorage');
-      }
+      }); 
     }
   }
 
-  // Close modal when clicking outside the OTP box
   closeModal(event: any) {
     this.showOtpModal = false;
   }
@@ -112,8 +98,8 @@ export class LoginPage implements OnInit {
     const toast = await this.toastController.create({
       message: 'OTP is invalid',
       duration: 2000,
-      position: 'top', // You can change this to 'top' or 'middle'
-      color: 'light', // Customize the toast color if needed
+      position: 'top',
+      color: 'light', 
     });
 
     await toast.present();

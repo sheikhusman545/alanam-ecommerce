@@ -1,23 +1,8 @@
-.overlay {
-  position: absolute;
-  z-index: -1;
-  top: 0;
-  left: 0;
+.ion-page{
+  --background:transparent;
+  background: transparent;
+  background-image: none;
 }
-
-.overlay-2 {
-  position: absolute;
-  top: 20%;
-  right: 0;
-}
-
-.overlay-3 {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  z-index: -1;
-}
-
 .login-type {
   display: flex;
   flex-direction: column;
@@ -31,7 +16,7 @@
   flex-direction: column;
   justify-content: center;
   gap: 50px;
-  margin: 40px;
+  margin: 20px;
 }
 
 .continue-as-guest,
@@ -50,9 +35,56 @@
   font-weight: bolder;
   font-size: 16px;
 }
+.phone-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  text-align: center;
+  padding: 10px 10px;
+  height: 97vh;
+  --ion-item-background: none;
+  color:white;
+}
 
+.logo-container {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
 .logo {
-  position: absolute;
-  top: 20px;
-  right: 20px;
+  width: 120px;
+}
+
+ion-content {
+  position: relative;
+  --background: none;
+
+  /* Background image */
+  &::before {
+    content: '';
+    background-image: url('/assets/images/truck2.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Keep it behind the content */
+  }
+
+  /* Light overlay */
+  &::after {
+    content: '';
+    background-color: rgba(255, 255, 255, 0.8); /* White overlay with 50% opacity */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
 }

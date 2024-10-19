@@ -23,7 +23,6 @@ export class SplashPage implements OnInit {
     try {
       await this.audio.play();
     } catch (error) {
-      console.log('Audio playback failed:', error);
     }
     setTimeout(() => {
 

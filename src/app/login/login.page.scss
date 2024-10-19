@@ -1,6 +1,12 @@
-.login{
+.ion-page{
+    --background:transparent;
+    background: transparent;
+    background-image: none;
+}
+.login {
     height: 100vh;
 }
+
 .phone-container {
     display: flex;
     flex-direction: column;
@@ -8,6 +14,8 @@
     width: 100%;
     text-align: center;
     padding: 10px 10px;
+    height: 97vh;
+    --ion-item-background: none;
 }
 
 .phone-container h2 {
@@ -18,19 +26,20 @@
     font-weight: 700;
     line-height: normal;
     letter-spacing: -0.52px;
-    margin-top: 50px;
 }
-
+.item-native{
+    --background: none !important;
+    --background-color:none;
+}
 .phone-title {
     font-size: 1.5rem;
     font-weight: bold;
     margin-bottom: 20px;
-    color: #333;
 }
 
 .phone-container ion-input {
     margin-top: 40px;
-    margin-bottom: 40px; 
+    margin-bottom: 40px;
 }
 
 ion-item {
@@ -138,7 +147,8 @@ ion-input {
     top: 20%;
     right: 0;
 }
-.overlay-3{
+
+.overlay-3 {
     position: absolute;
     right: 0;
     bottom: 0;
@@ -149,7 +159,8 @@ ion-input {
     width: 100%;
     height: 70px;
 }
-.back-button{
+
+.back-button {
     position: absolute;
     top: 20px;
     left: 30px;
@@ -159,8 +170,46 @@ ion-input {
     font-weight: bolder;
     font-size: 16px;
 }
-.logo{
-    position: absolute;
-    right: 20px;
-    top:20px;
+.logo-image{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
 }
+.logo {
+    width: 120px;
+    display: flex;
+    align-items: center;
+}
+ion-content {
+    position: relative;
+    --background: none;
+  
+    /* Background image */
+    &::before {
+      content: '';
+      background-image: url('/assets/images/truck2.jpeg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1; /* Keep it behind the content */
+    }
+  
+    /* Light overlay */
+    &::after {
+      content: '';
+      background-color: rgba(255, 255, 255, 0.8); /* White overlay with 50% opacity */
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+  }
+  

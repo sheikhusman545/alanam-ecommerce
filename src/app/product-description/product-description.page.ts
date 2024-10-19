@@ -60,8 +60,6 @@ export class ProductDescriptionPage implements OnInit {
       (response) => {
         this.productData = response.requestedData.Product[0];
         this.attributes = response.requestedData.Attributes;
-        console.log(this.productData);
-        console.log(this.attributes);
         this.quantity = this.productData.minQuantity;
         this.loading.dismiss(); 
       },
@@ -124,7 +122,6 @@ export class ProductDescriptionPage implements OnInit {
   }
 
   onOrder(booking: string) {
-    console.log(booking);
     if (booking === 'booking') {
       const totalPrice = this.quantity * this.productData.productPrice;
       const orderData = {
@@ -139,7 +136,6 @@ export class ProductDescriptionPage implements OnInit {
         atributeID: this.attr_id || '',
         atributeItemID: this.attrubite_item_id || '',
       };
-      console.log('orderData', orderData);
 
       this.bookingCartService.addBooking(orderData);
       this.isAuthenticated();

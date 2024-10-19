@@ -58,10 +58,8 @@ export class UserProfilePage implements OnInit {
       });
   
       return this.http.post('ecom/myaccount/updateprofile', formData, { headers }).subscribe((response) => {
-        console.log(response);
       });
     } else {
-      console.log('Form is not valid');
     }
   }
   navigateToOrders() {

@@ -19,7 +19,6 @@ export class OrdersPage implements OnInit {
 
   getOrders() {
     this.ordersService.getOrders().subscribe((data:any) => {
-      console.log('Orders: ', data);
       this.orders = data.requestedData.Orders;
     });
   }

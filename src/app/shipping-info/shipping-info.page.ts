@@ -66,7 +66,6 @@ export class ShippingInfoPage implements OnInit {
     this.cartSubscription = this.bookingCartService.bookingCart$.subscribe(
       (cart) => {
         this.bookingCart = cart;
-        console.log('Cart updated:', this.bookingCart);
       }
     );
 
@@ -137,7 +136,6 @@ export class ShippingInfoPage implements OnInit {
         async (response) => {
           await loading.dismiss(); // Dismiss the loader on response
           if (response.respondStatus === 'SUCCESS') { // Use '===' for strict comparison
-            console.log('Order submitted successfully:', response);
             this.presentSuccessAlert(response.successMessages.bookNo);
             this.bookingCartService.clearCart();
           }
@@ -149,7 +147,6 @@ export class ShippingInfoPage implements OnInit {
       );
     } else {
       this.orderForm.markAllAsTouched();
-      console.log('Form is invalid');
     }
   }
 
