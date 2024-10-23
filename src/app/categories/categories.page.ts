@@ -119,8 +119,9 @@ export class CategoriesPage implements OnInit {
     this.navCtrl.back();
   }
 
-  onCart() {
-    this.router.navigate(['cart']);
+  navigateToCart() {
+    console.log('Navigating to cart');  
+    this.router.navigate(['/tabs/cart']);
   }
   
   onOrder() {

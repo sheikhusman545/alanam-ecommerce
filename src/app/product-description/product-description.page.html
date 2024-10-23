@@ -72,7 +72,7 @@
           </ion-button>
 
           <ion-button [disabled]="!isAttributeSelected() || quantity == 0"
-            *ngIf="attributes.length > 0 && productData.type != 'Booking'" class="content_button"
+            *ngIf="productData.type != 'Booking'" class="content_button"
             (click)="onOrder('cart')" expand="block">
             <ion-icon name="cart-outline"></ion-icon>
             {{'Add to Cart' | translate}} 

@@ -6,7 +6,6 @@ import { SearchProductPageRoutingModule } from './search-product-routing.module'
 import { SearchProductPage } from './search-product.page';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-
 @NgModule({
   imports: [
     CommonModule,

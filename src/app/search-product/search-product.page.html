@@ -5,8 +5,8 @@
         <ion-icon name="arrow-back-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>Categories</ion-title>
-    <ion-buttons slot="end">
+    <ion-title>{{'Search' | translate}}</ion-title>
+    <ion-buttons slot="end" (click)="navigateToCart()">
       <ion-button>
         <ion-icon name="cart-outline"></ion-icon>
         <ion-badge *ngIf="cartCount > 0">{{ cartCount }}</ion-badge>
@@ -35,60 +35,42 @@
           <ion-avatar slot="start">
             <img [src]="'assets/images/all-2.png'" />
           </ion-avatar>
-          <ion-label style="color:black">{{ 'All' | translate}}</ion-label>
+          <ion-label class="cat-label">{{ 'All' | translate}}</ion-label>
         </div>
         <div class="categories" *ngFor="let category of categories" (click)="onCategoryClick(category)">
           <ion-avatar slot="start">
             <img [src]="'https://shopapi.alanaam.qa/' + category.categoryUrl" />
           </ion-avatar>
-          <ion-label style="color:black">{{ currentLanguage === 'ar' ? category.ar_CategoryName :
+          <ion-label  class="cat-label">{{ currentLanguage === 'ar' ? category.ar_CategoryName :
             category.en_CategoryName
             | uppercase}}</ion-label>
         </div>
       </ion-list>
     </div>
 
-    <!-- Scrollable Products Section -->
-    <!-- <div class="products-section">
-      <ion-grid>
-        <ion-row>
-          <ion-col size="6" *ngFor="let product of products">
-            <ion-card>
-              <img [src]="'https://shopapi.alanaam.qa/' + product.mainImageUrl" alt="{{ product.en_ProductName }}" />
-              <ion-card-header>
-                <ion-card-title>{{ currentLanguage === 'ar' ? product.ar_ProductName : product.en_ProductName }}</ion-card-title>
-              </ion-card-header>
-              <ion-card-content>
-                <p>QAR  {{ product.productPrice }}</p>
-                <ion-button color="primary" fill="outline" size="small">+</ion-button>
-              </ion-card-content>
-            </ion-card>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </div> -->
     <div class="products-section">
       <ion-grid>
 
         <ion-row>
           <ion-col size="12">
+            <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="onSearch()"></ion-searchbar>
+          </ion-col>
+          <ion-col size="12">
             <ion-item class="sub-category-item" *ngFor="let sub of subCategory" (click)="onCategoryClick(sub)">
               <ion-row>
                 <ion-img [src]="'https://shopapi.alanaam.qa/' + sub.categoryUrl"
                   alt="{{ sub.en_CategoryName  }}"></ion-img>
-                <p>{{ sub.en_CategoryName | uppercase }}</p>
+                <p>{{ currentLanguage === 'ar' ? sub.ar_CategoryName : sub.en_CategoryName
+                  | uppercase}}</p>
               </ion-row>
             </ion-item>
           </ion-col>
           <ion-col class="product-col" size="6" *ngFor="let product of products"
             (click)="navigateToProduct(product.productID)">
             <ion-card>
-              <!-- Image at the top with fixed size -->
               <div class="image-container">
                 <img [src]="'https://shopapi.alanaam.qa/' + product.mainImageUrl" alt="{{ product.en_ProductName }}" />
               </div>
-
-              <!-- Card content with product details -->
               <ion-card-content>
                 <h2 class="product-name">{{ currentLanguage === 'ar' ? product.ar_ProductName : product.en_ProductName
                   }}</h2>
@@ -97,6 +79,9 @@
                   size="small">+</ion-button>
               </ion-card-content>
             </ion-card>
+          </ion-col>
+          <ion-col size="12" *ngIf="products.length  < 1">
+            <ion-label class="no-products">{{'No Products Found' | translate}}</ion-label>
           </ion-col>
         </ion-row>
       </ion-grid>

@@ -85,7 +85,7 @@
     "1 X 530 QAR" : "1 × 530 ريال قطري",
     "Material(s)" : "المادة (المواد)" ,
     "Featured Products" : "المنتجات المميزة",
-    "Alanaam Factory For Animals Production": "مصنع الأنعام لإنتاج الحيوانات",
+    "Alanaam Factory For Animals Production": "مصنع الأنعام للإنتاج الحيواني",
     "Bu Fass, Doha-QATAR": "بوفاس، الدوحة-قطر",
     "Categories" : "الفئات",
     "All" : "الكل",
@@ -133,6 +133,8 @@
     "Phone Number must be at least 8 digits." : "يجب أن يكون رقم الهاتف مكونًا من 8 أرقام على الأقل.",
     "Email is required." : "البريد الإلكتروني مطلوب.",
     "Invalid email format." : "تنسيق البريد الإلكتروني غير صحيح.",
-    "Customer Name is required and must be atleast 3 character long ." : "اسم العميل مطلوب ويجب أن يكون طوله 3 أحرف على الأقل."
+    "Customer Name is required and must be atleast 3 character long ." : "اسم العميل مطلوب ويجب أن يكون طوله 3 أحرف على الأقل.",
+    "No Products Found" : "لم يتم العثور على منتجات",
+    "Search" : "بحث"
 
 }

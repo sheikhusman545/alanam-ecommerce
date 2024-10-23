@@ -33,6 +33,7 @@ export class Homepage2Page implements OnInit {
     slidesPerView: 1,
     slidesPerGroup: 1,
   };
+  searchTerm: any;
 
   constructor(
     private router: Router,
@@ -49,6 +50,18 @@ export class Homepage2Page implements OnInit {
   async ngOnInit() {
     this.cartService.cartItemCount$.subscribe((count) => (this.cartCount = count));
     await this.loadDataWithLoader();
+  }
+
+  onSearch(event: any) {
+    const inputValue = event.target.value;
+
+    // Check if search term is longer than 3 characters
+    if (inputValue.length > 2) {
+      // Navigate to search page with the search term
+      this.router.navigate(['/search-product'], {
+        queryParams: { term: inputValue }
+      });
+    }
   }
 
   async loadDataWithLoader() {

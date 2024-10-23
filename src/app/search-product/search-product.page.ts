@@ -3,10 +3,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CategoriesService } from '../services/categories.service';
 import { ProductsService } from '../services/products.service';
 import { HttpClient } from '@angular/common/http';
-import { LoadingController, NavController } from '@ionic/angular';
-import Swiper from 'swiper';
+import { NavController, LoadingController } from '@ionic/angular';
 import { CartService } from '../services/cart.service';
+import Swiper from 'swiper';
 import { LanguageService } from '../services/language.service';
+
 @Component({
   selector: 'app-search-product',
   templateUrl: './search-product.page.html',
@@ -23,6 +24,8 @@ export class SearchProductPage implements OnInit {
   @ViewChild('swiper') swiperRef: ElementRef | undefined;
   swiper?: Swiper;
   currentLanguage: string | 'en' | undefined;
+  searchTerm: any;
+  filteredProducts?: any[];
 
   constructor(
     private http: HttpClient,
@@ -32,31 +35,48 @@ export class SearchProductPage implements OnInit {
     private navCtrl: NavController,
     private cartService: CartService,
     private loadingController: LoadingController,
-    private languageService: LanguageService
-  ) {}
+    private languageService: LanguageService,
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit() {
+    
     this.currentLanguage = this.languageService.getCurrentLanguage();
     this.cartService.cartItemCount$.subscribe((count) => (this.cartCount = count));
     this.loadCategories();
     this.loadAllProducts();
+    this.route.queryParams.subscribe(params => {
+      this.searchTerm = params['term'] || '';
+      this.onSearch();
+    });
+  }
+
+  onSearch() {
+    if (this.searchTerm.length >= 3) {
+      let searchTerm = this.searchTerm.toLowerCase();
+       this.productsService.getSearchedProducts(searchTerm).subscribe((data: any) => { 
+        this.products = data.requestedData.Products;
+      });
+    } else {
+      this.products = this.allProducts;
+    }
   }
 
   async loadCategories() {
     const loader = await this.loadingController.create({
       message: 'Loading categories...',
     });
-    await loader.present(); 
+    await loader.present();
 
     this.categoriesService.getCategories().subscribe({
       next: (data: any) => {
-        this.categories = data.requestedData.Categories; 
+        this.categories = data.requestedData.Categories;
       },
       error: (error) => {
         console.error('Error loading categories:', error);
       },
       complete: () => {
-        loader.dismiss(); 
+        loader.dismiss();
       },
     });
   }
@@ -65,18 +85,18 @@ export class SearchProductPage implements OnInit {
     const loader = await this.loadingController.create({
       message: 'Loading products...',
     });
-    await loader.present(); 
+    await loader.present();
 
     this.productsService.getAllProducts().subscribe({
       next: (data: any) => {
-        this.allProducts = data.requestedData.Products; 
+        this.allProducts = data.requestedData.Products;
         this.products = this.allProducts;
       },
       error: (error) => {
         console.error('Error loading products:', error);
       },
       complete: () => {
-        loader.dismiss(); 
+        loader.dismiss();
       },
     });
   }
@@ -85,16 +105,16 @@ export class SearchProductPage implements OnInit {
     const loader = await this.loadingController.create({
       message: 'Loading products for category...',
     });
-    await loader.present(); 
+    await loader.present();
     this.productsService.getProductsByCategory(categoryId).subscribe({
       next: (data: any) => {
-        this.products = data.requestedData.Products; 
+        this.products = data.requestedData.Products;
       },
       error: (error) => {
         console.error('Error loading products by category:', error);
       },
       complete: () => {
-        loader.dismiss(); 
+        loader.dismiss();
       },
     });
   }
@@ -120,10 +140,10 @@ export class SearchProductPage implements OnInit {
     this.navCtrl.back();
   }
 
-  onCart() {
-    this.router.navigate(['cart']);
+  navigateToCart() {
+    this.router.navigate(['/tabs/cart']);
   }
-  
+
   onOrder() {
     this.router.navigate(['checkout']);
   }
