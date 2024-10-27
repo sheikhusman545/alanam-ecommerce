@@ -70,6 +70,10 @@ const routes: Routes = [
     path: 'guest',
     loadChildren: () => import('./guest/guest.module').then( m => m.GuestPageModule)
   },
+  // {
+  //   path: 'tabs/settings',
+  //   loadChildren: () => import('./settings/settings.module').then( m => m.SettingsPageModule)
+  // },
  
 
 ];

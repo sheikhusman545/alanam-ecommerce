@@ -135,6 +135,12 @@
     "Invalid email format." : "تنسيق البريد الإلكتروني غير صحيح.",
     "Customer Name is required and must be atleast 3 character long ." : "اسم العميل مطلوب ويجب أن يكون طوله 3 أحرف على الأقل.",
     "No Products Found" : "لم يتم العثور على منتجات",
-    "Search" : "بحث"
+    "Search" : "بحث",
+    "Privacy Policy" : "سياسة الخصوصية",
+    "Terms & Conditions" : "البنود و الظروف",
+    "Refund Policy" : "سياسة الاسترداد",
+    "FAQ" : "الأسئلة الشائعة",
+    "Language" : "اللغة",
+    "Settings" : "الإعدادات"
 
 }
