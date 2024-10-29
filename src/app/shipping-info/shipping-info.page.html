@@ -141,7 +141,7 @@
       <!-- City -->
       <ion-item>
         <ion-label position="floating">{{'City' | translate}}</ion-label>
-        <ion-input formControlName="city"></ion-input>
+        <ion-input #cityInput formControlName="city"></ion-input>
       </ion-item>
       <ion-note *ngIf="orderForm.get('city')?.touched && orderForm.get('city')?.invalid" color="danger">
         City is required.

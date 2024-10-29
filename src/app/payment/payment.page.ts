@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild ,NgZone} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CartItem } from '../services/cart.service';
 import { Subscription } from 'rxjs';
@@ -11,7 +11,11 @@ import { CartService } from '../services/cart.service';
 import { DatePipe } from '@angular/common';
 import { Browser } from '@capacitor/browser';
 import Swiper from 'swiper';
-import {LanguageService} from '../services/language.service';
+import { IonInput } from '@ionic/angular';
+
+import { LanguageService } from '../services/language.service';
+declare var google: any;
+
 @Component({
   selector: 'app-payment',
   templateUrl: './payment.page.html',
@@ -32,6 +36,10 @@ export class PaymentPage implements OnInit {
   @ViewChild('swiper') swiperRef: ElementRef | undefined;
   swiper?: Swiper;
   currentLanguage: string | 'en' | undefined;
+  selectedLocation: { lat: number; lng: number } | null = null;
+  @ViewChild('cityInput', { static: false }) cityInput!: IonInput;
+
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -44,7 +52,8 @@ export class PaymentPage implements OnInit {
     private cartService: CartService,
     private datePipe: DatePipe,
     private loadingController: LoadingController,
-    private lan: LanguageService
+    private lan: LanguageService,
+    private ngZone: NgZone,
   ) {
     const now = new Date();
     this.formattedDate = this.datePipe.transform(now, 'dd-MM-yyyy EEE') as string;
@@ -153,7 +162,7 @@ export class PaymentPage implements OnInit {
           let link = response.successMessages.redirectionURL;
           this.cartService.clearCart();
           await Browser.open({ url: link });
-          this.presentSuccessAlert("You are redirecting to payment gateway. Please make payment.");
+          this.presentSuccessAlert("You are redirecting to payment gateway once you approved you will get an email from us. Please make payment.");
           this.router.navigate(['/tabs/home']);
         } else {
           console.error('Error submitting order', response);
@@ -167,6 +176,8 @@ export class PaymentPage implements OnInit {
       this.orderForm.markAllAsTouched();
     }
   }
+
+  
 
   ngOnDestroy() {
     if (this.cartSubscription) {
@@ -215,5 +226,29 @@ export class PaymentPage implements OnInit {
       spinner: 'crescent'
     });
     await loading.present();
+  }
+
+  ngAfterViewInit() {
+    this.initAutocomplete();
+  }
+
+  async initAutocomplete() {
+    const inputElement = await this.cityInput.getInputElement();
+    const options = {
+      types: ['(cities)'],
+      componentRestrictions: { country: 'QA' }, // Restrict to Qatar
+    };
+
+    const autocomplete = new google.maps.places.Autocomplete(inputElement, options);
+
+    autocomplete.addListener('place_changed', () => {
+      this.ngZone.run(() => {
+        const place = autocomplete.getPlace();
+
+        if (place.geometry && place.geometry.location) {
+          this.orderForm.get('city')?.setValue(place.formatted_address);
+        }
+      });
+    });
   }
 }

@@ -41,7 +41,7 @@
           <ion-avatar slot="start">
             <img [src]="'https://shopapi.alanaam.qa/' + category.categoryUrl" />
           </ion-avatar>
-          <ion-label  class="cat-label">{{ currentLanguage === 'ar' ? category.ar_CategoryName :
+          <ion-label class="cat-label">{{ currentLanguage === 'ar' ? category.ar_CategoryName :
             category.en_CategoryName
             | uppercase}}</ion-label>
         </div>
@@ -53,14 +53,19 @@
 
         <ion-row>
           <ion-col size="12">
-            <ion-item class="sub-category-item" *ngFor="let sub of subCategory" (click)="onCategoryClick(sub)">
-              <ion-row>
-                <ion-img [src]="'https://shopapi.alanaam.qa/' + sub.categoryUrl"
-                  alt="{{ sub.en_CategoryName  }}"></ion-img>
-                <p>{{ currentLanguage === 'ar' ? sub.ar_CategoryName : sub.en_CategoryName
-                  | uppercase}}</p>
-              </ion-row>
-            </ion-item>
+            <ion-row class="sub-category-item" *ngFor="let sub of subCategory" (click)="onCategoryClick(sub)">
+              <ion-col size="6" >
+                <ion-item >
+                  <ion-row>
+                    <ion-img [src]="'https://shopapi.alanaam.qa/' + sub.categoryUrl"
+                      alt="{{ sub.en_CategoryName  }}"></ion-img>
+                    <p>{{ currentLanguage === 'ar' ? sub.ar_CategoryName : sub.en_CategoryName
+                      | uppercase}}</p>
+                  </ion-row>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+            
           </ion-col>
           <ion-col class="product-col" size="6" *ngFor="let product of products"
             (click)="navigateToProduct(product.productID)">

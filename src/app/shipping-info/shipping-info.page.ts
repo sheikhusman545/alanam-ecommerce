@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BookingCartService } from '../services/booking-cart.service';
 import { Subscription } from 'rxjs';
@@ -9,6 +9,9 @@ import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import Swiper from 'swiper';
 import { LanguageService } from '../services/language.service';
+import { IonInput } from '@ionic/angular';
+declare var google: any;
+
 @Component({
   selector: 'app-shipping-info',
   templateUrl: './shipping-info.page.html',
@@ -26,6 +29,8 @@ export class ShippingInfoPage implements OnInit {
   currentLanguage: string | 'en' | undefined;
   okButtonText: string = 'OK';
   cancelButtonText: string = 'Cancel';
+  selectedLocation: { lat: number; lng: number } | null = null;
+  @ViewChild('cityInput', { static: false }) cityInput!: IonInput;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -37,7 +42,8 @@ export class ShippingInfoPage implements OnInit {
     private router: Router,
     private toastController: ToastController,
     private loadingController: LoadingController,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private ngZone: NgZone,
   ) {
     this.orderForm = this.formBuilder.group({
       customerName: ['', Validators.required],
@@ -77,7 +83,7 @@ export class ShippingInfoPage implements OnInit {
           phoneNo: userDetails.customerMobile || ''
         });
       } else {
-        
+
       }
       await loading.dismiss(); // Dismiss the loader when data is loaded
     });
@@ -186,4 +192,29 @@ export class ShippingInfoPage implements OnInit {
 
     await toast.present();
   }
+  ngAfterViewInit() {
+    this.initAutocomplete();
+  }
+
+  async initAutocomplete() {
+    const inputElement = await this.cityInput.getInputElement();
+    const options = {
+      types: ['(cities)'],
+      componentRestrictions: { country: 'QA' }, // Restrict to Qatar
+    };
+
+    const autocomplete = new google.maps.places.Autocomplete(inputElement, options);
+
+    autocomplete.addListener('place_changed', () => {
+      this.ngZone.run(() => {
+        const place = autocomplete.getPlace();
+
+        if (place.geometry && place.geometry.location) {
+          this.orderForm.get('city')?.setValue(place.formatted_address);
+        }
+      });
+    });
+  }
 }
+
+
