@@ -5,3 +5,21 @@
 h2{
     padding: 0 18px;
 }
+.whatsapp-logo{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: 10px;
+    border-radius: 50%;
+}
+.whatsapp-logo ion-icon {
+    font-size: 40px;
+    padding: 10px;
+    border-radius: 50%;
+}
+ion-item ion-icon{
+    color:black;
+}
+ion-item.item.ios.item-lines-default.in-list.ion-activatable.ion-focusable.hydrated.item-label {
+    color: black;
+}

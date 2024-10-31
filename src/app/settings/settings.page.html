@@ -10,22 +10,22 @@
 <ion-content>
   <h2>{{'Settings' | translate}}</h2>
   <ion-list>
-    
+
     <ion-item class="translate">
       <ion-label>{{'Language' | translate}}</ion-label>
       <ion-label class="language" (click)="openPopover($event)">
-      {{"English|العربية"}}
-     </ion-label>
+        {{"English|العربية"}}
+      </ion-label>
     </ion-item>
-    <ion-item href="https://alanaam.qa/privacy-policy">
+    <ion-item href="https://alanaam.qa/privacy_policy">
       <ion-label>{{'Privacy Policy' | translate}}</ion-label>
     </ion-item>
 
-    <ion-item href="https://alanaam.qa/privacy-policy">
+    <ion-item href="https://alanaam.qa/faq">
       <ion-label>{{'FAQ' | translate}}</ion-label>
     </ion-item>
 
-    <ion-item href="https://alanaam.qa/refund-policy">
+    <ion-item href="https://alanaam.qa/return_policy">
       <ion-label>{{'Refund Policy' | translate}}</ion-label>
     </ion-item>
 
@@ -36,6 +36,11 @@
     <ion-item href="https://www.instagram.com/alanaam_factory/">
       <ion-label>{{'Instagram' | translate}}</ion-label>
     </ion-item>
-
   </ion-list>
+
+  <ion-button class="whatsapp-logo" expand="block" color="success" (click)="openWhatsApp()">
+    <ion-icon name="logo-whatsapp" slot=""></ion-icon>
+  </ion-button>
+
+  
 </ion-content>

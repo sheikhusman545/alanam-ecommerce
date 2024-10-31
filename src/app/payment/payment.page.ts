@@ -235,7 +235,7 @@ export class PaymentPage implements OnInit {
   async initAutocomplete() {
     const inputElement = await this.cityInput.getInputElement();
     const options = {
-      types: ['(cities)'],
+      // types: ['(cities)'],
       componentRestrictions: { country: 'QA' }, // Restrict to Qatar
     };
 

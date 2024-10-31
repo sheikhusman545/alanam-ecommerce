@@ -46,4 +46,7 @@ export class SettingsPage implements OnInit {
   ngOnInit() {
   }
 
+  openWhatsApp() {
+    window.open('https://wa.me/97450375555', '_blank');
+  }
 }
