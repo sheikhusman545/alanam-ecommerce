@@ -88,6 +88,8 @@ export class LoginPage implements OnInit {
   }
 
   closeModal(event: any) {
+    //clear all form value in otp form
+    this.otpForm.reset();
     this.showOtpModal = false;
   }
   onBack() {

@@ -3,10 +3,16 @@
     --ion-text-color: darkred !important;
 }
 ion-header{
-    height: 80px;
     display: flex;
     align-items: center;
 }
 .mt-5{
     margin-top: 30px;
+}
+.delete-account{
+    position: absolute;
+    bottom: 100px;
+    left: 5%;
+    width: 90%;
+    text-align: center;
 }

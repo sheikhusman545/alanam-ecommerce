@@ -32,6 +32,7 @@ export class CartPage implements OnInit, OnDestroy {
     this.cartSubscription = this.cartService.cart$.subscribe((items) => {
       this.cartItems = items;
       this.calculateTotal();
+      console.log(this.cartItems.length);
 
     });
       this.cartCount.subscribe((count: any) => {

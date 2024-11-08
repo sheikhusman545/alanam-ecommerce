@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.usman.alanam',
-  appName: 'Alanaam',
+  appId: 'com.shop.alanaam',
+  appName: 'AL ANAAM',
   webDir: 'www',
   plugins: {
     SplashScreen: {

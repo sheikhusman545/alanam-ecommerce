@@ -199,7 +199,6 @@ export class ShippingInfoPage implements OnInit {
   async initAutocomplete() {
     const inputElement = await this.cityInput.getInputElement();
     const options = {
-      // types: ['(cities)'],
       componentRestrictions: { country: 'QA' }, // Restrict to Qatar
     };
 

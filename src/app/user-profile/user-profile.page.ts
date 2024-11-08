@@ -6,6 +6,8 @@ import { HttpClientService } from '../services/http.service';
 import { Router } from '@angular/router';
 import { LanguageService } from '../services/language.service';
 import { CartService } from '../services/cart.service';
+import { ToastController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-user-profile',
@@ -16,7 +18,8 @@ export class UserProfilePage implements OnInit {
   userForm!: FormGroup;
   currentLanguage: string | 'en' | undefined;
   count = 0;
-  private token :any = localStorage.getItem('JWT_Token');  // Retrieve token from localStorage
+   ID: any = '';
+  private token: any = localStorage.getItem('JWT_Token');  // Retrieve token from localStorage
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -24,6 +27,8 @@ export class UserProfilePage implements OnInit {
     private router: Router,
     private languageService: LanguageService,
     private cart: CartService,
+    private toastController: ToastController,
+    private alertController: AlertController
   ) { }
 
   ngOnInit() {
@@ -35,46 +40,130 @@ export class UserProfilePage implements OnInit {
       mobilePhone: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
     });
 
-    this.authService.getUserDetails$().subscribe((userDetails) => {
-      if (userDetails.customerName) {
-        this.userForm.patchValue({
-          fullName: userDetails.customerName || '',
-          email: userDetails.customerEmail || '',
-          mobilePhone: userDetails.customerMobile || ''
-        });
-      }
-    });
+    // this.authService.getUserDetails$().subscribe((userDetails) => {
+    //   if (userDetails.customerID) {
+    //     this.userForm.patchValue({
+    //       fullName: userDetails.customerName || '',
+    //       email: userDetails.customerEmail || '',
+    //       mobilePhone: userDetails.customerMobile || ''
+    //     });
+    //   }
+    // });
+    //user locastorage  data
+    const userDetails = JSON.parse(localStorage.getItem('userDetails')!);
+    if (userDetails) {
+      this.ID = userDetails.customerID || '';
+
+      this.userForm.patchValue({
+        fullName: userDetails.customerName || '',
+        email: userDetails.customerEmail || '',
+        mobilePhone: userDetails.customerMobile || ''
+      });
+    }
+        
   }
 
-  onSubmit() :any {
+  onSubmit(): any {
     if (this.userForm.valid) {
       const formData = new FormData();
       formData.append('customerName', this.userForm.get('fullName')?.value);
       formData.append('customerEmail', this.userForm.get('email')?.value);
-     
+
       const headers = new HttpHeaders({
-        'Authorization': `Bearer ${this.token}`,   
-        'X-Auth-Token': this.token || ''           
+        'Authorization': `Bearer ${this.token}`,
+        'X-Auth-Token': this.token || ''
       });
-  
+
       return this.http.post('ecom/myaccount/updateprofile', formData, { headers }).subscribe((response) => {
+        if (response.respondStatus == "SUCCESS") {
+          const userDetails = JSON.parse(localStorage.getItem('userDetails')!);
+          userDetails.customerName = this.userForm.get('fullName')?.value;
+          userDetails.customerEmail = this.userForm.get('email')?.value;
+          userDetails.customerMobile = this.userForm.get('mobilePhone')?.value;
+          localStorage.setItem('userDetails', JSON.stringify(userDetails));
+          this.toastMessage('Profile updated successfully');
+        } else {
+          this.toastMessage('Failed to update profile');
+        }
+
       });
     } else {
+      this.toastMessage('Form is invalid');
     }
   }
   navigateToOrders() {
     this.router.navigate(['/orders']);
   }
 
-   logout() {
+  logout() {
     this.authService.clearAuthData();
     this.router.navigate(['/tabs/home']);
-   }
-  
+  }
+
   navigateToHome() {
     this.router.navigate(['/tabs/home']);
   }
   navigateToCart() {
     this.router.navigate(['/tabs/cart']);
+  }
+  async toastMessage(msg: string) {
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: 2000,
+      position: 'top',
+      color: 'light',
+    });
+
+    await toast.present();
+  }
+
+  async deleteAccount() {
+    if (!this.ID) {
+      console.error('User ID is undefined; cannot delete account.');
+      return;
+    }
+    const alert = await this.alertController.create({
+      header: 'Confirm Delete',
+      message: 'Are you sure you want to delete this account?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Delete canceled');
+          },
+        },
+        {
+          text: 'Delete',
+          handler: () => {
+            this.confirmDeleteAccount();
+          },
+        },
+      ],
+    });
+  
+    await alert.present();
+  }
+  
+  
+  confirmDeleteAccount() {
+    this.authService.deleteUser(this.ID).subscribe((res) => {
+      if (res.respondStatus == "SUCCESS") {
+        this.authService.clearAuthData();
+        this.presentAlert();
+        this.router.navigate(['/tabs/home']);
+      } else {
+        
+      }
+    });
+  }
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      header: 'Account Deletion',
+      message: 'We regret to see you go. Your account has been deleted.',
+      buttons: ['OK']
+    });
+  
+    await alert.present();
   }
 }

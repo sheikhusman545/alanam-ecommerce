@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { LanguageService } from '../services/language.service';
 import { ModalController, PopoverController } from '@ionic/angular';
 import { LanguagePopoverComponent } from '../components/language-popover/language-popover.component';
+import { AuthService } from '../services/auth.service';
+import { AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-settings',
@@ -10,13 +13,17 @@ import { LanguagePopoverComponent } from '../components/language-popover/languag
 })
 export class SettingsPage implements OnInit {
   currentLanguage: string;
+  ID: any = '';
 
   constructor(
     private languageService: LanguageService,
     private modalController: ModalController,
-    private popoverController: PopoverController
+    private popoverController: PopoverController,
+    private authService: AuthService,
+    private alertController: AlertController,
+    private router: Router
 
-  ) { 
+  ) {
     this.currentLanguage = this.languageService.getCurrentLanguage(); // Get the current language
   }
 
@@ -45,8 +52,11 @@ export class SettingsPage implements OnInit {
 
   ngOnInit() {
   }
+  
 
   openWhatsApp() {
     window.open('https://wa.me/97450375555', '_blank');
   }
+
+  
 }

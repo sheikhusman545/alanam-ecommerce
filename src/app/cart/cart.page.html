@@ -18,7 +18,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-list class="cart-list">
+  <ion-list class="cart-list"  *ngIf="cartItems?.length && cartItems.length > 0">
     <ion-item *ngFor="let item of cartItems" class="cart-item">
       <ion-thumbnail slot="start">
         <img [src]="'https://shopapi.alanaam.qa/' +item.product.mainImageUrl" />
@@ -37,11 +37,14 @@
     </ion-item>
   </ion-list>
 
-  <div class="total-section">
+  <div class="total-section" *ngIf="cartItems?.length && cartItems.length > 0">
     <ion-item>
       <ion-label>{{'Total' | translate}}:</ion-label>
       <ion-note slot="end">QAR {{ totalAmount }}</ion-note>
     </ion-item>
     <ion-button expand="block" color="" (click)="proceedToCheckout()" class="checkout-btn">{{'Proceed to Checkout' | translate}}</ion-button>
+  </div>
+  <div *ngIf="cartItems?.length === 0" class="nothing-cart">
+    <h2>Nothing In The Cart</h2>
   </div>
 </ion-content>
