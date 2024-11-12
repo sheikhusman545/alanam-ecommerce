@@ -2,95 +2,59 @@
   background-color: #6c2835;
   border-bottom-left-radius: 50px;
   border-bottom-right-radius: 50px;
-}
-ion-header {
-  border-bottom-left-radius: 50px;
-  border-bottom-right-radius: 50px;
-  .language{
-    text-decoration: underline; 
+  .language {
+    text-decoration: underline;
     cursor: pointer;
-    font-size: 20px;
+    font-size: 16px;
     color: white;
     font-weight: bolder;
   }
-}
-.logo {
-  width: 64px;
-}
-.custom-search {
-  margin: 0 10px;
-  background-color: #6c2835;
-}
-.searchbar-custom {
-  --background: white;
-  --border-radius: 50px;
-  --color: black;
-  --icon-color: black;
-  padding-left: 10px;
-  background: white;
-  padding: 10px;
-  border-radius: 20px;
-}
-.address-grid {
-  padding-top: 10px;
-  text-align: center;
-}
-.location-text {
-  color: white;
-  font-size: 14px;
-}
-.email-text,.phone-text {
-  color: white;
-  font-size: 14px;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  .logo {
+    width: 64px;
+  }
+  .custom-search,
+  .searchbar-custom,
+  .searchbar-input-container {
+    --background: white;
+    --border-radius: 50px;
+    --color: black;
+    --icon-color: black;
+    background: white;
+    color: black;
+    border-radius: 20px;
+    padding: 0;
+  }
+
+  .location-text,
+  .address-text,
+  .email-text,
+  .phone-text {
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  .address-text {
+    font-size: 18px;
+    align-items: flex-start;
+  }
+
+  .address-grid {
+    padding-top: 10px;
+    text-align: center;
+  }
 }
 
-.address-text {
-  color: white;
-  font-size: 18px;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-}
 ion-icon {
   color: white;
   margin-right: 3px;
 }
-.custom-search {
-  --background: white;
-  --border-radius: 50px;
-  --color: black;
-  --icon-color: black;
-  padding-left: 10px;
-  background: white;
-  border-radius: 20px;
-  padding: 0;
-  margin: 0;
-  color: black;
-}
 
-.searchbar-custom {
-  background-color: white;
-}
-
-.searchbar-input-container {
-  --background: white !important;
-}
-
-.location-text,
-.address-text {
-  color: white;
-  font-size: 14px;
-}
-.location-text{
-  font-weight: bolder;
-  text-transform: uppercase;
-  text-align: center;
-}
 .home-page {
   --ion-background-color: #fff;
 
@@ -135,12 +99,14 @@ ion-icon {
       }
     }
   }
- .swiper-container {
+
+  .swiper-container {
     width: 100%;
     height: auto;
 
   }
- .section-title {
+
+  .section-title {
     font-size: 1.5rem;
     color: #6c2835; // Meat shop theme color
     text-align: center;
@@ -158,6 +124,8 @@ ion-icon {
     display: flex;
     justify-content: center;
     align-items: center;
+    text-align: center;
+    width: 100%;
   }
 }
 
@@ -169,7 +137,7 @@ ion-icon {
 }
 
 .main_content_div .title_lbl {
-  font-size: 22px;
+  font-size: 18px;
   font-family: "semi-bold";
   margin-bottom: 16px;
 }
@@ -184,13 +152,12 @@ ion-icon {
 .main_content_div img {
   border-radius: 100%;
 }
-
-
 .main_content_div ion-label {
   margin-top: 10px;
   text-align: center;
-  font-size: 14px;
+  font-size: 12px;
 }
+
 .main_content_div ion-col {
   margin-bottom: 16px;
   text-align: center;
@@ -251,18 +218,37 @@ h3.product-name {
   margin-top: 10px;
   text-align: center;
   font-size: 14px;
-  font-size: 16px;
   color: gray;
 
 }
+
 .cat-img {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
-.info{
-  display: flex ;
+
+.info {
+  display: flex;
   justify-content: center;
   gap: 20px;
+}
+@media (min-width: 768px) {
+  .categories-section .category-card,
+  .main_content_div ion-img {
+    height: 128px;
+    width: 128px;
+  }
+
+  .section-title,
+  .title_lbl,
+  .product-name {
+    font-size: 1.375rem;
+  }
+
+  .product-price,
+  .cat-label {
+    font-size: 1.125rem;
+  }
 }

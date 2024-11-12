@@ -39,7 +39,8 @@
 <ion-content [fullscreen]="true" class="home-page" class="ion-padding">
 
   <swiper-container rtl="true" dir="rtl" [loop]="true" autoplay="true" [pagination]="{ clickable: true }"
-    [slidesPerView]="1" [slidesPerGroup]="1" [loopFillGroupWithBlank]="true">
+    [slidesPerView]="1" [slidesPerGroup]="1" [loopFillGroupWithBlank]="true" [spaceBetween]=""
+    breakpoints="{&quot;768&quot;:{&quot;slidesPerView&quot;:2},&quot;1024&quot;:{&quot;slidesPerView&quot;:3}}" >
     <swiper-slide swiperSlide>
       <img src="assets/images/1alanam.jpeg" alt="Promo 1">
     </swiper-slide>
@@ -49,6 +50,9 @@
     <swiper-slide swiperSlide>
       <img src="assets/images/3alanam.jpeg" alt="Promo 2">
     </swiper-slide>
+    <swiper-slide swiperSlide>
+      <img src="assets/images/4alanam.jpeg" alt="Promo 2">
+    </swiper-slide>
   </swiper-container>
 
   <div class="main_content_div">
@@ -57,7 +61,7 @@
     <ion-label class="title_lbl">{{'Crafted with care, raised with respect' | translate}}</ion-label>
 
     <ion-row>
-      <ion-col size="4" *ngFor="let category of categories">
+      <ion-col size="4"  *ngFor="let category of categories">
         <div class="cat-img" (click)="navigateToCategory(category.categoryID)">
           <ion-img [src]="'https://shopapi.alanaam.qa/' + category.categoryUrl" alt="{{category.en_CategoryName}}"
             class="category-image"></ion-img>

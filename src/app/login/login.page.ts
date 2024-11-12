@@ -79,7 +79,9 @@ export class LoginPage implements OnInit {
           this.jwtToken = response.requestedData.JWT_Token;
           localStorage.setItem("userDetails", JSON.stringify(this.userDetails));
           localStorage.setItem("JWT_Token", this.jwtToken);
+          this.otpForm.reset();
           this.router.navigate(['/tabs/home']);
+
         } else {
           this.toastMessage('Invalid OTP');
         }

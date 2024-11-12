@@ -20,9 +20,10 @@ export class ProductDescriptionPage implements OnInit {
   attributes: any[] = [];
   productAttributes: any[] = [];
   attr_id: any;
-  loading: any; 
+  loading: any;
   currentLanguage: string = 'en';
   attribute_msg = '';
+  selectedValue: boolean = false;
 
 
 
@@ -61,11 +62,11 @@ export class ProductDescriptionPage implements OnInit {
         this.productData = response.requestedData.Product[0];
         this.attributes = response.requestedData.Attributes;
         this.quantity = this.productData.minQuantity;
-        this.loading.dismiss(); 
+        this.loading.dismiss();
       },
       (error) => {
         console.error('Error fetching product details:', error);
-        this.loading.dismiss(); 
+        this.loading.dismiss();
       }
     );
   }
@@ -89,15 +90,15 @@ export class ProductDescriptionPage implements OnInit {
       }
     });
   }
-  isAttributeSelected(): boolean {
-    return this.attributes.every(attribute => attribute.selectedItem !== null);
+
+  isAllAttributesSelected(): boolean {
+    return this.attributes.length > 0;
   }
-  
+
 
   onAttributeChange(attribute: any, event: any) {
-    if (!event.detail.value) { 
-      this.attribute_msg = 'Please select an attribute';
-      return;
+    if (event.detail.value !== null) {
+      this.selectedValue = true;
     }
     this.attrubite_item_id = event.detail.value.atributeItemID;
     this.attr_id = attribute.atributeID;
@@ -122,6 +123,15 @@ export class ProductDescriptionPage implements OnInit {
   }
 
   onOrder(booking: string) {
+    if (this.isAllAttributesSelected()) {
+      if (this.selectedValue === false) {
+        this.attribute_msg = "Please select an attribute";
+        return
+      }
+      else {
+        this.attribute_msg = '';
+      }
+    }
     if (booking === 'booking') {
       const totalPrice = this.quantity * this.productData.productPrice;
       const orderData = {
@@ -140,24 +150,31 @@ export class ProductDescriptionPage implements OnInit {
       this.bookingCartService.addBooking(orderData);
       this.isAuthenticated();
     } else {
-      const totalPrice = this.quantity * this.productData.productPrice;
-      this.cartService.addProduct({
-        product: this.productData,
-        quantity: this.quantity,
-        totalPrice: totalPrice,
-        price: this.productData.productPrice,
-        cuttingAmount: '',
-        productName: this.productData.en_ProductName,
-        slaughterCharge: this.productData.SlaughterCharge,
-        productAttributes: this.productAttributes,
-        productId: this.productData.productID,
-        atributeID: this.attr_id || '',
-        atributeItemID: this.attrubite_item_id || '',
-      });
+      for (let i = 0; i < this.quantity; i++) {
+        this.addItemToCart();
+      }
+
       this.router.navigate(['/tabs/cart']);
     }
   }
-  
+
+  addItemToCart() {
+    const totalPrice = this.productData.productPrice;
+    this.cartService.addProduct({
+      product: this.productData,
+      quantity: this.quantity,
+      totalPrice: totalPrice,
+      price: this.productData.productPrice,
+      cuttingAmount: '',
+      productName: this.productData.en_ProductName,
+      slaughterCharge: this.productData.SlaughterCharge,
+      productAttributes: this.productAttributes,
+      productId: this.productData.productID,
+      atributeID: this.attr_id || '',
+      atributeItemID: this.attrubite_item_id || '',
+    });
+  }
+
   onBack() {
     this.NavCtrl.back();
   }

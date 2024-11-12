@@ -6,8 +6,6 @@ ion-card {
   ion-item {
     --inner-padding-start: 0;
   }
-
-
   .radio-inner{
     width: 30px;
     height: 30px;
@@ -16,13 +14,13 @@ ion-card {
   }
 
   ion-radio {
-    font-size: 15px;
+    font-size: 14px;
     padding: 5px;
 }
 
 .ion-color-danger{
   padding: 0 10px;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 ion-radio {
@@ -35,8 +33,6 @@ ion-radio {
     background-color: #6c2835 !important;   // Color for the selected icon
   }
 }
-
-/* Adjust the label styling if needed */
 ion-radio-group {
   display: flex;
   flex-direction: column;

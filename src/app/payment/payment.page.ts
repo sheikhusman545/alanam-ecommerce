@@ -1,9 +1,9 @@
-import { Component, ElementRef, OnInit, ViewChild ,NgZone} from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CartItem } from '../services/cart.service';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../services/auth.service';
-import { HttpClientService } from '../services/http.service';  
+import { HttpClientService } from '../services/http.service';
 import { AlertController, NavController, LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
@@ -38,8 +38,8 @@ export class PaymentPage implements OnInit {
   currentLanguage: string | 'en' | undefined;
   selectedLocation: { lat: number; lng: number } | null = null;
   @ViewChild('cityInput', { static: false }) cityInput!: IonInput;
-
-
+  ID: any;
+  apiErrors: { [key: string]: string } = {};
 
   constructor(
     private formBuilder: FormBuilder,
@@ -65,10 +65,10 @@ export class PaymentPage implements OnInit {
       city: ['', Validators.required],
       deliveryMethod: ['selfPickup', Validators.required],
       addressType: ['individual', Validators.required],
+      landMark: ['', Validators.required],
       companyName: [''],
       buildingName_No: ['', Validators.required],
       streetName_No: ['', Validators.required],
-      landMark: ['', Validators.required],
       deliveryTime: ['10AM-12PM', Validators.required],
       zoneNo: ['', Validators.required]
     });
@@ -87,22 +87,8 @@ export class PaymentPage implements OnInit {
       return sum + Number(item.totalPrice) + Number(item.slaughterCharge) * Number(item.quantity);
     }, 0);
 
-    this.authService.getUserDetails$().subscribe((userDetails) => {
-      if (userDetails && userDetails.customerName) {
-        this.orderForm.patchValue({
-          customerName: userDetails.customerName || '',
-          emailID: userDetails.customerEmail || '',
-          phoneNo: userDetails.customerMobile || ''
-        });
-      } else {
-        this.orderForm.patchValue({
-          customerName: '',
-          emailID: '',
-          phoneNo: ''
-        });
-        
-      }
-    });
+    this.checkUserInfo()
+
     this.loadingController.dismiss();
   }
 
@@ -110,6 +96,24 @@ export class PaymentPage implements OnInit {
     this.isCompany = event.detail.value === 'company';
     if (!this.isCompany) {
       this.orderForm.patchValue({ companyName: '' });
+    }
+  }
+  checkUserInfo() {
+    const userDetails = JSON.parse(localStorage.getItem('userDetails')!);
+    if (userDetails) {
+      this.ID = userDetails.customerID || '';
+
+      this.orderForm.patchValue({
+        customerName: userDetails.customerName || '',
+        emailID: userDetails.customerEmail || '',
+        phoneNo: userDetails.customerMobile || ''
+      });
+    } else {
+      this.orderForm.patchValue({
+        customerName: '',
+        emailID: '',
+        phoneNo: ''
+      });
     }
   }
 
@@ -124,12 +128,12 @@ export class PaymentPage implements OnInit {
         formData.append(`products[${index}][SlaughterCharge]`, product.product.SlaughterCharge.toString());
         formData.append(`products[${index}][packingCharge]`, product.product.packingCharge ? product.product.packingCharge : '0');
         formData.append(`products[${index}][productQuantity]`, product.quantity.toString());
-        let amount = 
-          Number(product.totalPrice) + 
-          Number(product.slaughterCharge) * 
+        let amount =
+          Number(product.totalPrice) +
+          Number(product.slaughterCharge) *
           Number(product.quantity);
-      
-        formData.append(`products[${index}][productAmount]`, amount.toFixed(2).toString());  
+
+        formData.append(`products[${index}][productAmount]`, amount.toFixed(2).toString());
         formData.append(`products[${index}][productAttributes]`, JSON.stringify(product.productAttributes));
       });
 
@@ -155,7 +159,7 @@ export class PaymentPage implements OnInit {
       formData.append("emailID", this.orderForm.value.emailID);
       formData.append("mobileNumber", this.orderForm.value.phoneNo);
       formData.append("city", this.orderForm.value.city);
-      
+
       this.httpClient.post('ecom/cart', formData).subscribe(async response => {
         this.loadingController.dismiss();
         if (response.respondStatus === 'SUCCESS') {
@@ -165,19 +169,21 @@ export class PaymentPage implements OnInit {
           this.presentSuccessAlert("You are redirecting to payment gateway once you approved you will get an email from us. Please make payment.");
           this.router.navigate(['/tabs/home']);
         } else {
+          this.handleErrors(response.errorMessages.Errors);
           console.error('Error submitting order', response);
         }
       }, error => {
+        console.log("errror ", 'Error submitting order', error);
         console.error('Error submitting order', error);
         this.loadingController.dismiss();
       });
-     
+
     } else {
       this.orderForm.markAllAsTouched();
     }
   }
 
-  
+
 
   ngOnDestroy() {
     if (this.cartSubscription) {
@@ -185,9 +191,26 @@ export class PaymentPage implements OnInit {
     }
   }
 
-  onBack() {
-    this.navCtrl.back();
+  async handleErrors(response: any) {
+      this.apiErrors = response;
+      await this.presentErrorAlert();
+    
   }
+
+  formatErrors(errors: { [key: string]: string }): string {
+    return Object.values(errors).join('\n'); // Combine all error messages into a single string
+  }
+
+  async presentErrorAlert() {
+    console.log(this.apiErrors)
+    const alert = await this.alertController.create({
+      header: 'Error',
+      message: this.formatErrors(this.apiErrors),
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+
 
   async presentSuccessAlert(msg: string) {
     const alert = await this.alertController.create({
@@ -216,9 +239,6 @@ export class PaymentPage implements OnInit {
     await toast.present();
   }
 
-  goToCheckout() {
-    this.router.navigate(['/tabs/cart']);
-  }
 
   async presentLoading(message: string) {
     const loading = await this.loadingController.create({
@@ -251,4 +271,13 @@ export class PaymentPage implements OnInit {
       });
     });
   }
+
+
+  onBack() {
+    this.navCtrl.back();
+  }
+  goToCheckout() {
+    this.router.navigate(['/tabs/cart']);
+  }
+
 }

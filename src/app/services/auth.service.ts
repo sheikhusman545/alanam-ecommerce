@@ -30,13 +30,7 @@ export class AuthService {
   }
 
   // deleteUser
-  deleteUser(id: any) {
-    console.log(id);
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.token}`,   // Authorization header
-      'X-Auth-Token': this.token || ''           // X-Auth-Token header
-    });
-    console.log(this.token);
+  deleteUser(id: any, headers: HttpHeaders) {
     return this._httpClient.post(`ecom/myaccount/deleteaddress/` + id, {}  ,{ headers });
   }
 

@@ -65,13 +65,13 @@
           </ion-row>
 
       
-          <ion-button [disabled]="(attributes.length > 0 && !isAttributeSelected()) || quantity == 0"
+          <ion-button [disabled]="quantity == 0"
             *ngIf="productData.type == 'Booking'" class="content_button" (click)="onOrder('booking')" expand="block">
             <ion-icon name="cart-outline"></ion-icon>
             {{'Book Now' | translate}}
           </ion-button>
 
-          <ion-button [disabled]="!isAttributeSelected() || quantity == 0"
+          <ion-button [disabled]="quantity == 0"
             *ngIf="productData.type != 'Booking'" class="content_button"
             (click)="onOrder('cart')" expand="block">
             <ion-icon name="cart-outline"></ion-icon>

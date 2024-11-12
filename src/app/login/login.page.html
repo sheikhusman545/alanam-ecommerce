@@ -12,7 +12,7 @@
       <h6 class="phone-title">{{'Enter your phone number'| translate}}</h6>
       <form [formGroup]="phoneForm" (ngSubmit)="sendOTP()">
         <ion-item>
-          <ion-input type="tel" formControlName="phoneNumber" label="{{'Enter Phone Number' | translate}}"
+          <ion-input type="tel" maxlength="8" formControlName="phoneNumber" label="{{'Enter Phone Number' | translate}}"
             label-placement="floating" fill="outline" placeholder="{{'Enter Phone Number' | translate}}"></ion-input>
         </ion-item>
         <ion-button class="submit-btn" expand="block" type="submit" [disabled]="!phoneForm.valid">Send OTP</ion-button>

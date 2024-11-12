@@ -131,7 +131,7 @@ export class ShippingInfoPage implements OnInit {
       formdata.append('AddressTypeName', this.isCompany ? this.orderForm.value.companyName : '');
       formdata.append('buildingName_No', this.orderForm.value.buildingName_No);
       formdata.append('streetName_No', this.orderForm.value.streetName_No);
-      formdata.append('landMark', this.orderForm.value.landMark);
+      formdata.append('landMark', this.orderForm.value.landMark || '');
       formdata.append('emailID', this.orderForm.value.emailID);
       formdata.append('phoneNo', '+974' + this.orderForm.value.phoneNo);
       formdata.append('city', this.orderForm.value.city);
@@ -199,6 +199,7 @@ export class ShippingInfoPage implements OnInit {
   async initAutocomplete() {
     const inputElement = await this.cityInput.getInputElement();
     const options = {
+      // types: ['(cities)'],
       componentRestrictions: { country: 'QA' }, // Restrict to Qatar
     };
 

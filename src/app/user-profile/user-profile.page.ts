@@ -147,20 +147,24 @@ export class UserProfilePage implements OnInit {
   
   
   confirmDeleteAccount() {
-    this.authService.deleteUser(this.ID).subscribe((res) => {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.token}`,
+      'X-Auth-Token': this.token || ''
+    });
+    this.authService.deleteUser(this.ID,headers).subscribe((res) => {
       if (res.respondStatus == "SUCCESS") {
         this.authService.clearAuthData();
-        this.presentAlert();
+        this.presentAlert('We regret to see you go. Your account has been deleted.');
         this.router.navigate(['/tabs/home']);
       } else {
-        
+        this.presentAlert('Failed to delete account');
       }
     });
   }
-  async presentAlert() {
+  async presentAlert(msg: string) {
     const alert = await this.alertController.create({
       header: 'Account Deletion',
-      message: 'We regret to see you go. Your account has been deleted.',
+      message: msg,
       buttons: ['OK']
     });
   
