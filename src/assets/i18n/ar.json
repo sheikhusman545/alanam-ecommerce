@@ -141,6 +141,10 @@
     "Refund Policy" : "سياسة الاسترداد",
     "FAQ" : "الأسئلة الشائعة",
     "Language" : "اللغة",
-    "Settings" : "الإعدادات"
+    "Settings" : "الإعدادات",
+    "Delete My Account": "حذف حسابي",
+    "Are you looking to delete you account? This will completely delete your account in our system.": "هل ترغب في حذف حسابك؟ سيتم حذف حسابك بالكامل من نظامنا."
+
+
 
 }
