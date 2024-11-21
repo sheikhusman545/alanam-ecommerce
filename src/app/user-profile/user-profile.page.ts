@@ -130,7 +130,6 @@ export class UserProfilePage implements OnInit {
           text: 'Cancel',
           role: 'cancel',
           handler: () => {
-            console.log('Delete canceled');
           },
         },
         {

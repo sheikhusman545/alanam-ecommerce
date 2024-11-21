@@ -30,10 +30,6 @@ const routes: Routes = [
     loadChildren: () => import('./search-product/search-product.module').then( m => m.SearchProductPageModule)
   },
   {
-    path: 'checkout',
-    loadChildren: () => import('./checkout/checkout.module').then(m => m.CheckoutPageModule)
-  },
-  {
     path: 'tabs',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
   },

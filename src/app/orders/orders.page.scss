@@ -3,25 +3,18 @@
     --ion-text-color: darkred !important;
 }
 ion-header{
-    height: 80px;
     display: flex;
     align-items: center;
 }
 ion-accordion-group {
     --background: #f0f0f0;
-    /* Set background color */
     border: 1px solid #ccc;
-    /* Add a border */
     border-radius: 8px;
-    /* Add rounded corners */
 }
 
-/* Override styles for individual accordion items */
 ion-accordion {
     --background: #ffffff;
-    /* Set background color */
     border-bottom: 1px solid #eee;
-    /* Add border between accordions */
 }
 
 ion-list {
@@ -38,7 +31,10 @@ ion-item-divider {
     font-weight: bold;
     color: #6c2835;
 }
-
+ion-icon{
+    width: 32px;
+    height: 32px;
+}
 .order-history h2 {
     padding: 30px;
     color:black;

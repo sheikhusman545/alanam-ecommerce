@@ -56,14 +56,18 @@
             <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="onSearch()"></ion-searchbar>
           </ion-col>
           <ion-col size="12">
-            <ion-item class="sub-category-item" *ngFor="let sub of subCategory" (click)="onCategoryClick(sub)">
-              <ion-row>
-                <ion-img [src]="'https://shopapi.alanaam.qa/' + sub.categoryUrl"
-                  alt="{{ sub.en_CategoryName  }}"></ion-img>
-                <p>{{ currentLanguage === 'ar' ? sub.ar_CategoryName : sub.en_CategoryName
-                  | uppercase}}</p>
-              </ion-row>
-            </ion-item>
+            <ion-row class="sub-category-item" >
+              <ion-col size="6" *ngFor="let sub of subCategory" (click)="onCategoryClick(sub)" >
+                <ion-item >
+                  <ion-row>
+                    <ion-img [src]="'https://shopapi.alanaam.qa/' + sub.categoryUrl"
+                      alt="{{ sub.en_CategoryName  }}"></ion-img>
+                    <p class="sub-font">{{ currentLanguage === 'ar' ? sub.ar_CategoryName : sub.en_CategoryName
+                      | uppercase}}</p>
+                  </ion-row>
+                </ion-item>
+              </ion-col>
+            </ion-row>
           </ion-col>
           <ion-col class="product-col" size="6" *ngFor="let product of products"
             (click)="navigateToProduct(product.productID)">

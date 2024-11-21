@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, NgZone } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, NgZone, Renderer2 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CartItem } from '../services/cart.service';
 import { Subscription } from 'rxjs';
@@ -12,7 +12,6 @@ import { DatePipe } from '@angular/common';
 import { Browser } from '@capacitor/browser';
 import Swiper from 'swiper';
 import { IonInput } from '@ionic/angular';
-
 import { LanguageService } from '../services/language.service';
 declare var google: any;
 
@@ -40,6 +39,7 @@ export class PaymentPage implements OnInit {
   @ViewChild('cityInput', { static: false }) cityInput!: IonInput;
   ID: any;
   apiErrors: { [key: string]: string } = {};
+  additionalCharge: number = 0;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -54,6 +54,7 @@ export class PaymentPage implements OnInit {
     private loadingController: LoadingController,
     private lan: LanguageService,
     private ngZone: NgZone,
+    private renderer: Renderer2
   ) {
     const now = new Date();
     this.formattedDate = this.datePipe.transform(now, 'dd-MM-yyyy EEE') as string;
@@ -73,23 +74,35 @@ export class PaymentPage implements OnInit {
       zoneNo: ['', Validators.required]
     });
   }
-
   async ngOnInit() {
     this.currentLanguage = this.lan.getCurrentLanguage();
     await this.presentLoading('Loading...');
+
+    this.subscribeToCart();
+    this.calculateTotalAmount();
+    this.checkUserInfo();
+    this.ifDoorStepDelivery();
+
+    this.loadingController.dismiss();
+  }
+
+  private subscribeToCart() {
     this.cartSubscription = this.cartService.cart$.subscribe((items) => {
       this.cartItems = items;
     });
+
     this.cartCount.subscribe((count: any) => {
       this.count = count;
     });
-    this.totalAmount = this.cartItems.reduce((sum: number, item) => {
-      return sum + Number(item.totalPrice) + Number(item.slaughterCharge) * Number(item.quantity);
+  }
+
+  private calculateTotalAmount() {
+    this.totalAmount = this.cartItems.reduce((sum, item) => {
+      const itemTotal =
+        (Number(item.price) * Number(item.quantity)) +
+        (Number(item.quantity) * Number(item.slaughterCharge));
+      return sum + itemTotal;
     }, 0);
-
-    this.checkUserInfo()
-
-    this.loadingController.dismiss();
   }
 
   onAddressTypeChange(event: any) {
@@ -121,17 +134,16 @@ export class PaymentPage implements OnInit {
     if (this.orderForm.valid) {
       await this.presentLoading('Submitting your order...');
       let formData = new FormData();
+      const shippingCharge = this.orderForm.value.deliveryMethod === 'selfPickup' ? 0 : 20;
 
       this.cartItems.forEach((product, index) => {
         formData.append(`products[${index}][productID]`, product.product.productID.toString());
         formData.append(`products[${index}][productPrice]`, product.product.productPrice.toString());
         formData.append(`products[${index}][SlaughterCharge]`, product.product.SlaughterCharge.toString());
-        formData.append(`products[${index}][packingCharge]`, product.product.packingCharge ? product.product.packingCharge : '0');
+        formData.append(`products[${index}][packingCharge]`, product.product.packingCharge ? product.product.packingCharge : undefined);
         formData.append(`products[${index}][productQuantity]`, product.quantity.toString());
         let amount =
-          Number(product.totalPrice) +
-          Number(product.slaughterCharge) *
-          Number(product.quantity);
+          Number(product.totalPrice)
 
         formData.append(`products[${index}][productAmount]`, amount.toFixed(2).toString());
         formData.append(`products[${index}][productAttributes]`, JSON.stringify(product.productAttributes));
@@ -139,15 +151,15 @@ export class PaymentPage implements OnInit {
 
       formData.append("totalProductsQuantity", this.count);
       formData.append("totalProductPrice", this.totalAmount.toString());
-      formData.append("shippingCharge", "0");
+      formData.append("shippingCharge", shippingCharge.toString());
       formData.append("shippingDiscount", "0");
       formData.append("couponDiscount", "0");
       formData.append("otherDiscount", "0");
-      formData.append("grantTotal", this.totalAmount.toString());
+      formData.append("grantTotal", (this.totalAmount + shippingCharge).toString());
       formData.append("paymentType", "Online");
       formData.append("DeliveryMethod", this.orderForm.value.deliveryMethod);
       formData.append("DeliveryDate", this.formattedDate);
-      formData.append("DeliveryTime", this.orderForm.value.deliveryTime);
+      formData.append("DeliveryTime", ''); //this.orderForm.value.deliveryTime
       formData.append("paymentMethod", "card");
       formData.append("addressType", this.orderForm.value.addressType);
       formData.append("AddressTypeName", this.isCompany ? this.orderForm.value.companyName : '');
@@ -174,7 +186,6 @@ export class PaymentPage implements OnInit {
         }
       }, error => {
         console.log("errror ", 'Error submitting order', error);
-        console.error('Error submitting order', error);
         this.loadingController.dismiss();
       });
 
@@ -183,7 +194,15 @@ export class PaymentPage implements OnInit {
     }
   }
 
-
+  ifDoorStepDelivery() {
+    this.orderForm.get('deliveryMethod')?.valueChanges.subscribe((method) => {
+      if (method === 'Doorstep Delivery') {
+        this.additionalCharge = 20;
+      } else {
+        this.additionalCharge = 0;
+      }
+    });
+  }
 
   ngOnDestroy() {
     if (this.cartSubscription) {
@@ -192,17 +211,16 @@ export class PaymentPage implements OnInit {
   }
 
   async handleErrors(response: any) {
-      this.apiErrors = response;
-      await this.presentErrorAlert();
-    
+    this.apiErrors = response;
+    await this.presentErrorAlert();
+
   }
 
   formatErrors(errors: { [key: string]: string }): string {
-    return Object.values(errors).join('\n'); // Combine all error messages into a single string
+    return Object.values(errors).join('\n');
   }
 
   async presentErrorAlert() {
-    console.log(this.apiErrors)
     const alert = await this.alertController.create({
       header: 'Error',
       message: this.formatErrors(this.apiErrors),
@@ -252,10 +270,11 @@ export class PaymentPage implements OnInit {
     this.initAutocomplete();
   }
 
+
   async initAutocomplete() {
     const inputElement = await this.cityInput.getInputElement();
     const options = {
-      // types: ['(cities)'],
+      types: ['geocode'], // Includes broader geographical data
       componentRestrictions: { country: 'QA' }, // Restrict to Qatar
     };
 
@@ -264,14 +283,43 @@ export class PaymentPage implements OnInit {
     autocomplete.addListener('place_changed', () => {
       this.ngZone.run(() => {
         const place = autocomplete.getPlace();
-
         if (place.geometry && place.geometry.location) {
           this.orderForm.get('city')?.setValue(place.formatted_address);
         }
       });
     });
   }
+  AfterViewInit() {
+    const autocompleteInput = document.getElementById('autocompleteInput');
 
+    if (autocompleteInput) {
+      autocompleteInput.addEventListener('focus', () => {
+        const pacContainer = document.querySelector('.pac-container');
+        if (pacContainer) {
+          this.adjustAutocompletePosition();
+        }
+      });
+    }
+  }
+
+  onScroll(event: any) {
+    this.adjustAutocompletePosition();
+  }
+
+  private adjustAutocompletePosition() {
+    const input = document.getElementById('autocompleteInput');
+    const pacContainer = document.querySelector('.pac-container') as HTMLElement;
+
+    if (input && pacContainer) {
+      const inputRect = input.getBoundingClientRect();
+      const newTop = inputRect.top + inputRect.height;
+      const newLeft = inputRect.left;
+      this.renderer.setStyle(pacContainer, 'top', `${newTop}px`);
+      this.renderer.setStyle(pacContainer, 'left', `${newLeft}px`);
+      this.renderer.setStyle(pacContainer, 'position', 'fixed');
+      this.renderer.setStyle(pacContainer, 'z-index', '9999');
+    }
+  }
 
   onBack() {
     this.navCtrl.back();

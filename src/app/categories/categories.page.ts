@@ -1,8 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CategoriesService } from '../services/categories.service';
 import { ProductsService } from '../services/products.service';
-import { HttpClient } from '@angular/common/http';
 import { NavController, LoadingController } from '@ionic/angular';
 import { CartService } from '../services/cart.service';
 import Swiper from 'swiper';
@@ -22,25 +21,52 @@ export class CategoriesPage implements OnInit {
   @ViewChild('swiper') swiperRef: ElementRef | undefined;
   swiper?: Swiper;
   currentLanguage: string | 'en' | undefined;
+  catId: string | undefined;
+  searchTerm: any;
 
   constructor(
-    private http: HttpClient,
     private categoriesService: CategoriesService,
     private productsService: ProductsService,
     private router: Router,
     private navCtrl: NavController,
     private cartService: CartService,
     private loadingController: LoadingController,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private route: ActivatedRoute
+
   ) {}
 
   ngOnInit() {
     this.currentLanguage = this.languageService.getCurrentLanguage();
     this.cartService.cartItemCount$.subscribe((count) => (this.cartCount = count));
     this.loadCategories();
-    this.loadAllProducts();
+    this.route.queryParams.subscribe((params) => {
+      const categoryId = params['cat'] || '';
+      this.catId = categoryId;
+      if (categoryId) {
+        this.loadProductsByCategory(categoryId);
+        this.getSubCategories(categoryId);
+      } else {
+        this.loadAllProducts();
+        this.router.navigate([], {
+          queryParams: { cat: null },
+          queryParamsHandling: 'merge', // Keep other query params
+        });
+      }
+    });
+    this.route.queryParams.subscribe(params => {
+      this.searchTerm = params['term'] || '';
+      if (this.searchTerm) { 
+        this.onSearch();
+      } else {
+        this.router.navigate([], {
+          queryParams: { term: null },
+          queryParamsHandling: 'merge', // Keep other query params
+        });
+      }
+    });
   }
-
+ 
   async loadCategories() {
     const loader = await this.loadingController.create({
       message: 'Loading categories...',
@@ -115,12 +141,25 @@ export class CategoriesPage implements OnInit {
     this.selectedCategory = category;
   }
 
+  onSearch() {
+    if (this.searchTerm.length >= 3) {
+      let searchTerm = this.searchTerm.toLowerCase();
+       this.productsService.getSearchedProducts(searchTerm).subscribe((data: any) => { 
+         this.products = data.requestedData.Products;
+         this.subCategory = null;
+
+      });
+    } else {
+      this.products = this.allProducts;
+      this.subCategory = null;
+
+    }
+  }
   onBack() {
     this.navCtrl.back();
   }
 
   navigateToCart() {
-    console.log('Navigating to cart');  
     this.router.navigate(['/tabs/cart']);
   }
   

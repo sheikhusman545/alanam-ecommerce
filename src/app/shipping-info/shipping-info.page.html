@@ -16,7 +16,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content class="ion-padding" [scrollEvents]="true" (ionScroll)="onScroll($event)">
   <swiper-container dir="rtl" rtl="true" [loop]="true" autoplay="true"
     [pagination]="{ clickable: true }" [slidesPerView]="1" [slidesPerGroup]="1" [loopFillGroupWithBlank]="true">
     <swiper-slide swiperSlide>
@@ -60,14 +60,21 @@
               <ion-label>
                 <p>{{'Slaughter Charge' | translate}}</p>
               </ion-label>
-              <ion-label slot="end">{{booking.slaughterCharge}} QAR</ion-label>
+              <ion-label slot="end">{{booking.slaughterCharge * booking.quantity }} QAR</ion-label>
             </ion-item>
 
             <ion-item lines="none">
               <ion-label>
                 <p>{{'Cutting Charge' | translate}}</p>
               </ion-label>
-              <ion-label slot="end">{{booking.slaughterCharge}} QAR</ion-label>
+              <ion-label slot="end">{{ booking.cuttingAmount * booking.quantity   }} QAR</ion-label>
+            </ion-item>
+
+            <ion-item lines="none">
+              <ion-label>
+                <p>{{'Delivery Charge' | translate}}</p>
+              </ion-label>
+              <ion-label slot="end">{{ additionalCharge   }} QAR</ion-label>
             </ion-item>
 
             <ion-item lines="none">
@@ -75,7 +82,7 @@
                 <h2>{{'Order Total' | translate}}</h2>
               </ion-label>
               <ion-label slot="end">
-                <h2>{{ booking.quantity * booking.price}} QAR</h2>
+                <h2>{{ booking.quantity * booking.price + (booking.quantity * booking.slaughterCharge) + (booking.quantity * booking.cuttingAmount) + additionalCharge   }} QAR</h2>
               </ion-label>
             </ion-item>
           </ion-card-content>
@@ -86,10 +93,8 @@
 
   <ion-grid>
     <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
-      <h2>{{'User Info' | translate}} <ion-icon name="information-circle" color="primary" (click)="showDeliveryToast()"></ion-icon>
-      </h2>
+      <h2>{{'User Info' | translate}}  </h2>
 
-      <!-- Address Type -->
       <ion-item>
         <ion-label>{{'Address Type' | translate}}</ion-label>
         <ion-select [okText]="okButtonText"
@@ -102,7 +107,6 @@
         Address Type is required.
       </ion-note>
 
-      <!-- Customer Name -->
       <ion-item>
       <ion-label position="floating">{{'Customer Name' | translate}}</ion-label>
         <ion-input minlength="3" formControlName="customerName"></ion-input>
@@ -142,9 +146,9 @@
 
       <h2>{{'Shipping Address' | translate}}</h2>
       <!-- City -->
-      <ion-item>
+      <ion-item id="city-input">
         <ion-label position="floating">{{'City' | translate}}</ion-label>
-        <ion-input #cityInput formControlName="city" class="cityinput"></ion-input>
+        <ion-input #cityInput formControlName="city" id="autocompleteInput" class="cityinput"></ion-input>
       </ion-item>
       <ion-note *ngIf="orderForm.get('city')?.touched && orderForm.get('city')?.invalid" color="danger">
         City is required.
@@ -186,8 +190,8 @@
       <h2>{{'Delivery Method' | translate}}</h2>
 
       <ion-radio-group formControlName="deliveryMethod">
-        <ion-radio slot="start" justify="space-between" value="selfPickup" id="selfPickup">{{'Self Pickup' | translate}}</ion-radio>
-        <ion-radio slot="start" justify="space-between" value="homeDelivery" id="homeDelivery">{{'Home Delivery' | translate}}</ion-radio>
+        <ion-radio slot="start" justify="space-between" value="selfPickup" id="selfPickup">{{'Self Pickup' | translate}} &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;(Free)</ion-radio>
+        <ion-radio slot="start" justify="space-between" value="Doorstep Delivery" id="homeDelivery">{{'Home Delivery' | translate}} &nbsp;&nbsp; (20 QAR)</ion-radio>
       </ion-radio-group>
 
       <!-- Delivery Time -->
@@ -205,9 +209,13 @@
       <ion-note *ngIf="orderForm.get('deliveryTime')?.touched && orderForm.get('deliveryTime')?.invalid" color="danger">
         Delivery Time is required.
       </ion-note>
+      <ion-note color="danger">
+        <p>Any order before 3 PM will be delivered the same day.</p>
+        <p>Orders after 3 PM will be delivered the next day.</p>
+        <p>Estimated delivery time: 3-5 business days.</p>
 
-      <!-- Submit Button -->
-      <ion-button expand="full" type="submit">{{'Book Now' | translate}}</ion-button>
+      </ion-note>
+      <ion-button expand="full" type="submit">{{'Book Now' | translate}} ({{ grandTotal + additionalCharge}})</ion-button>
     </form>
   </ion-grid>
 

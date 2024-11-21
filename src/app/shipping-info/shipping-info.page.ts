@@ -1,8 +1,7 @@
-import { Component, ElementRef, OnInit, ViewChild, NgZone } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, NgZone, Renderer2 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BookingCartService } from '../services/booking-cart.service';
 import { Subscription } from 'rxjs';
-import { AuthService } from '../services/auth.service';
 import { HttpClientService } from '../services/http.service';
 import { AlertController, NavController, LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
@@ -10,6 +9,7 @@ import { ToastController } from '@ionic/angular';
 import Swiper from 'swiper';
 import { LanguageService } from '../services/language.service';
 import { IonInput } from '@ionic/angular';
+import { ActivatedRoute } from '@angular/router';
 declare var google: any;
 
 @Component({
@@ -17,12 +17,14 @@ declare var google: any;
   templateUrl: './shipping-info.page.html',
   styleUrls: ['./shipping-info.page.scss'],
 })
+
 export class ShippingInfoPage implements OnInit {
 
   orderForm: FormGroup;
   isCompany: boolean = false;
   bookingCart: any[] = [];
   cartSubscription!: Subscription;
+  routeSubscription!: Subscription;
   isArabic = true;
   @ViewChild('swiper') swiperRef: ElementRef | undefined;
   swiper?: Swiper;
@@ -31,11 +33,14 @@ export class ShippingInfoPage implements OnInit {
   cancelButtonText: string = 'Cancel';
   selectedLocation: { lat: number; lng: number } | null = null;
   @ViewChild('cityInput', { static: false }) cityInput!: IonInput;
+  ID: any;
+  grandTotal: any = 0;
+  additionalCharge: number = 0;
+
 
   constructor(
     private formBuilder: FormBuilder,
     private bookingCartService: BookingCartService,
-    private authService: AuthService,
     private httpClient: HttpClientService,
     private navCtrl: NavController,
     private alertController: AlertController,
@@ -44,6 +49,9 @@ export class ShippingInfoPage implements OnInit {
     private loadingController: LoadingController,
     private languageService: LanguageService,
     private ngZone: NgZone,
+    private renderer: Renderer2,
+    private activatedRoute: ActivatedRoute
+    
   ) {
     this.orderForm = this.formBuilder.group({
       customerName: ['', Validators.required],
@@ -72,21 +80,61 @@ export class ShippingInfoPage implements OnInit {
     this.cartSubscription = this.bookingCartService.bookingCart$.subscribe(
       (cart) => {
         this.bookingCart = cart;
+        if (this.bookingCart) {
+          this.getTotal();
+        }
       }
     );
-
-    this.authService.getUserDetails$().subscribe(async (userDetails) => {
-      if (userDetails && userDetails.customerName) {
-        this.orderForm.patchValue({
-          customerName: userDetails.customerName || '',
-          emailID: userDetails.customerEmail || '',
-          phoneNo: userDetails.customerMobile || ''
-        });
-      } else {
-
-      }
-      await loading.dismiss(); // Dismiss the loader when data is loaded
+    this.routeSubscription = this.activatedRoute.url.subscribe(() => {
+      setTimeout(() => {
+        this.initAutocomplete();
+      });
     });
+    this.ifDoorStepDelivery();
+    this.checkUserInfo();
+
+    await loading.dismiss(); // Dismiss the loader when data is loaded
+
+  }
+  getTotal(): void {
+   
+   this.grandTotal = this.bookingCart.reduce((total, item) => {
+      const quantity = item.quantity || 0;
+      const price = Number(item.price) || 0;
+      const slaughterCharge = Number(item.slaughterCharge) || 0;
+      const cuttingAmount = Number(item.cuttingAmount) || 0;
+  
+      return total + (quantity * (price + slaughterCharge + cuttingAmount));
+    }, 0);
+  }
+  
+  ifDoorStepDelivery() {
+    this.orderForm.get('deliveryMethod')?.valueChanges.subscribe((method) => {
+      if (method === 'Doorstep Delivery') {
+        this.additionalCharge = 20;
+      } else {
+        this.additionalCharge = 0;
+      }
+    });
+  }
+
+  checkUserInfo() {
+    const userDetails = JSON.parse(localStorage.getItem('userDetails')!);
+    if (userDetails) {
+      this.ID = userDetails.customerID || '';
+
+      this.orderForm.patchValue({
+        customerName: userDetails.customerName || '',
+        emailID: userDetails.customerEmail || '',
+        phoneNo: userDetails.customerMobile || ''
+      });
+    } else {
+      this.orderForm.patchValue({
+        customerName: '',
+        emailID: '',
+        phoneNo: ''
+      });
+    }
   }
 
   onAddressTypeChange(event: any) {
@@ -112,7 +160,7 @@ export class ShippingInfoPage implements OnInit {
         spinner: 'crescent',
       });
       await loading.present(); // Show the loader
-
+      const shippingCharge = this.orderForm.value.deliveryMethod === 'selfPickup' ? 0 : 20;
       const formdata = new FormData();
       this.bookingCart.map((cartItem) => {
         formdata.append(`productID`, cartItem.product.productID);
@@ -121,12 +169,12 @@ export class ShippingInfoPage implements OnInit {
         formdata.append(`quantity`, cartItem.quantity.toString());
         formdata.append(`slaughterCharge`, cartItem.slaughterCharge || '0.00');
         formdata.append(`cuttingAmount`, cartItem.cuttingAmount || '0');
-        formdata.append(`orderTotal`, cartItem.orderTotal || '0');
-        formdata.append(`payableAmount`, cartItem.payableAmount || '0');
+        formdata.append(`orderTotal`, this.grandTotal + this.additionalCharge || '0');
+        formdata.append(`payableAmount`, this.grandTotal + this.additionalCharge || '0');
       });
       formdata.append('customerName', this.orderForm.value.customerName);
       formdata.append('deliveryMethod', this.orderForm.value.deliveryMethod);
-      formdata.append('shippingCharge', '0');
+      formdata.append('shippingCharge', shippingCharge.toString());
       formdata.append('addressType', this.orderForm.value.addressType);
       formdata.append('AddressTypeName', this.isCompany ? this.orderForm.value.companyName : '');
       formdata.append('buildingName_No', this.orderForm.value.buildingName_No);
@@ -159,6 +207,9 @@ export class ShippingInfoPage implements OnInit {
   ngOnDestroy() {
     if (this.cartSubscription) {
       this.cartSubscription.unsubscribe();
+    }
+    if (this.routeSubscription) {
+      this.routeSubscription.unsubscribe();
     }
   }
 
@@ -194,12 +245,13 @@ export class ShippingInfoPage implements OnInit {
   }
   ngAfterViewInit() {
     this.initAutocomplete();
+    this.handleAutocompleteFocus();
   }
 
   async initAutocomplete() {
     const inputElement = await this.cityInput.getInputElement();
     const options = {
-      // types: ['(cities)'],
+      types: ['geocode'], // Includes broader geographical data
       componentRestrictions: { country: 'QA' }, // Restrict to Qatar
     };
 
@@ -208,12 +260,43 @@ export class ShippingInfoPage implements OnInit {
     autocomplete.addListener('place_changed', () => {
       this.ngZone.run(() => {
         const place = autocomplete.getPlace();
-
         if (place.geometry && place.geometry.location) {
           this.orderForm.get('city')?.setValue(place.formatted_address);
         }
       });
     });
+  }
+
+  private handleAutocompleteFocus() {
+    const autocompleteInput = document.getElementById('autocompleteInput');
+
+    if (autocompleteInput) {
+      autocompleteInput.addEventListener('focus', () => {
+        const pacContainer = document.querySelector('.pac-container');
+        if (pacContainer) {
+          this.adjustAutocompletePosition();
+        }
+      });
+    }
+  }
+
+  onScroll(event: any) {
+    this.adjustAutocompletePosition();
+  }
+
+  private adjustAutocompletePosition() {
+    const input = document.getElementById('autocompleteInput');
+    const pacContainer = document.querySelector('.pac-container') as HTMLElement;
+
+    if (input && pacContainer) {
+      const inputRect = input.getBoundingClientRect();
+      const newTop = inputRect.top + inputRect.height;
+      const newLeft = inputRect.left;
+      this.renderer.setStyle(pacContainer, 'top', `${newTop}px`);
+      this.renderer.setStyle(pacContainer, 'left', `${newLeft}px`);
+      this.renderer.setStyle(pacContainer, 'position', 'fixed');
+      this.renderer.setStyle(pacContainer, 'z-index', '9999');
+    }
   }
 }
 

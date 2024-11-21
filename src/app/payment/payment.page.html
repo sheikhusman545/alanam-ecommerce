@@ -15,7 +15,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content class="ion-padding" [scrollEvents]="true" (ionScroll)="onScroll($event)">
   <swiper-container dir="rtl" rtl="true" [loop]="true" autoplay="true" [pagination]="{ clickable: true }"
     [slidesPerView]="1" [slidesPerGroup]="1" [loopFillGroupWithBlank]="true">
     <swiper-slide swiperSlide>
@@ -31,8 +31,7 @@
 
   <ion-grid>
     <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
-      <h2>{{'User Info' | translate}} <ion-icon name="information-circle" color="primary"
-          (click)="showDeliveryToast()"></ion-icon>
+      <h2>{{'User Info' | translate}} 
       </h2>
 
       <!-- Address Type -->
@@ -87,9 +86,9 @@
 
       <h2>{{'Shipping Address' | translate}}</h2>
       <!-- City -->
-      <ion-item>
+      <ion-item id="city">
         <ion-label position="floating">{{'City' | translate}}</ion-label>
-        <ion-input #cityInput formControlName="city"></ion-input>
+        <ion-input #cityInput formControlName="city" id="autocompleteInput"></ion-input>
       </ion-item>
       <ion-note *ngIf="orderForm.get('city')?.touched && orderForm.get('city')?.invalid" color="danger">
         {{'City is required.' | translate}}
@@ -138,9 +137,9 @@
 
       <ion-radio-group formControlName="deliveryMethod">
         <ion-radio slot="start" justify="space-between" value="selfPickup" id="selfPickup">{{'Self Pickup' |
-          translate}}</ion-radio><br />
-        <ion-radio slot="start" justify="space-between" value="homeDelivery" id="homeDelivery">{{'Home Delivery' |
-          translate}}</ion-radio> <br />
+          translate}} &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;(Free)</ion-radio><br />
+        <ion-radio slot="start" justify="space-between" value="Doorstep Delivery" id="homeDelivery">{{'Home Delivery' |
+          translate}} &nbsp;&nbsp; (20 QAR)</ion-radio> <br />
       </ion-radio-group>
 
       <!-- Delivery Time -->
@@ -157,8 +156,14 @@
       <ion-note *ngIf="orderForm.get('deliveryTime')?.touched && orderForm.get('deliveryTime')?.invalid" color="danger">
         {{'Delivery Time is required.' | translate}}
       </ion-note>
+      <ion-note color="danger">
+        <p>Any order before 3 PM will be delivered the same day.</p>
+        <p>Orders after 3 PM will be delivered the next day.</p>
+        <p>Estimated delivery time: 3-5 business days.</p>
 
-      <ion-button expand="full" type="submit">{{'Pay Now' | translate}} ({{totalAmount}} QAR)</ion-button>
+      </ion-note>
+      <ion-button expand="full" type="submit">{{'Pay Now' | translate}} ({{totalAmount + additionalCharge}} QAR)</ion-button>
+
     </form>
   </ion-grid>
 

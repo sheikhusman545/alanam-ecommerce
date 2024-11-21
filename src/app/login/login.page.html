@@ -25,12 +25,7 @@
 
       <form [formGroup]="otpForm" (ngSubmit)="verifyOTP()">
         <div class="otp-input-box">
-          <input type="tel" formControlName="otp1" maxlength="1" (input)="moveToNext($event, 'otp2')" />
-          <input type="tel" formControlName="otp2" maxlength="1" (input)="moveToNext($event, 'otp3')" />
-          <input type="tel" formControlName="otp3" maxlength="1" (input)="moveToNext($event, 'otp4')" />
-          <input type="tel" formControlName="otp4" maxlength="1" (input)="moveToNext($event, 'otp5')" />
-          <input type="tel" formControlName="otp5" maxlength="1" (input)="moveToNext($event, 'otp6')" />
-          <input type="tel" formControlName="otp6" maxlength="1" />
+          <input type="tel" formControlName="otp1" maxlength="6"  />
         </div>
         <ion-button expand="full" type="submit" [disabled]="!otpForm.valid">{{"Verify OTP" | translate}}</ion-button>
       </form>

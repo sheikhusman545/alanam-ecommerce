@@ -36,9 +36,18 @@ ion-radio {
 ion-radio-group {
   display: flex;
   flex-direction: column;
-
   ion-radio {
-    margin-bottom: 8px;
     align-items: center;
   }
+}
+#autocomplete {
+  position: relative;
+}
+
+ion-button{
+  height: 48px;
+}
+.pac-container {
+  z-index: 10000 !important;
+  background: white;
 }

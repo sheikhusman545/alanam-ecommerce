@@ -33,13 +33,8 @@ export class LoginPage implements OnInit {
 
     // Initialize OTP form with 6 controls, each for a single digit
     this.otpForm = this.fb.group({
-      otp1: ['', [Validators.required, Validators.maxLength(1)]],
-      otp2: ['', [Validators.required, Validators.maxLength(1)]],
-      otp3: ['', [Validators.required, Validators.maxLength(1)]],
-      otp4: ['', [Validators.required, Validators.maxLength(1)]],
-      otp5: ['', [Validators.required, Validators.maxLength(1)]],
-      otp6: ['', [Validators.required, Validators.maxLength(1)]],
-    });
+      otp1: ['', [Validators.required, Validators.maxLength(6)]],
+        });
   }
   ngOnInit(): void {
     this.currentLanguage = this.languageService.getCurrentLanguage();
@@ -56,22 +51,22 @@ export class LoginPage implements OnInit {
     }
   }
 
-  moveToNext(event: any, nextControl: string) {
-    const input = event.target.value;
-    if (input.length === 1 && nextControl) {
-      const nextElement = document.querySelector(`[formControlName="${nextControl}"]`);
-      if (nextElement) {
-        (nextElement as HTMLInputElement).focus();
-      }
-    }
-  }
+  // moveToNext(event: any, nextControl: string) {
+  //   const input = event.target.value;
+  //   if (input.length === 1 && nextControl) {
+  //     const nextElement = document.querySelector(`[formControlName="${nextControl}"]`);
+  //     if (nextElement) {
+  //       (nextElement as HTMLInputElement).focus();
+  //     }
+  //   }
+  // }
 
   verifyOTP() {
     if (this.otpForm.valid) {
-      const otp = Object.values(this.otpForm.value).join('');
+     // const otp = ;
       const formData = new FormData();
       formData.append('mobileNumber', this.phoneForm.get('phoneNumber')?.value);
-      formData.append('otp', otp);
+      formData.append('otp', this.otpForm.get('otp1')?.value);
       formData.append('devicetype', 'app-anrdoid');
       this.http.post('ecom/login', formData).subscribe((response) => {
         if (response.respondStatus == 'SUCCESS') {

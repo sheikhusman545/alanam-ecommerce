@@ -60,16 +60,34 @@
     <ion-label class="title_lbl">{{'Premium Quality, Fresh Flavor' | translate}}</ion-label>
     <ion-label class="title_lbl">{{'Crafted with care, raised with respect' | translate}}</ion-label>
 
-    <ion-row>
+    <!-- <ion-row class="cat-img">
       <ion-col size="4"  *ngFor="let category of categories">
-        <div class="cat-img" (click)="navigateToCategory(category.categoryID)">
-          <ion-img [src]="'https://shopapi.alanaam.qa/' + category.categoryUrl" alt="{{category.en_CategoryName}}"
+        <div  (click)="navigateToCategory(category.categoryID)">
+          <ion-img class="img-cat" [src]="'https://shopapi.alanaam.qa/' + category.categoryUrl" alt="{{category.en_CategoryName}}"
             class="category-image"></ion-img>
           <ion-label class="cat-label">{{ currentLanguage === 'ar' ? category.ar_CategoryName : category.en_CategoryName
             | uppercase}}</ion-label>
         </div>
       </ion-col>
-    </ion-row>
+    </ion-row> -->
+    <ion-list>
+      <div class="categories-container">
+        <div
+          class="category-item"
+          *ngFor="let category of categories"
+          (click)="navigateToCategory(category.categoryID)"
+        >
+          <ion-avatar>
+            <img [src]="'https://shopapi.alanaam.qa/' + category.categoryUrl" />
+          </ion-avatar>
+          <ion-label class="cat-label">
+            {{ currentLanguage === 'ar' ? category.ar_CategoryName : category.en_CategoryName | uppercase }}
+          </ion-label>
+        </div>
+      </div>
+    </ion-list>
+    
+
   </div>
 
   <section class="featured-products">

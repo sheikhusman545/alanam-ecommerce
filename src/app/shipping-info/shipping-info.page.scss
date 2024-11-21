@@ -45,3 +45,14 @@ ion-radio-group {
 .cityinput{
   position: relative;
 }
+#city-input{
+  position: relative;
+}
+
+.pac-container {
+  z-index: 10000 !important;
+  background: white;
+}
+.ion-button.md.button.button-full.button-solid.ion-activatable.ion-focusable.hydrated{
+  height: 48px;
+}

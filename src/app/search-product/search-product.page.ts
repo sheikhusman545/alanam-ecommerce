@@ -126,6 +126,7 @@ export class SearchProductPage implements OnInit {
   }
 
   onCategoryClick(category: any) {
+    this.searchTerm = '';
     if (category.categoryID !== undefined) {
       this.loadProductsByCategory(category.categoryID);
       this.getSubCategories(category.categoryID);

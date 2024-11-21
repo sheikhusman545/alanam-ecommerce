@@ -67,7 +67,6 @@
     --ion-tab-bar-background: #3880ff; /* Set the tab bar background color */
     --ion-tab-bar-text-color: #fff; /* Set the tab bar text color */
     --ion-tab-bar-selected-text-color: #fff; 
-
 }
 
 ion-header {
@@ -94,4 +93,7 @@ ion-header {
       }
     }
   }
+}
+ion-note{
+	font-size: 14px;
 }

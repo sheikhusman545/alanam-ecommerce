@@ -20,12 +20,12 @@
   <div class="user-profile">
     <div class="info-section">
       <div class="info-card">
-        <p>{{'Need to show your order history?' | translate}}</p>
-        <a (click)="navigateToOrders()">{{'Please click here' | translate}}</a>
+        <!-- <p>{{'Need to show your order history?' | translate}}</p> -->
+        <ion-button color="success" (click)="navigateToOrders()">{{'Order History' | translate}}</ion-button>
       </div>
       <div class="info-card">
-        <p>{{'Wanna Logout?' | translate}}</p>
-        <a (click)="logout()">{{'Please click here' | translate}}</a>
+        <!-- <p>{{'Wanna Logout?' | translate}}</p> -->
+        <ion-button (click)="logout()">{{'Logout' | translate}}</ion-button>
       </div>
     </div>
 

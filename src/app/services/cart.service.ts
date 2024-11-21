@@ -22,7 +22,6 @@ export class CartService {
   private cart = new BehaviorSubject<CartItem[]>(this.getCartFromStorage());
   cart$ = this.cart.asObservable();
 
-  // Cart count subject
   private cartItemCount = new BehaviorSubject<number>(this.getCartItemCount());
   cartItemCount$ = this.cartItemCount.asObservable();
 
@@ -49,7 +48,7 @@ export class CartService {
       currentCart[index].totalPrice = currentCart[index].price * currentCart[index].quantity + (currentCart[index].slaughterCharge * currentCart[index].quantity);
     } else {
       product.quantity = 1;
-      product.totalPrice = product.price;  // Initialize totalPrice
+      product.totalPrice = Number(product.price) + Number(product.slaughterCharge)  ;  // Initialize totalPrice
       currentCart.push(product);
     }
   
@@ -87,19 +86,16 @@ export class CartService {
     this.cartItemCount.next(0); // Reset cart count
   }
 
-  // Check if product productAttributes match
   private matchproductAttributes(attr1: { [key: string]: any }, attr2: { [key: string]: any }): boolean {
     return JSON.stringify(attr1) === JSON.stringify(attr2); // Simplified comparison of productAttributes
   }
 
-  // Update cart count by summing up all item quantities
   private updateCartCount() {
     const currentCart = this.cart.value;
     const count = currentCart.reduce((total, item) => total + item.quantity, 0);
     this.cartItemCount.next(count); // Update cart count observable
   }
 
-  // Get total number of items in the cart
   private getCartItemCount(): number {
     const cart = this.getCartFromStorage();
     return cart.reduce((total, item) => total + item.quantity, 0);

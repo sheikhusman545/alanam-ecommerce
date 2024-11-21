@@ -71,7 +71,7 @@ export class CartPage implements OnInit, OnDestroy {
 
   private calculateTotal() {
     this.totalAmount = this.cartItems.reduce((sum, item) => {
-      const itemTotal = Number(item.totalPrice) + (Number(item.slaughterCharge) * Number(item.quantity));
+      const itemTotal = (Number(item.price)  * Number(item.quantity)) + (Number(item.quantity) * Number(item.slaughterCharge));
       return sum + itemTotal;
     }, 0);
   }

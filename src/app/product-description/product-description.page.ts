@@ -125,7 +125,7 @@ export class ProductDescriptionPage implements OnInit {
   onOrder(booking: string) {
     if (this.isAllAttributesSelected()) {
       if (this.selectedValue === false) {
-        this.attribute_msg = "Please select an attribute";
+        this.attribute_msg = "Please select cutting type";
         return
       }
       else {
@@ -163,7 +163,7 @@ export class ProductDescriptionPage implements OnInit {
     this.cartService.addProduct({
       product: this.productData,
       quantity: this.quantity,
-      totalPrice: totalPrice,
+      totalPrice: totalPrice + this.productData.SlaughterCharge,
       price: this.productData.productPrice,
       cuttingAmount: '',
       productName: this.productData.en_ProductName,

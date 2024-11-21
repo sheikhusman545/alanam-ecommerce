@@ -2,16 +2,19 @@
   background-color: #6c2835;
   border-bottom-left-radius: 50px;
   border-bottom-right-radius: 50px;
+
   .language {
     text-decoration: underline;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 24px;
     color: white;
     font-weight: bolder;
   }
+
   .logo {
     width: 64px;
   }
+
   .custom-search,
   .searchbar-custom,
   .searchbar-input-container {
@@ -35,8 +38,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    text-transform: uppercase;
     text-align: center;
+  }
+
+  .location-text {
+    text-transform: uppercase;
   }
 
   .address-text {
@@ -48,12 +54,14 @@
     padding-top: 10px;
     text-align: center;
   }
+
+  ion-icon {
+    color: white;
+    margin-right: 3px;
+  }
 }
 
-ion-icon {
-  color: white;
-  margin-right: 3px;
-}
+
 
 .home-page {
   --ion-background-color: #fff;
@@ -69,65 +77,66 @@ ion-icon {
       margin-bottom: 10px;
     }
 
-    .categories-grid {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 15px;
-    }
-
-    .category-card {
-      flex: 1 1 calc(33.33% - 10px);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background-color: #f8f8f8;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      padding: 10px;
-      text-align: center;
+    .swiper-container {
+      width: 100%;
+      height: auto;
 
 
 
-      .category-name {
-        font-size: 0.9rem;
-        color: #333;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+      .section-title {
+        font-size: 1.5rem;
+        color: #6c2835; // Meat shop theme color
         text-align: center;
+        margin-top: 20px;
+      }
+
+      .featured-products .swiper-wrapper,
+      .new-products .swiper-wrapper {
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
+      }
+
+      .swiper-slide {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        width: 100%;
       }
     }
   }
 
-  .swiper-container {
-    width: 100%;
-    height: auto;
-
-  }
-
-  .section-title {
-    font-size: 1.5rem;
-    color: #6c2835; // Meat shop theme color
-    text-align: center;
-    margin-top: 20px;
-  }
-
-  .featured-products .swiper-wrapper,
-  .new-products .swiper-wrapper {
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
-  }
-
-  .swiper-slide {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    width: 100%;
-  }
+  
+  
 }
+
+.categories-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px; /* Adjust for spacing between items */
+  padding: 16px; /* Optional padding for the container */
+}
+
+.category-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center; /* Center-align text */
+  cursor: pointer;
+}
+
+.category-item ion-avatar {
+  width: 80px;
+  height: 80px; /* Adjust size of avatar */
+  margin-bottom: 8px; /* Space between avatar and label */
+}
+
+.category-item ion-label {
+  font-size: 14px; /* Adjust font size */
+}
+
 
 .featured-products img {
   width: 100%;
@@ -135,7 +144,6 @@ ion-icon {
   object-fit: cover;
   border-radius: 10px;
 }
-
 .main_content_div .title_lbl {
   font-size: 18px;
   font-family: "semi-bold";
@@ -145,13 +153,14 @@ ion-icon {
 .main_content_div ion-img {
   height: 70px;
   width: 70px;
-  border-radius: 100% !important;
+  border-radius: 50% !important;
   object-fit: cover;
 }
 
 .main_content_div img {
   border-radius: 100%;
 }
+
 .main_content_div ion-label {
   margin-top: 10px;
   text-align: center;
@@ -177,12 +186,9 @@ ion-icon {
 
 .main_content_div ion-img {
   object-fit: fill;
-  border-radius: 100% !important;
+
 }
 
-.cat-img ion-img {
-  border-radius: 100% !important;
-}
 
 ion-img.s-image,
 ion-img.p-image {
@@ -193,7 +199,7 @@ ion-img.p-image {
 
 
 h3.product-name {
-  font-size: 16px;
+  font-size: 14px;
   color: gray;
   padding: 0;
   margin-bottom: 0;
@@ -217,16 +223,9 @@ h3.product-name {
 .main_content_div .cat-label {
   margin-top: 10px;
   text-align: center;
-  font-size: 14px;
+  font-size: 12px;
   color: gray;
 
-}
-
-.cat-img {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 
 .info {
@@ -234,7 +233,9 @@ h3.product-name {
   justify-content: center;
   gap: 20px;
 }
+
 @media (min-width: 768px) {
+
   .categories-section .category-card,
   .main_content_div ion-img {
     height: 128px;
@@ -250,5 +251,12 @@ h3.product-name {
   .product-price,
   .cat-label {
     font-size: 1.125rem;
+  }
+
+  .location-text,
+  .address-text,
+  .email-text,
+  .phone-text {
+    font-size: 16px;
   }
 }

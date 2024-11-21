@@ -58,7 +58,7 @@ export class Homepage2Page implements OnInit {
     // Check if search term is longer than 3 characters
     if (inputValue.length > 2) {
       // Navigate to search page with the search term
-      this.router.navigate(['/search-product'], {
+      this.router.navigate(['/tabs/categories'], {
         queryParams: { term: inputValue }
       });
     }
@@ -95,7 +95,9 @@ export class Homepage2Page implements OnInit {
   }
 
   navigateToCategory(CategoryId: any) {
-    this.router.navigate(['/tabs/categories']);
+    this.router.navigate(['/tabs/categories'] , {
+      queryParams: { cat: CategoryId }
+    });
   }
 
   navigateToProduct(productId: string) {
