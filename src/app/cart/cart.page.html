@@ -27,6 +27,8 @@
         <h2>{{ currentLanguage === 'ar' ? item.product.ar_ProductName : item.product.en_ProductName }}</h2>
         <p>QAR {{ item.price }}</p>
         <p>{{'Slaughter Charge' | translate }}:{{item.product.SlaughterCharge}}</p>
+        <p>{{'Cutting Charges' | translate }}:{{ item.cuttingAmount }}</p>
+
         <div class="quantity">
           <ion-button size="small" (click)="decreaseQuantity(item,item.product.minQuantity,item.quantity)">-</ion-button>
           <span>{{ item.quantity }}</span>

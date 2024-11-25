@@ -70,8 +70,10 @@ export class PaymentPage implements OnInit {
       companyName: [''],
       buildingName_No: ['', Validators.required],
       streetName_No: ['', Validators.required],
-      deliveryTime: ['10AM-12PM', Validators.required],
-      zoneNo: ['', Validators.required]
+      deliveryTime: ['10AM-01PM', Validators.required],
+      zoneNo: ['', Validators.required],
+      saveAddress: [false]
+
     });
   }
   async ngOnInit() {
@@ -82,7 +84,7 @@ export class PaymentPage implements OnInit {
     this.calculateTotalAmount();
     this.checkUserInfo();
     this.ifDoorStepDelivery();
-
+    this.loadSavedAddress();
     this.loadingController.dismiss();
   }
 
@@ -94,6 +96,7 @@ export class PaymentPage implements OnInit {
     this.cartCount.subscribe((count: any) => {
       this.count = count;
     });
+
   }
 
   private calculateTotalAmount() {
@@ -135,7 +138,8 @@ export class PaymentPage implements OnInit {
       await this.presentLoading('Submitting your order...');
       let formData = new FormData();
       const shippingCharge = this.orderForm.value.deliveryMethod === 'selfPickup' ? 0 : 20;
-
+      // find length of cartItems
+      
       this.cartItems.forEach((product, index) => {
         formData.append(`products[${index}][productID]`, product.product.productID.toString());
         formData.append(`products[${index}][productPrice]`, product.product.productPrice.toString());
@@ -326,6 +330,38 @@ export class PaymentPage implements OnInit {
   }
   goToCheckout() {
     this.router.navigate(['/tabs/cart']);
+  }
+  onSaveAddress(event: any) {
+    const isChecked = event.detail.checked;
+    this.orderForm.get('saveAddress')?.setValue(isChecked);
+  
+    if (isChecked) {
+      const addressData = {
+        city: this.orderForm.value.city,
+        buildingName_No: this.orderForm.value.buildingName_No,
+        streetName_No: this.orderForm.value.streetName_No,
+        landMark: this.orderForm.value.landMark,
+        zoneNo: this.orderForm.value.zoneNo,
+      };
+      localStorage.setItem('savedAddress', JSON.stringify(addressData));
+    } else {
+      localStorage.removeItem('savedAddress');
+    }
+  }
+  
+  loadSavedAddress() {
+    const savedAddress = localStorage.getItem('savedAddress');
+    if (savedAddress) {
+      const addressData = JSON.parse(savedAddress);
+      this.orderForm.patchValue({
+        city: addressData.city,
+        buildingName_No: addressData.buildingName_No,
+        streetName_No: addressData.streetName_No,
+        landMark: addressData.landMark,
+        zoneNo: addressData.zoneNo,
+        saveAddress: true, // Set checkbox to checked if data exists
+      });
+    }
   }
 
 }

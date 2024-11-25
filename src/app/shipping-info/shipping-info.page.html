@@ -17,8 +17,8 @@
 </ion-header>
 
 <ion-content class="ion-padding" [scrollEvents]="true" (ionScroll)="onScroll($event)">
-  <swiper-container dir="rtl" rtl="true" [loop]="true" autoplay="true"
-    [pagination]="{ clickable: true }" [slidesPerView]="1" [slidesPerGroup]="1" [loopFillGroupWithBlank]="true">
+  <swiper-container dir="rtl" rtl="true" [loop]="true" autoplay="true" [slidesPerView]="1" [slidesPerGroup]="1"
+    [loopFillGroupWithBlank]="true">
     <swiper-slide swiperSlide>
       <img src="assets/images/2alanam.jpeg" alt="Promo 1">
     </swiper-slide>
@@ -67,14 +67,14 @@
               <ion-label>
                 <p>{{'Cutting Charge' | translate}}</p>
               </ion-label>
-              <ion-label slot="end">{{ booking.cuttingAmount * booking.quantity   }} QAR</ion-label>
+              <ion-label slot="end">{{ booking.cuttingAmount * booking.quantity }} QAR</ion-label>
             </ion-item>
 
             <ion-item lines="none">
               <ion-label>
                 <p>{{'Delivery Charge' | translate}}</p>
               </ion-label>
-              <ion-label slot="end">{{ additionalCharge   }} QAR</ion-label>
+              <ion-label slot="end">{{ additionalCharge }} QAR</ion-label>
             </ion-item>
 
             <ion-item lines="none">
@@ -82,7 +82,8 @@
                 <h2>{{'Order Total' | translate}}</h2>
               </ion-label>
               <ion-label slot="end">
-                <h2>{{ booking.quantity * booking.price + (booking.quantity * booking.slaughterCharge) + (booking.quantity * booking.cuttingAmount) + additionalCharge   }} QAR</h2>
+                <h2>{{ booking.quantity * booking.price + (booking.quantity * booking.slaughterCharge) +
+                  (booking.quantity * booking.cuttingAmount) + additionalCharge }} QAR</h2>
               </ion-label>
             </ion-item>
           </ion-card-content>
@@ -93,12 +94,12 @@
 
   <ion-grid>
     <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
-      <h2>{{'User Info' | translate}}  </h2>
+      <h2>{{'User Info' | translate}} </h2>
 
       <ion-item>
         <ion-label>{{'Address Type' | translate}}</ion-label>
-        <ion-select [okText]="okButtonText"
-        [cancelText]="cancelButtonText" formControlName="addressType" (ionChange)="onAddressTypeChange($event)">
+        <ion-select [okText]="okButtonText" [cancelText]="cancelButtonText" formControlName="addressType"
+          (ionChange)="onAddressTypeChange($event)">
           <ion-select-option value="individual">{{'Individual' | translate}}</ion-select-option>
           <ion-select-option value="company">{{'Company' | translate}}</ion-select-option>
         </ion-select>
@@ -108,7 +109,7 @@
       </ion-note>
 
       <ion-item>
-      <ion-label position="floating">{{'Customer Name' | translate}}</ion-label>
+        <ion-label position="floating">{{'Customer Name' | translate}}</ion-label>
         <ion-input minlength="3" formControlName="customerName"></ion-input>
       </ion-item>
       <ion-note *ngIf="orderForm.get('customerName')?.touched && orderForm.get('customerName')?.invalid" color="danger">
@@ -186,23 +187,27 @@
         Landmark is required.
       </ion-note>
 
+      <ion-checkbox  [checked]="orderForm.get('saveAddress')?.value" 
+      (ionChange)="onSaveAddress($event)">
+        Save Address
+      </ion-checkbox>
       <!-- Delivery Method -->
       <h2>{{'Delivery Method' | translate}}</h2>
 
       <ion-radio-group formControlName="deliveryMethod">
-        <ion-radio slot="start" justify="space-between" value="selfPickup" id="selfPickup">{{'Self Pickup' | translate}} &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;(Free)</ion-radio>
-        <ion-radio slot="start" justify="space-between" value="Doorstep Delivery" id="homeDelivery">{{'Home Delivery' | translate}} &nbsp;&nbsp; (20 QAR)</ion-radio>
+        <ion-radio slot="start" justify="space-between" value="selfPickup" id="selfPickup">{{'Self Pickup' | translate}}
+          &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;(Free)</ion-radio>
+        <ion-radio slot="start" justify="space-between" value="Doorstep Delivery" id="homeDelivery">{{'Home Delivery' |
+          translate}} &nbsp;&nbsp; (20 QAR)</ion-radio>
       </ion-radio-group>
 
       <!-- Delivery Time -->
       <ion-item>
         <ion-label position="floating">{{'Delivery Time' | translate}}</ion-label>
-        <ion-select formControlName="deliveryTime" [okText]="okButtonText"
-        [cancelText]="cancelButtonText">
-          <ion-select-option value="09AM-11PM">10AM-12PM</ion-select-option>
-          <ion-select-option value="10AM-12PM">11AM-01PM</ion-select-option>
-          <ion-select-option value="12PM-2PM">01PM-3PM</ion-select-option>
-          <ion-select-option value="2PM-4PM">6PM-9PM</ion-select-option>
+        <ion-select formControlName="deliveryTime" [okText]="okButtonText" [cancelText]="cancelButtonText">
+          <ion-select-option value="10AM-01PM">10AM-01PM</ion-select-option>
+          <ion-select-option value="01PM-04PM">1PM-04PM</ion-select-option>
+          <ion-select-option value="04PM-08PM">04PM-08PM</ion-select-option>
         </ion-select>
       </ion-item>
 
@@ -215,10 +220,8 @@
         <p>Estimated delivery time: 3-5 business days.</p>
 
       </ion-note>
-      <ion-button expand="full" type="submit">{{'Book Now' | translate}} ({{ grandTotal + additionalCharge}})</ion-button>
+      <ion-button expand="full" type="submit">{{'Book Now' | translate}} ({{ grandTotal +
+        additionalCharge}})</ion-button>
     </form>
   </ion-grid>
-
-  <!-- Shopping Bag (Example Static Content) -->
-
 </ion-content>

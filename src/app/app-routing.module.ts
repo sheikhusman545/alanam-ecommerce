@@ -2,11 +2,6 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
 const routes: Routes = [
-  // {
-  //   path: '',
-  //   redirectTo: 'tabs',
-  //   pathMatch: 'full'
-  // },
   {
     path: '',
     redirectTo: 'splash',
@@ -24,10 +19,6 @@ const routes: Routes = [
   {
     path: 'product-description/:id',
     loadChildren: () => import('./product-description/product-description.module').then(m => m.ProductDescriptionPageModule)
-  },
-  {
-    path: 'search-product',
-    loadChildren: () => import('./search-product/search-product.module').then( m => m.SearchProductPageModule)
   },
   {
     path: 'tabs',

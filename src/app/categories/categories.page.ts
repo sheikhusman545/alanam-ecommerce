@@ -63,6 +63,7 @@ export class CategoriesPage implements OnInit {
           queryParams: { term: null },
           queryParamsHandling: 'merge', // Keep other query params
         });
+        this.searchTerm = '';
       }
     });
   }
@@ -139,6 +140,7 @@ export class CategoriesPage implements OnInit {
       this.subCategory = null;
     }
     this.selectedCategory = category;
+    this.searchTerm = '';
   }
 
   onSearch() {

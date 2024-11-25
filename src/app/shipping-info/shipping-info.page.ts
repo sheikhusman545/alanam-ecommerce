@@ -64,7 +64,8 @@ export class ShippingInfoPage implements OnInit {
       buildingName_No: ['', Validators.required],
       streetName_No: ['', Validators.required],
       landMark: ['', Validators.required],
-      deliveryTime: ['10AM-12PM', Validators.required],
+      deliveryTime: ['10AM-01PM', Validators.required],
+      saveAddress: [false]
     });
     this.setButtonText();
   }
@@ -85,6 +86,11 @@ export class ShippingInfoPage implements OnInit {
         }
       }
     );
+    if (this.grandTotal === 0) { 
+      this.navCtrl.back();
+    }
+
+
     this.routeSubscription = this.activatedRoute.url.subscribe(() => {
       setTimeout(() => {
         this.initAutocomplete();
@@ -92,7 +98,7 @@ export class ShippingInfoPage implements OnInit {
     });
     this.ifDoorStepDelivery();
     this.checkUserInfo();
-
+    this.loadSavedAddress();
     await loading.dismiss(); // Dismiss the loader when data is loaded
 
   }
@@ -298,6 +304,38 @@ export class ShippingInfoPage implements OnInit {
       this.renderer.setStyle(pacContainer, 'z-index', '9999');
     }
   }
+
+  onSaveAddress(event: any) {
+    const isChecked = event.detail.checked;
+    this.orderForm.get('saveAddress')?.setValue(isChecked);
+  
+    if (isChecked) {
+      const addressData = {
+        city: this.orderForm.value.city,
+        buildingName_No: this.orderForm.value.buildingName_No,
+        streetName_No: this.orderForm.value.streetName_No,
+        landMark: this.orderForm.value.landMark,
+      };
+      localStorage.setItem('savedAddress', JSON.stringify(addressData));
+    } else {
+      localStorage.removeItem('savedAddress');
+    }
+  }
+  
+  loadSavedAddress() {
+    const savedAddress = localStorage.getItem('savedAddress');
+    if (savedAddress) {
+      const addressData = JSON.parse(savedAddress);
+      this.orderForm.patchValue({
+        city: addressData.city,
+        buildingName_No: addressData.buildingName_No,
+        streetName_No: addressData.streetName_No,
+        landMark: addressData.landMark,
+        saveAddress: true, // Set checkbox to checked if data exists
+      });
+    }
+  }
+
 }
 
 

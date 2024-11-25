@@ -16,7 +16,7 @@
 </ion-header>
 
 <ion-content>
-  <swiper-container dir="rtl" rtl="true" [loop]="true" autoplay="true" [pagination]="{ clickable: true }"
+  <swiper-container dir="rtl" rtl="true" [loop]="true" autoplay="true" 
     [slidesPerView]="1" [slidesPerGroup]="1" [loopFillGroupWithBlank]="true">
     <swiper-slide swiperSlide>
       <img src="assets/images/4alanam.jpeg" alt="Promo 1">
@@ -49,20 +49,29 @@
           <ion-col size="12">
             <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="onSearch()"></ion-searchbar>
           </ion-col>
+        </ion-row>
+        <ion-row>
           <ion-col size="12">
-            <ion-row class="sub-category-item" >
-              <ion-col size="6" *ngFor="let sub of subCategory" (click)="onCategoryClick(sub)" >
-                <ion-item >
-                  <ion-row>
-                    <ion-img [src]="'https://shopapi.alanaam.qa/' + sub.categoryUrl"
-                      alt="{{ sub.en_CategoryName  }}"></ion-img>
-                    <p class="sub-font">{{ currentLanguage === 'ar' ? sub.ar_CategoryName : sub.en_CategoryName
-                      | uppercase}}</p>
-                  </ion-row>
+            <ion-row class="sub-category-item">
+              <ion-col size="6" *ngFor="let sub of subCategory" (click)="onCategoryClick(sub)" class="sub-category">
+                <ion-item lines="none" class="category-item">
+                  <div class="category-content">
+                    <ion-avatar class="category-avatar">
+                      <ion-img [src]="'https://shopapi.alanaam.qa/' + sub.categoryUrl" 
+                        alt="{{ sub.en_CategoryName }}"></ion-img>
+                    </ion-avatar>
+                    <p class="sub-font">
+                      {{ currentLanguage === 'ar' ? sub.ar_CategoryName : sub.en_CategoryName | uppercase }}
+                    </p>
+                  </div>
                 </ion-item>
               </ion-col>
             </ion-row>
           </ion-col>
+        </ion-row>
+        
+        
+        <ion-row>
           <ion-col class="product-col" size="6" *ngFor="let product of products"
             (click)="navigateToProduct(product.productID)">
             <ion-card>

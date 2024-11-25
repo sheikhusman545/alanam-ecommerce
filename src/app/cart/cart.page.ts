@@ -28,13 +28,13 @@ export class CartPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.currentLanguage = this.languageService.getCurrentLanguage() || 'en';
 
-    // Subscribe to cart changes and update items & total
     this.cartSubscription = this.cartService.cart$.subscribe((items) => {
       this.cartItems = items;
+      console.log('Cart items', this.cartItems);
+      
       this.calculateTotal();
     });
 
-    // Subscribe to cart item count
     this.cartCountSubscription = this.cartService.cartItemCount$.subscribe((count) => {
       this.count = count || 0;
     });
@@ -71,7 +71,8 @@ export class CartPage implements OnInit, OnDestroy {
 
   private calculateTotal() {
     this.totalAmount = this.cartItems.reduce((sum, item) => {
-      const itemTotal = (Number(item.price)  * Number(item.quantity)) + (Number(item.quantity) * Number(item.slaughterCharge));
+      const itemTotal = (Number(item.price) * Number(item.quantity)) + (Number(item.quantity) * Number(item.slaughterCharge))
+      +( Number(item.quantity) * Number(item.cuttingAmount));
       return sum + itemTotal;
     }, 0);
   }

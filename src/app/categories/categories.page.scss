@@ -94,3 +94,48 @@ ion-button {
 .sub-font{
   font-size: 12px;
 }
+.sub-category-item {
+  display: flex;
+  flex-wrap: wrap;
+
+  .sub-category {
+    text-align: center;
+  }
+
+  .category-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    --ion-item-background: transparent;
+  }
+
+  .category-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .category-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-bottom: 10px;
+
+      ion-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .sub-font {
+      font-size: 14px;
+      font-weight: bold;
+      color: #6c757d; 
+      text-align: center;
+      margin-top: 5px;
+    }
+  }
+}
