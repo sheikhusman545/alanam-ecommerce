@@ -60,11 +60,21 @@
     margin-right: 3px;
   }
 }
-
-
-
+h2 {
+  font-size: 1.5rem;
+  color: #6c2835;
+  margin-bottom: 10px;
+  font-family: system-ui;
+  text-align: center;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  padding: 2px;
+}
 .home-page {
   --ion-background-color: #fff;
+
+  
 
   .categories-section {
     margin: 20px 0;
@@ -85,7 +95,7 @@
 
       .section-title {
         font-size: 1.5rem;
-        color: #6c2835; // Meat shop theme color
+        color: #6c2835;
         text-align: center;
         margin-top: 20px;
       }
@@ -106,16 +116,13 @@
       }
     }
   }
-
-  
-  
 }
 
 .categories-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 16px; /* Adjust for spacing between items */
-  padding: 16px; /* Optional padding for the container */
+  gap: 16px;
+  padding: 16px;
 }
 
 .category-item {
@@ -123,20 +130,31 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center; /* Center-align text */
+  text-align: center;
   cursor: pointer;
+  background: white;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .category-item ion-avatar {
   width: 80px;
-  height: 80px; /* Adjust size of avatar */
-  margin-bottom: 8px; /* Space between avatar and label */
+  height: 80px;
+  margin-bottom: 8px;
+}
+
+.category-item img {
+  border-radius: 0 !important;
 }
 
 .category-item ion-label {
-  font-size: 14px; /* Adjust font size */
+  font-size: 14px;
 }
-
+.featured-products,.new-products{
+  margin:  20px 0;
+}
 
 .featured-products img {
   width: 100%;
@@ -144,6 +162,7 @@
   object-fit: cover;
   border-radius: 10px;
 }
+
 .main_content_div .title_lbl {
   font-size: 18px;
   font-family: "semi-bold";
@@ -155,10 +174,6 @@
   width: 70px;
   border-radius: 50% !important;
   object-fit: cover;
-}
-
-.main_content_div img {
-  border-radius: 100%;
 }
 
 .main_content_div ion-label {
@@ -189,14 +204,12 @@
 
 }
 
-
 ion-img.s-image,
 ion-img.p-image {
   height: 150px;
   width: 100%;
   object-fit: cover;
 }
-
 
 h3.product-name {
   font-size: 14px;

@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Select Payment Method</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let payment of paymentMethods" (click)="selectPaymentMethod(payment)">
+      <ion-thumbnail slot="start">
+        <img [src]="payment.ImageUrl" alt="Payment Logo" />
+      </ion-thumbnail>
+      <ion-label>
+        <h2>{{ payment.PaymentMethodEn }}</h2>
+        <p>Currency: {{ payment.CurrencyIso }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

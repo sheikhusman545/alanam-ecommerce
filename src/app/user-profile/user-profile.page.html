@@ -18,18 +18,13 @@
 </ion-header>
 <ion-content class="ion-padding">
   <div class="user-profile">
-    <div class="info-section">
-      <div class="info-card">
-        <!-- <p>{{'Need to show your order history?' | translate}}</p> -->
-        <ion-button color="success" (click)="navigateToOrders()">{{'Order History' | translate}}</ion-button>
-      </div>
-      <div class="info-card">
-        <!-- <p>{{'Wanna Logout?' | translate}}</p> -->
-        <ion-button (click)="logout()">{{'Logout' | translate}}</ion-button>
-      </div>
-    </div>
-
     <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+      <div class="info-section">
+        <div class="info-card">
+          <!-- <p>{{'Need to show your order history?' | translate}}</p> -->
+          <ion-button color="success" (click)="navigateToOrders()">{{'Order History' | translate}}</ion-button>
+        </div>
+      </div>
       <ion-item>
         <ion-label position="floating">{{'Full Name' | translate}}</ion-label>
         <ion-input formControlName="fullName"></ion-input>
@@ -47,12 +42,20 @@
 
       <ion-button class="mt-5" expand="block" type="submit">{{'Update' | translate}}</ion-button>
     </form>
+    <div class="info-section">
+      <div class="info-card">
+        <!-- <p>{{'Wanna Logout?' | translate}}</p> -->
+        <ion-button (click)="logout()">{{'Logout' | translate}}</ion-button>
+      </div>
+    </div>
+
+
   </div>
 
   <!--Delete my account button-->
   <ion-button class="delete-account" expand="block" color="primary" (click)="deleteAccount()">
     {{'Delete My Account' | translate}}
   </ion-button>
-  <ion-note color="danger">Are you looking to delete you account? This will completely delete your account in our system.</ion-note>
+  <ion-note color="danger">{{'Are you looking to delete you account? This will completely delete your account' | translate}}</ion-note>
 
 </ion-content>

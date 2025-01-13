@@ -6,7 +6,7 @@
       </ion-button>
     </ion-buttons>
 
-    <ion-title>MY Previous Orders </ion-title>
+    <ion-title>Orders </ion-title>
 
     <ion-buttons slot="end">
       <ion-button>
@@ -17,7 +17,7 @@
 </ion-header>
 <ion-content>
   <div class="order-history" *ngIf="orders">
-    <h2>My Previous Order </h2>
+    <h2>Previous Orders </h2>
     <ion-accordion-group  *ngFor="let order of orders">
       <!-- Repeat this for each order -->
       <ion-accordion>

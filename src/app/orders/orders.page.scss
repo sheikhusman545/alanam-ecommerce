@@ -2,7 +2,7 @@
     --ion-background-color: whitesmoke !important;
     --ion-text-color: darkred !important;
 }
-ion-header{
+ion-header {
     display: flex;
     align-items: center;
 }
@@ -11,31 +11,35 @@ ion-accordion-group {
     border: 1px solid #ccc;
     border-radius: 8px;
 }
-
 ion-accordion {
     --background: #ffffff;
     border-bottom: 1px solid #eee;
 }
-
 ion-list {
     padding: 16px;
     background-color: #f9f9f9;
 }
-
 ion-thumbnail {
     width: 70px;
     height: 70px;
 }
-
 ion-item-divider {
     font-weight: bold;
     color: #6c2835;
 }
-ion-icon{
+ion-icon {
     width: 32px;
     height: 32px;
 }
+.order-history{
+    padding: 10px;
+}
 .order-history h2 {
-    padding: 30px;
-    color:black;
+    padding: 5px;
+    color: #6c2835;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    background: white;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+    font-family: system-ui;
+    text-align: center;
 }

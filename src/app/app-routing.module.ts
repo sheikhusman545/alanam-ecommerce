@@ -57,6 +57,10 @@ const routes: Routes = [
     path: 'guest',
     loadChildren: () => import('./guest/guest.module').then( m => m.GuestPageModule)
   },
+  {
+    path: 'paynow',
+    loadChildren: () => import('./embedded-payment/embedded-payment.module').then( m => m.EmbeddedPaymentPageModule)
+  },
   // {
   //   path: 'tabs/settings',
   //   loadChildren: () => import('./settings/settings.module').then( m => m.SettingsPageModule)

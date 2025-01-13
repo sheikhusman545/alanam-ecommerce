@@ -2,22 +2,37 @@
     --ion-background-color: whitesmoke !important;
     --ion-text-color: darkred !important;
 }
-ion-header{
+
+ion-header {
     display: flex;
     align-items: center;
 }
-.mt-5{
+
+.mt-5 {
     margin-top: 30px;
 }
 
-
-.delete-account{
+.delete-account {
     margin-top: 50px;
-    display:flex;
+    display: flex;
     text-align: center;
 }
-.info-card{
+
+.info-card {
     margin-bottom: 50px;
     width: 100%;
     text-align: center;
+    margin-top: 50px;
+}
+
+ion-button {
+    width: 100%;
+}
+
+ion-note {
+    width: 100%;
+    display: flex;
+    font-size: 12px;
+    text-align: center;
+
 }

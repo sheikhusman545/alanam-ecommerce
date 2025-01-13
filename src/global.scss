@@ -44,8 +44,9 @@
 //     --ion-background-color: #000000; /* Dark theme background */
 //     --ion-text-color: #ffffff; /* Dark theme text */
 //   }
-  
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
   :root {
+	--ion-font-family: 'Montserrat', sans-serif;
 	--ion-color-primary: #6c2835;
 	--ion-color-primary-rgb: 0,175,240;
 	--ion-color-primary-contrast: #fff;

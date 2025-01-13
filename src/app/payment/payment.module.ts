@@ -8,6 +8,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
+import { PaymentMethodModalComponent } from '../components/payment-method-modal/payment-method-modal.component';
 
 @NgModule({
   imports: [
@@ -18,7 +19,7 @@ import { TranslateModule } from '@ngx-translate/core';
     ReactiveFormsModule,
     TranslateModule
   ],
-  declarations: [PaymentPage],
+  declarations: [PaymentPage, PaymentMethodModalComponent],
   providers: [DatePipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

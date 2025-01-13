@@ -159,7 +159,6 @@ export class ProductDescriptionPage implements OnInit {
   }
 
   addItemToCart() {
-    console.log(this.productAttributes);
     const totalPrice = this.productData.productPrice;
     this.cartService.addProduct({
       product: this.productData,
