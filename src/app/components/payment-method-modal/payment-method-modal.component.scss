@@ -11,7 +11,6 @@
 ion-content {
     width: 98%;
     background-color: #fff;
-    /* Ensure a contrasting background color */
     border-radius: 12px;
     padding: 1rem;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
@@ -50,9 +49,8 @@ ion-item {
 }
 
 ion-thumbnail {
-    border-radius: 50%;
-    /* Circular thumbnails for a modern look */
-    overflow: hidden;
+    border-radius: 0%;
+    overflow: visible;
 }
 
 ion-label h2 {
@@ -66,7 +64,6 @@ ion-label p {
 }
 
 ion-thumbnail img {
-    width: 40px;
     height: 40px;
 }
 

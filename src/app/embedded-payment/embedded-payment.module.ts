@@ -7,14 +7,18 @@ import { IonicModule } from '@ionic/angular';
 import { EmbeddedPaymentPageRoutingModule } from './embedded-payment-routing.module';
 
 import { EmbeddedPaymentPage } from './embedded-payment.page';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    EmbeddedPaymentPageRoutingModule
+    EmbeddedPaymentPageRoutingModule,
+    TranslateModule
   ],
-  declarations: [EmbeddedPaymentPage]
+  declarations: [EmbeddedPaymentPage],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class EmbeddedPaymentPageModule {}

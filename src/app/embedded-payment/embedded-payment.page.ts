@@ -3,9 +3,11 @@ import { PaymentService } from 'src/app/services/payment.service'; // Import the
 import { Browser } from '@capacitor/browser';
 import { CartItem, CartService } from 'src/app/services/cart.service';
 import { Subscription } from 'rxjs';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, NavController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { LanguageService } from '../services/language.service';
+
 
 declare global {
     interface Window {
@@ -31,26 +33,32 @@ export class EmbeddedPaymentPage implements OnInit {
     @ViewChild('gpCardElement', { static: true }) gpCardElement!: ElementRef;
     cartCount: any;
     count: any;
+    currentLanguage: string | 'en' | undefined;
+
 
     constructor(
         private paymentService: PaymentService,
         private cartService: CartService,
         private loadingController: LoadingController,
         private alertController: AlertController,
-        private router: Router
+        private router: Router,
+        private navCtrl: NavController,
+        private languageService: LanguageService
     ) { }
 
-   async ngOnInit() {
+    async ngOnInit() {
+       
         await this.presentLoading('Loading...');
-
+        this.currentLanguage = this.languageService.getCurrentLanguage();
         this.subscribeToCart();
         this.calculateTotalAmount();
-        this.loadingController.dismiss();
 
         this.paymentService.getEmbeddedSession().subscribe((response: any) => {
             this.sessionId = response.successMessages.sessionId.trim();
             this.initializePayment();
         });
+        this.loadingController.dismiss();
+
 
    }
     
@@ -72,6 +80,8 @@ export class EmbeddedPaymentPage implements OnInit {
         (Number(item.quantity) * Number(item.slaughterCharge));
       return sum + itemTotal;
     }, 0);
+    this.totalAmount = Number(this.totalAmount.toFixed(2));
+
   }
 
     initializePayment() {
@@ -98,35 +108,36 @@ export class EmbeddedPaymentPage implements OnInit {
             amount: this.totalAmount.toString(),
             callback: this.handlePayment.bind(this),
             containerId: 'unified-session',
-            paymentOptions: ['ApplePay', 'GooglePay', 'Card'],
+            // paymentOptions: ['ApplePay', 'GooglePay', 'Card'],
+             paymentOptions: ['Card'],
             supportedNetworks: ['visa', 'masterCard', 'mada', 'amex'],
             language: 'en',
             settings: {
-                googlePay: {
-                    containerId: 'gp-card-element',
-                    style: {
-                        frameHeight: '40px',
-                        frameWidth: '100%',
-                        button: {
-                            height: '40px',
-                            type: 'pay',
-                            borderRadius: '4px',
-                            color: 'black',
-                            language: 'en'
-                        }
-                    }
-                },
-                applePay: {
-                    style: {
-                        frameHeight: '40px',
-                        frameWidth: '100%',
-                        button: {
-                            height: '40px',
-                            type: 'pay',
-                            borderRadius: '4px'
-                        }
-                    }
-                },
+                // googlePay: {
+                //     containerId: 'gp-card-element',
+                //     style: {
+                //         frameHeight: '40px',
+                //         frameWidth: '100%',
+                //         button: {
+                //             height: '40px',
+                //             type: 'pay',
+                //             borderRadius: '4px',
+                //             color: 'black',
+                //             language: 'en'
+                //         }
+                //     }
+                // },
+                // applePay: {
+                //     style: {
+                //         frameHeight: '40px',
+                //         frameWidth: '100%',
+                //         button: {
+                //             height: '40px',
+                //             type: 'pay',
+                //             borderRadius: '4px'
+                //         }
+                //     }
+                // },
                 card: {
                     style: {
                         cardHeight: '150px',
@@ -174,10 +185,56 @@ export class EmbeddedPaymentPage implements OnInit {
         }
     }
 
+    // handlePayment(response: any) {
+    //     alert('Payment response: ' + JSON.stringify(response));
+    //     try {
+    //         if (response.isSuccess) {
+
+    //             // Handle success
+    //             localStorage.setItem('paymentResponse', JSON.stringify(response));
+    //             const paymentData = {
+    //                 orderNo: Number(localStorage.getItem('orderNo')),
+    //                 methodId: 2,
+    //                 IsEmbeddedSupported: true,
+    //                 sessionId: response.sessionId
+    //             };
+    //             this.paymentService.executePayment(paymentData).subscribe(async response => {
+    //                 if (response.successMessages.redirectionURL != null) {
+    //                     let link = response.successMessages.redirectionURL;
+    //                     this.presentSuccessAlert(link);
+
+    //                     this.cartService.clearCart();
+    //                     await Browser.open({ url: link });
+    //                     this.presentSuccessAlert("You are redirecting to payment gateway once you approved you will get an email from us. Please make payment.");
+    //                     this.router.navigate(['/tabs/home']);
+
+    //                 }
+    //             }, error => {
+    //                 console.error('Payment Error:', error);
+    //             });
+
+    //             ///   this.paymentService.executePayment(paymentData).subscribe((response: any) => { });
+    //             // You can perform actions based on payment type
+    //             switch (response.paymentType) {
+    //                 case 'ApplePay':
+    //                     break;
+    //                 case 'GooglePay':
+    //                     break;
+    //                 case 'Card':
+    //                     break;
+    //             }
+    //         } else {
+    //             console.error('Payment failed:', response);
+    //         }
+    //     } catch (error) {
+    //         console.error('Error in payment callback:', error);
+    //     }
+    // }
     handlePayment(response: any) {
+//        alert('Payment response: ' + JSON.stringify(response));
         try {
             if (response.isSuccess) {
-
+    
                 // Handle success
                 localStorage.setItem('paymentResponse', JSON.stringify(response));
                 const paymentData = {
@@ -189,16 +246,17 @@ export class EmbeddedPaymentPage implements OnInit {
                 this.paymentService.executePayment(paymentData).subscribe(async response => {
                     if (response.successMessages.redirectionURL != null) {
                         let link = response.successMessages.redirectionURL;
-                        this.cartService.clearCart();
+    
+                        // Open the payment gateway in the system browser
                         await Browser.open({ url: link });
-                        this.presentSuccessAlert("You are redirecting to payment gateway once you approved you will get an email from us. Please make payment.");
+    
+                        this.presentSuccessAlert("You are redirecting to the payment gateway. Once you approve, you will receive an email from us. Please make payment.");
                         this.router.navigate(['/tabs/home']);
-
                     }
                 }, error => {
                     console.error('Payment Error:', error);
                 });
-
+    
                 ///   this.paymentService.executePayment(paymentData).subscribe((response: any) => { });
                 // You can perform actions based on payment type
                 switch (response.paymentType) {
@@ -240,6 +298,14 @@ export class EmbeddedPaymentPage implements OnInit {
           ]
         });
         await alert.present();
+      }
+    
+      onBack() {
+        this.navCtrl.back();
+      }
+    
+      goToCheckout() {
+        this.router.navigate(['/tabs/cart']);
       }
 
 }

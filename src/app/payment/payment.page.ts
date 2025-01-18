@@ -43,6 +43,7 @@ export class PaymentPage implements OnInit {
   ID: any;
   apiErrors: { [key: string]: string } = {};
   additionalCharge: number = 0;
+  private subscriptions: Subscription = new Subscription();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -54,7 +55,7 @@ export class PaymentPage implements OnInit {
     private cartService: CartService,
     private datePipe: DatePipe,
     private loadingController: LoadingController,
-    private lan: LanguageService,
+    private languageService: LanguageService,
     private ngZone: NgZone,
     private renderer: Renderer2,
     private paymentService: PaymentService,
@@ -80,7 +81,13 @@ export class PaymentPage implements OnInit {
     });
   }
   async ngOnInit() {
-    this.currentLanguage = this.lan.getCurrentLanguage();
+    //this.currentLanguage = this.lan.getCurrentLanguage();
+    this.subscriptions.add(
+      this.languageService.language$.subscribe((language) => {
+        this.currentLanguage = language;
+        console.log(`Language changed to: ${language}`);
+      })
+    );
     await this.presentLoading('Loading...');
 
     this.subscribeToCart();
@@ -108,6 +115,7 @@ export class PaymentPage implements OnInit {
         (Number(item.quantity) * Number(item.slaughterCharge));
       return sum + itemTotal;
     }, 0);
+    this.totalAmount = Number(this.totalAmount.toFixed(2));
   }
 
   onAddressTypeChange(event: any) {

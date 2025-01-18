@@ -1,13 +1,26 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>embedded-payment</ion-title>
+<ion-header class="header-menu" [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="onBack()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>{{'Pay Now' | translate}}</ion-title>
+
+    <!-- <ion-buttons slot="end" (click)="goToCheckout()">
+      <ion-icon name="cart-outline"></ion-icon>
+      <ion-badge>{{ count }}</ion-badge>
+    </ion-buttons> -->
   </ion-toolbar>
 </ion-header>
 
+
 <ion-content >
   <div class="ion-padding">
-    <img src="assets/images/alanam-logo-dark.png" alt="Payment" style="width: 100%; width:256px; display: block; margin: 0 auto;">
+    <img src="assets/images/alanam-logo-dark.png" alt="Payment" style="width: 100%; width:128px; display: block; margin: 0 auto;">
   </div>
+  <div class="total-amount ion-padding">Total Amount : {{totalAmount}} QAR</div>
   <div class="ion-padding payment-container">
     <div id="unified-session" #unifiedSession></div>
     <div id="gp-card-element" #gpCardElement style="margin-top: 12px;"></div>

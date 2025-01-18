@@ -5,6 +5,7 @@ import { NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { LanguageService } from '../services/language.service';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -17,6 +18,8 @@ export class LoginPage implements OnInit {
   userDetails: any;
   jwtToken: any = null;
   currentLanguage: string | 'en' | undefined;
+  private subscriptions: Subscription = new Subscription();
+  
 
   constructor(
     private fb: FormBuilder,
@@ -37,7 +40,13 @@ export class LoginPage implements OnInit {
         });
   }
   ngOnInit(): void {
-    this.currentLanguage = this.languageService.getCurrentLanguage();
+    //this.currentLanguage = this.languageService.getCurrentLanguage();
+    this.subscriptions.add(
+      this.languageService.language$.subscribe((language) => {
+        this.currentLanguage = language;
+        console.log(`Language changed to: ${language}`);
+      })
+    );
   }
 
   sendOTP() {

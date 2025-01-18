@@ -1,20 +1,25 @@
-ion-content{
+ion-title {
+    font-size: 14px;
+}
+
+ion-content {
     padding: 20px;
-    display: flex  ;
+    display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.payment-container{
+.payment-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
-ion-thumbnail{
-    width: 100px;
-    height: 100px;
-    margin: 0 auto;
-}
-ion-thumbnail img{
-    width: 100%;
+
+.total-amount {
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    margin: 20px;
+    font-size: 20px;
 }

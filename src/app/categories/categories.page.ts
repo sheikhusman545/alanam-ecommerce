@@ -6,6 +6,7 @@ import { NavController, LoadingController } from '@ionic/angular';
 import { CartService } from '../services/cart.service';
 import Swiper from 'swiper';
 import { LanguageService } from '../services/language.service';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-categories',
   templateUrl: './categories.page.html',
@@ -23,6 +24,7 @@ export class CategoriesPage implements OnInit {
   currentLanguage: string | 'en' | undefined;
   catId: string | undefined;
   searchTerm: any;
+  private subscriptions: Subscription = new Subscription();
 
   constructor(
     private categoriesService: CategoriesService,
@@ -37,7 +39,14 @@ export class CategoriesPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.currentLanguage = this.languageService.getCurrentLanguage();
+    //  this.currentLanguage = this.languageService.getCurrentLanguage();
+    this.subscriptions.add(
+      this.languageService.language$.subscribe((language) => {
+        this.currentLanguage = language;
+        console.log(`Language changed to: ${language}`);
+      })
+    );
+    
     this.cartService.cartItemCount$.subscribe((count) => (this.cartCount = count));
     this.loadCategories();
     this.route.queryParams.subscribe((params) => {

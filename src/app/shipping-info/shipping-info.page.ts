@@ -36,6 +36,7 @@ export class ShippingInfoPage implements OnInit {
   ID: any;
   grandTotal: any = 0;
   additionalCharge: number = 0;
+  private subscriptions: Subscription = new Subscription();
 
 
   constructor(
@@ -71,7 +72,14 @@ export class ShippingInfoPage implements OnInit {
   }
 
   async ngOnInit() {
-    this.currentLanguage = this.languageService.getCurrentLanguage();
+    //this.currentLanguage = this.languageService.getCurrentLanguage();
+    this.subscriptions.add(
+      this.languageService.language$.subscribe((language) => {
+        this.currentLanguage = language;
+        console.log(`Language changed to: ${language}`);
+      })
+    );
+    
     this.setButtonText()
     const loading = await this.loadingController.create({
       message: 'Loading...',

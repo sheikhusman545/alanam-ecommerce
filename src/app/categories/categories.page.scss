@@ -29,15 +29,36 @@ ion-avatar {
   height: 64px;
 }
 
-.categories {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
-  border-radius: 8px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
+// .categories {
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: center;
+//   padding: 10px;
+//   border-radius: 8px;
+//   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+//   transition: box-shadow 0.3s ease, transform 0.3s ease;
+//   gap: 10px;
+// }
+
+.categories{
+  display: flex
+  ;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+      gap: 10px;
+      background: white;
+      margin: 1px;
+      border: none;
+}
+.categories img{
+  border-radius: 0;
+  object-fit: cover;
 }
 
 ion-list {
@@ -93,10 +114,9 @@ ion-card-content {
 }
 
 .product-name {
-  font-size: 12px;
+  font-size: 10px;
   text-align: center;
   margin-top: 10px;
-  font-weight: bold;
   color: #333;
 }
 
@@ -125,7 +145,8 @@ ion-button {
 .sub-category-item {
   display: flex;
   flex-wrap: wrap;
-
+  padding:2px;
+  font-size: 10px;
   .sub-category {
     text-align: center;
   }
@@ -138,10 +159,11 @@ ion-button {
     background: transparent;
     --ion-item-background: transparent;
     background: white;
-    padding: 10px;
+    padding: 2px;
     border-radius: 8px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
     transition: box-shadow 0.3s ease, transform 0.3s ease;
+    overflow: visible;
   }
 
   .category-content {
@@ -165,9 +187,8 @@ ion-button {
     }
 
     .sub-font {
-      font-size: 12px;
-      font-weight: bold;
-      color: #6c757d;
+      font-size: 10px;
+      color: black;
       text-align: center;
       margin-top: 5px;
     }

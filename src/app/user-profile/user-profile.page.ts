@@ -8,6 +8,7 @@ import { LanguageService } from '../services/language.service';
 import { CartService } from '../services/cart.service';
 import { ToastController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-user-profile',
@@ -18,7 +19,8 @@ export class UserProfilePage implements OnInit {
   userForm!: FormGroup;
   currentLanguage: string | 'en' | undefined;
   count = 0;
-   ID: any = '';
+  ID: any = '';
+  private subscriptions: Subscription = new Subscription();
   private token: any = localStorage.getItem('JWT_Token');  // Retrieve token from localStorage
   constructor(
     private fb: FormBuilder,
@@ -32,8 +34,14 @@ export class UserProfilePage implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.subscriptions.add(
+      this.languageService.language$.subscribe((language) => {
+        this.currentLanguage = language;
+        console.log(`Language changed to: ${language}`);
+      })
+    );
     this.cart.cartItemCount$.subscribe((count) => (this.count = count));
-    this.currentLanguage = this.languageService.getCurrentLanguage();
+   // this.currentLanguage = this.languageService.getCurrentLanguage();
     this.userForm = this.fb.group({
       fullName: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],

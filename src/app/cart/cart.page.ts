@@ -16,7 +16,8 @@ export class CartPage implements OnInit, OnDestroy {
   cartSubscription!: Subscription;
   cartCountSubscription!: Subscription;
   count = 0;
-  currentLanguage: string = 'en';
+  currentLanguage: string | undefined = 'en';
+  private subscriptions: Subscription = new Subscription();
 
   constructor(
     private router: Router,
@@ -26,8 +27,13 @@ export class CartPage implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.currentLanguage = this.languageService.getCurrentLanguage() || 'en';
-
+   // this.currentLanguage = this.languageService.getCurrentLanguage() || 'en';
+   this.subscriptions.add(
+    this.languageService.language$.subscribe((language) => {
+      this.currentLanguage = language;
+      console.log(`Language changed to: ${language}`);
+    })
+  );
     this.cartSubscription = this.cartService.cart$.subscribe((items) => {
       this.cartItems = items;
       this.calculateTotal();
@@ -73,6 +79,8 @@ export class CartPage implements OnInit, OnDestroy {
       +( Number(item.quantity) * Number(item.cuttingAmount));
       return sum + itemTotal;
     }, 0);
+    this.totalAmount = Number(this.totalAmount.toFixed(2));
+
   }
 
   proceedToCheckout() {

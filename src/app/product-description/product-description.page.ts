@@ -6,6 +6,7 @@ import { BookingCartService } from '../services/booking-cart.service';
 import { AuthService } from '../services/auth.service';
 import { CartService } from '../services/cart.service';
 import { LanguageService } from '../services/language.service';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-product-description',
   templateUrl: './product-description.page.html',
@@ -24,6 +25,7 @@ export class ProductDescriptionPage implements OnInit {
   currentLanguage: string = 'en';
   attribute_msg = '';
   selectedValue: boolean = false;
+  private subscriptions: Subscription = new Subscription();
 
 
 
@@ -41,7 +43,13 @@ export class ProductDescriptionPage implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.currentLanguage = this.languageService.getCurrentLanguage();
+    // this.currentLanguage = this.languageService.getCurrentLanguage();
+    this.subscriptions.add(
+      this.languageService.language$.subscribe((language) => {
+        this.currentLanguage = language;
+        console.log(`Language changed to: ${language}`);
+      })
+    );
     this.route.paramMap.subscribe(params => {
       this.id = params.get('id');
       if (this.id) {

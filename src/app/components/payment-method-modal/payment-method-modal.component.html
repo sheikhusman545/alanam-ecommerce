@@ -9,14 +9,16 @@
 
 <ion-content>
   <ion-list>
-    <ion-item *ngFor="let payment of paymentMethods" (click)="selectPaymentMethod(payment)">
-      <ion-thumbnail slot="start">
-        <img [src]="payment.ImageUrl" alt="Payment Logo" />
-      </ion-thumbnail>
-      <ion-label>
-        <h2>{{ payment.PaymentMethodEn }}</h2>
-        <p>Currency: {{ payment.CurrencyIso }}</p>
-      </ion-label>
-    </ion-item>
+    <div *ngFor="let payment of paymentMethods" (click)="selectPaymentMethod(payment)">
+      <ion-item *ngIf="payment.PaymentMethodId != 8 && payment.PaymentMethodId != 9">
+        <ion-thumbnail slot="start">
+          <img [src]="payment.ImageUrl" alt="Payment Logo" />
+        </ion-thumbnail>
+        <ion-label>
+          <h2>{{ payment.PaymentMethodEn }}</h2>
+          <p>Currency: {{ payment.CurrencyIso }}</p>
+        </ion-label>
+      </ion-item>
+    </div>
   </ion-list>
 </ion-content>
