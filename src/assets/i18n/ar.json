@@ -142,13 +142,22 @@
     "FAQ" : "الأسئلة الشائعة",
     "Language" : "اللغة",
     "Settings" : "الإعدادات",
-    "Delete My Account": "حذف حسابي",
     "Are you looking to delete you account? This will completely delete your account in our system.": "هل ترغب في حذف حسابك؟ سيتم حذف حسابك بالكامل من نظامنا.",
     "Please select cutting type": "يرجى تحديد نوع التقطيع",
     "Delivery charges for home delivery is 20.00 QAR": "رسوم التوصيل للتوصيل إلى المنزل هي 20.00 ريال قطري",
     "Are you looking to delete you account? This will completely delete your account": "هل ترغب في حذف حسابك؟ سيتم حذف حسابك بالكامل",
     "Orders": "الطلبات",
-    "Previous Orders" : "الطلبات السابقة"
+    "Save Address" : "حفظ العنوان",
+    "Any order before 3 PM will be delivered the same day." : "سيتم توصيل أي طلب قبل الساعة 3 مساءً في نفس اليوم.",
+    "Orders after 3 PM will be delivered the next day." : "سيتم توصيل الطلبات بعد الساعة 3 مساءً في اليوم التالي.",
+    "Estimated delivery time: 3-5 business days." : "الوقت المتوقع للتسليم: 3-5 أيام عمل.",
+    "Zone No" : "رقم المنطقة",
+    "Logout" : "تسجيل الخروج",
+    "Order History" : "تاريخ الطلب",
+    "Full Name" : "الاسم الكامل",
+    "Previous Orders" : "الطلبات السابقة",
+    "Delete My Account" : "حذف حسابي"
+
     
 
 

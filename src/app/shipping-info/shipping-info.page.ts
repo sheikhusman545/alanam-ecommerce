@@ -170,7 +170,7 @@ export class ShippingInfoPage implements OnInit {
   async onSubmit() {
     if (this.orderForm.valid) {
       const loading = await this.loadingController.create({
-        message: 'Submitting your order...',
+        message: 'Submitting...',
         spinner: 'crescent',
       });
       await loading.present(); // Show the loader

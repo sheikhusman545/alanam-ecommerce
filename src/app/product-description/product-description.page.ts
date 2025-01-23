@@ -60,7 +60,7 @@ export class ProductDescriptionPage implements OnInit {
 
   async getProductDetails(productId: string) {
     this.loading = await this.loadingController.create({
-      message: 'Loading product details...', // Optional message
+      message: 'Loading ...', // Optional message
       spinner: 'crescent' // You can choose different spinner styles
     });
     await this.loading.present(); // Present the loader

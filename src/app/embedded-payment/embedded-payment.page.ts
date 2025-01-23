@@ -108,36 +108,36 @@ export class EmbeddedPaymentPage implements OnInit {
             amount: this.totalAmount.toString(),
             callback: this.handlePayment.bind(this),
             containerId: 'unified-session',
-            // paymentOptions: ['ApplePay', 'GooglePay', 'Card'],
-             paymentOptions: ['Card'],
+             paymentOptions: ['ApplePay', 'GooglePay', 'Card'],
+            // paymentOptions: ['Card'],
             supportedNetworks: ['visa', 'masterCard', 'mada', 'amex'],
             language: 'en',
             settings: {
-                // googlePay: {
-                //     containerId: 'gp-card-element',
-                //     style: {
-                //         frameHeight: '40px',
-                //         frameWidth: '100%',
-                //         button: {
-                //             height: '40px',
-                //             type: 'pay',
-                //             borderRadius: '4px',
-                //             color: 'black',
-                //             language: 'en'
-                //         }
-                //     }
-                // },
-                // applePay: {
-                //     style: {
-                //         frameHeight: '40px',
-                //         frameWidth: '100%',
-                //         button: {
-                //             height: '40px',
-                //             type: 'pay',
-                //             borderRadius: '4px'
-                //         }
-                //     }
-                // },
+                googlePay: {
+                    containerId: 'gp-card-element',
+                    style: {
+                        frameHeight: '40px',
+                        frameWidth: '100%',
+                        button: {
+                            height: '40px',
+                            type: 'pay',
+                            borderRadius: '4px',
+                            color: 'black',
+                            language: 'en'
+                        }
+                    }
+                },
+                applePay: {
+                    style: {
+                        frameHeight: '40px',
+                        frameWidth: '100%',
+                        button: {
+                            height: '40px',
+                            type: 'pay',
+                            borderRadius: '4px'
+                        }
+                    }
+                },
                 card: {
                     style: {
                         cardHeight: '150px',
@@ -171,6 +171,7 @@ export class EmbeddedPaymentPage implements OnInit {
                         }
                     }
                 }
+          
             }
         };
 

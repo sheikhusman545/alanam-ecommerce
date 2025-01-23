@@ -79,7 +79,7 @@ export class CategoriesPage implements OnInit {
  
   async loadCategories() {
     const loader = await this.loadingController.create({
-      message: 'Loading categories...',
+      message: 'Loading...',
     });
     await loader.present(); 
 
@@ -98,7 +98,7 @@ export class CategoriesPage implements OnInit {
 
   async loadAllProducts() {
     const loader = await this.loadingController.create({
-      message: 'Loading products...',
+      message: 'Loading...',
     });
     await loader.present(); 
 
@@ -118,7 +118,7 @@ export class CategoriesPage implements OnInit {
 
   async loadProductsByCategory(categoryId: string) {
     const loader = await this.loadingController.create({
-      message: 'Loading products for category...',
+      message: 'Loading ...',
     });
     await loader.present(); 
     this.productsService.getProductsByCategory(categoryId).subscribe({

@@ -87,6 +87,9 @@
               </ion-card-content>
             </ion-card>
           </ion-col>
+          <ion-col class="no-product" *ngIf="products.length === 0">
+            <h6 class="no-products">No Products Available</h6>
+          </ion-col>
         </ion-row>
       </ion-grid>
     </div>

@@ -134,7 +134,7 @@
 
       <ion-checkbox  [checked]="orderForm.get('saveAddress')?.value" 
       (ionChange)="onSaveAddress($event)">
-        Save Address
+        {{'Save Address' | translate}}
       </ion-checkbox>
       <!-- Delivery Method -->
       <h2>{{'Delivery Method' | translate}}</h2>
@@ -160,9 +160,8 @@
         {{'Delivery Time is required.' | translate}}
       </ion-note>
       <ion-note color="danger">
-        <p>Any order before 3 PM will be delivered the same day.</p>
-        <p>Orders after 3 PM will be delivered the next day.</p>
-        <p>Estimated delivery time: 3-5 business days.</p>
+        <p>{{'Any order before 3 PM will be delivered the same day.' | translate}}</p>
+        <p>{{'Orders after 3 PM will be delivered the next day.' | translate}}</p>
 
       </ion-note>
       <ion-button expand="full" type="submit">{{'Pay Now' | translate}} ({{totalAmount + additionalCharge}} QAR)</ion-button>
