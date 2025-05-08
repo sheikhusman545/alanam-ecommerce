@@ -13,13 +13,12 @@ export class OrdersService {
 
   private token = localStorage.getItem('JWT_Token');  // Retrieve token from localStorage
 
-
   getOrders() {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${this.token}`,   // Authorization header
       'X-Auth-Token': this.token || ''           // X-Auth-Token header
     });
 
-    return this.http.get('ecom/myaccount/orders', { headers });
+    return this.http.get('ecom/myaccount/getorders', { headers });
   }
 }

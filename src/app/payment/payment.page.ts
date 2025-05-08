@@ -16,6 +16,7 @@ import { IonInput } from '@ionic/angular';
 import { LanguageService } from '../services/language.service';
 import { PaymentMethodModalComponent } from '../components/payment-method-modal/payment-method-modal.component';
 import { PaymentService } from '../services/payment.service';
+import { HttpHeaders } from '@angular/common/http';
 declare var google: any;
 
 @Component({
@@ -44,7 +45,8 @@ export class PaymentPage implements OnInit {
   apiErrors: { [key: string]: string } = {};
   additionalCharge: number = 0;
   private subscriptions: Subscription = new Subscription();
-
+  private token: any = localStorage.getItem('JWT_Token'); 
+  
   constructor(
     private formBuilder: FormBuilder,
     private httpClient: HttpClientService,
@@ -209,53 +211,19 @@ export class PaymentPage implements OnInit {
     formData.append("mobileNumber", this.orderForm.value.phoneNo);
     formData.append("city", this.orderForm.value.city);
 
-    this.httpClient.post('ecom/cart/mobile', formData).subscribe(async response => {
-      
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.token}`,
+      'X-Auth-Token': this.token || ''
+    });
+
+    this.httpClient.post('ecom/cart/mobile', formData, { headers }).subscribe(async response => {
+
       if (response.respondStatus == 'SUCCESS') {
         await Browser.open({ url: response.successMessages.paymentLink });
         this.loadingController.dismiss();
         this.presentSuccessAlert("You are redirecting to payment gateway once you approved you will get an email from us. Please make payment.");
         this.router.navigate(['/tabs/home']);
       }
-    //  await Browser.open({ url: link });
-
-      // if (response.respondStatus === 'SUCCESS') {
-      //   localStorage.setItem('orderNo', response.successMessages.orderNo);
-      //   localStorage.setItem('PaymentMethod', paymentMethod);
-      //   if (paymentMethod.PaymentMethodId !== 6) {
-      //     this.router.navigate(['/paynow']);
-      //   } else {
-      //     const orderNo = localStorage.getItem('orderNo');
-      //     const paymentData = {
-      //       orderNo: orderNo ? parseInt(orderNo, 10) : 0,
-      //       methodId: 6,
-      //       IsEmbeddedSupported: false
-      //     };
-
-      //     this.paymentService.executeDirectPayment(paymentData).subscribe(async response => {
-      //       if (response.successMessages.redirectionURL != null) {
-      //         let link = response.successMessages.redirectionURL;
-      //         this.cartService.clearCart();
-      //         await Browser.open({ url: link });
-      //          this.presentSuccessAlert("You are redirecting to payment gateway once you approved you will get an email from us. Please make payment.");
-      //          this.router.navigate(['/tabs/home']);
-      //       }
-      //     }, error => {
-      //       console.error('Payment Error:', error);
-      //     });
-      //     //if PaymentMethodId is 6 then navigate to success page
-      //     //this.router.navigate(['/success']);
-      //   }
-      //   // let link = response.successMessages.redirectionURL;
-      //   // this.cartService.clearCart();
-      //   // await Browser.open({ url: link });
-      //   // this.presentSuccessAlert("You are redirecting to payment gateway once you approved you will get an email from us. Please make payment.");
-      //   // this.router.navigate(['/tabs/home']);
-      //   console.log(response);
-      // } else {
-      //   this.handleErrors(response.errorMessages.Errors);
-      //   console.error('Error submitting order', response);
-      // }
     }, error => {
       console.log("errror ", 'Error submitting order', error);
       this.loadingController.dismiss();
@@ -277,7 +245,7 @@ export class PaymentPage implements OnInit {
 
         // Present the modal
         await modal.present();
-        this.loadingController.dismiss(); 
+        this.loadingController.dismiss();
         // Handle the modal dismissal
         const { data } = await modal.onDidDismiss();
 
