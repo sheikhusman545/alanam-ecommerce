@@ -180,6 +180,7 @@ export class ProductDescriptionPage implements OnInit {
       productId: this.productData.productID,
       atributeID: this.attr_id || '',
       atributeItemID: this.attrubite_item_id || '',
+      is_eid : this.productData.is_eid > 0 ? 1 : 0,
     });
   }
 

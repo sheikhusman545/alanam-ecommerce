@@ -16,8 +16,8 @@
 </ion-header>
 
 <ion-content class="ion-padding" [scrollEvents]="true" (ionScroll)="onScroll($event)">
-  <swiper-container dir="rtl" rtl="true" [loop]="true" autoplay="true" 
-    [slidesPerView]="1" [slidesPerGroup]="1" [loopFillGroupWithBlank]="true">
+  <swiper-container dir="rtl" rtl="true" [loop]="true" autoplay="true" [slidesPerView]="1" [slidesPerGroup]="1"
+    [loopFillGroupWithBlank]="true">
     <swiper-slide swiperSlide>
       <img src="assets/images/70alanaam.jpeg" alt="Promo 1">
     </swiper-slide>
@@ -31,7 +31,7 @@
 
   <ion-grid>
     <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
-      <h2>{{'User Info' | translate}} 
+      <h2>{{'User Info' | translate}}
       </h2>
 
       <!-- Address Type -->
@@ -84,7 +84,7 @@
       </div>
 
 
-      <h2>{{'Shipping Address' | translate}}</h2>
+      <h2>{{'Customer Address' | translate}}</h2>
       <!-- City -->
       <ion-item id="city">
         <ion-label position="floating">{{'City' | translate}}</ion-label>
@@ -132,23 +132,23 @@
         {{'Zone No is required.' | translate}}
       </ion-note>
 
-      <ion-checkbox  [checked]="orderForm.get('saveAddress')?.value" 
-      (ionChange)="onSaveAddress($event)">
+      <ion-checkbox [checked]="orderForm.get('saveAddress')?.value" (ionChange)="onSaveAddress($event)">
         {{'Save Address' | translate}}
       </ion-checkbox>
       <!-- Delivery Method -->
-      <h2>{{'Delivery Method' | translate}}</h2>
+      <h2 *ngIf="is_eid">{{'PickUp Method' | translate}}</h2>
+      <h2 *ngIf="!is_eid">{{'Delivery Method' | translate}}</h2>
 
-      <ion-radio-group formControlName="deliveryMethod">
+      <ion-radio-group formControlName="deliveryMethod" >
         <ion-radio slot="start" justify="space-between" value="selfPickup" id="selfPickup">{{'Self Pickup' |
           translate}} &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;</ion-radio><br />
         <ion-radio slot="start" justify="space-between" value="Doorstep Delivery" id="homeDelivery">{{'Home Delivery' |
-          translate}} &nbsp;&nbsp; (20 QAR)</ion-radio> <br />
+          translate}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (20 QAR)</ion-radio> <br />
       </ion-radio-group>
 
       <!-- Delivery Time -->
       <ion-item>
-        <ion-label position="floating">{{'Delivery Time' | translate}}</ion-label>
+        <ion-label position="floating">{{'Select Time' | translate}}</ion-label>
         <ion-select formControlName="deliveryTime">
           <ion-select-option [selected]="true" value="10AM-01PM">10AM-01PM</ion-select-option>
           <ion-select-option value="01PM-04PM">01PM-04PM</ion-select-option>
@@ -156,15 +156,66 @@
         </ion-select>
       </ion-item>
 
+
+
+
+      <!-- <ion-item *ngIf="is_eid">
+        <ion-label position="floating">{{'Select Date' | translate}}</ion-label>
+        <ion-select formControlName="deliveryDate">
+           <ion-select-option [selected]="true" value="6June">6 June</ion-select-option> -->
+          <!-- <ion-select-option [selected]="true" value="7June">7 June</ion-select-option> -->
+          <!-- <ion-select-option [selected]="true" value="8June">8 June</ion-select-option>
+          <ion-select-option value="9June">9 June</ion-select-option>
+        </ion-select>
+      </ion-item> --> 
+
+      <!-- <ion-item *ngIf="is_eid">
+        <ion-label position="floating">{{ 'Select Time' | translate }}</ion-label>
+        <ion-select formControlName="deliveryTime">
+          <ion-select-option *ngFor="let time of filteredDeliveryTimes" [value]="time.value">
+            {{ time.label }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item> -->
+
+      <!-- <ion-item *ngIf="is_eid">
+        <ion-label position="floating">{{'Delivery Time' | translate}}</ion-label>
+        <ion-select formControlName="deliveryTime">
+          <ion-select-option [selected]="true" value="morning">Morning Hours</ion-select-option>
+          <ion-select-option value="afternoon">Afternoon Hours</ion-select-option>
+          <ion-select-option value="evening">Evening Hours</ion-select-option>
+        </ion-select>
+      </ion-item> -->
+
+      <ion-item button>
+        <ion-label  position="floating">Select Date</ion-label>
+        <ion-datetime formControlName="DeliveryDate" display-format="MMM dd, yyyy"
+         presentation="date" picker-format="MMM dd, yyyy" [min]="minDate" [max]="maxDate">
+        </ion-datetime>
+      </ion-item>
+
       <ion-note *ngIf="orderForm.get('deliveryTime')?.touched && orderForm.get('deliveryTime')?.invalid" color="danger">
         {{'Delivery Time is required.' | translate}}
       </ion-note>
-      <ion-note color="danger">
+
+      <ion-item>
+        <ion-label position="floating">{{'Select Location' | translate}}</ion-label>
+        <ion-select formControlName="location">
+          <ion-select-option selected="true" value="Alanaam-factory">Al Anaam Factory</ion-select-option>
+          <ion-select-option value="Lohud-Al-Rayan">Lohud Al Rayan</ion-select-option>
+          <ion-select-option value="Lohud-MAnaseer">Lohud Manaseer</ion-select-option>
+          <ion-select-option value="Lohud-Madina-Khalifa">Lohud Madina Khalifa</ion-select-option>
+          <ion-select-option value="Lohud-Al-Gharafa">Lohud Al Gharafa</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-note color="danger" *ngIf="!is_eid">
         <p>{{'Any order before 3 PM will be delivered the same day.' | translate}}</p>
         <p>{{'Orders after 3 PM will be delivered the next day.' | translate}}</p>
 
       </ion-note>
-      <ion-button expand="full" type="submit">{{'Pay Now' | translate}} ({{totalAmount + additionalCharge}} QAR)</ion-button>
+      <ion-button expand="full" type="submit">{{'Pay Now' | translate}} ({{totalAmount + additionalCharge}}
+        QAR)</ion-button>
 
     </form>
   </ion-grid>

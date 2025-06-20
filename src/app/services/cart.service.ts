@@ -13,6 +13,7 @@ export interface CartItem {
   price: any;
   atributeID?: any;
   atributeItemID?: any;
+  is_eid?: number;
 }
 
 @Injectable({
@@ -25,33 +26,132 @@ export class CartService {
   private cartItemCount = new BehaviorSubject<number>(this.getCartItemCount());
   cartItemCount$ = this.cartItemCount.asObservable();
 
-  constructor() {}
+  constructor() { }
 
-   getCartFromStorage(): CartItem[] {
+  getCartFromStorage(): CartItem[] {
     const storedCart = localStorage.getItem('cart');
     return storedCart ? JSON.parse(storedCart) : [];
   }
 
   // Save cart to localStorage
-   saveCartToStorage(cart: CartItem[]) {
+  saveCartToStorage(cart: CartItem[]) {
     localStorage.setItem('cart', JSON.stringify(cart));
   }
 
+  // addProduct(product: CartItem) {
+  //   console.log('Adding product to cart:', product);
+  //   const currentCart = this.cart.value;
+  //   if (product.is_eid) {
+  //     console.log('EID product detected. Clearing previous cart.');
+  //     this.clearCart();
+  //   }
+  //   const index = currentCart.findIndex(
+  //     (item) => item.productId === product.productId && this.matchproductAttributes(item.productAttributes, product.productAttributes)
+  //   );
+
+  //   if (index > -1) {
+  //     currentCart[index].quantity += 1;
+  //     currentCart[index].totalPrice = currentCart[index].price * currentCart[index].quantity + (currentCart[index].slaughterCharge * currentCart[index].quantity);
+  //   } else {
+  //     product.quantity = 1;
+  //     product.totalPrice = Number(product.price) + Number(product.slaughterCharge);  // Initialize totalPrice
+  //     currentCart.push(product);
+  //   }
+
+  //   this.cart.next(currentCart);
+  //   this.saveCartToStorage(currentCart);
+  //   this.updateCartCount();
+  // }
+
+
+  // Remove product or decrease quantity
+
+  // addProduct(product: CartItem) {
+  //   console.log('Adding product to cart:', product);
+
+  //   let currentCart = this.cart.value;
+  //   const isIncomingEid = !!product.is_eid;
+  //   const existingIndex = currentCart.findIndex(
+  //     (item) =>
+  //       item.productId === product.productId &&
+  //       this.matchproductAttributes(item.productAttributes, product.productAttributes)
+  //   );
+
+  //   const cartHasEid = currentCart.some(item => item.is_eid);
+
+  //   // 🛑 If product is EID and cart has a different product, clear cart
+  //   if (isIncomingEid) {
+  //     if (existingIndex === -1 || !cartHasEid) {
+  //       console.log('Incoming product is EID. Cart does not match — clearing cart.');
+  //       currentCart = [];
+  //     }
+  //   }
+
+  //   // 🛑 If cart has an EID item, only allow same product
+  //   if (cartHasEid && !isIncomingEid) {
+  //     console.warn('Cart has an EID item. Non-EID products are blocked.');
+  //     return;
+  //   }
+
+  //   if (cartHasEid && isIncomingEid && existingIndex === -1) {
+  //     console.warn('Cart has an EID item. Different EID product is blocked.');
+  //     return;
+  //   }
+
+  //   // ✅ Safe to add or increment product
+  //   if (existingIndex > -1) {
+  //     currentCart[existingIndex].quantity += 1;
+  //     currentCart[existingIndex].totalPrice =
+  //       currentCart[existingIndex].price * currentCart[existingIndex].quantity +
+  //       (currentCart[existingIndex].slaughterCharge * currentCart[existingIndex].quantity);
+  //   } else {
+  //     product.quantity = 1;
+  //     product.totalPrice = Number(product.price) + Number(product.slaughterCharge);
+  //     currentCart.push(product);
+  //   }
+
+  //   this.cart.next(currentCart);
+  //   this.saveCartToStorage(currentCart);
+  //   this.updateCartCount();
+  // }
+
   addProduct(product: CartItem) {
-    const currentCart = this.cart.value;
-    const index = currentCart.findIndex(
-      (item) => item.productId === product.productId && this.matchproductAttributes(item.productAttributes, product.productAttributes)
+    console.log('Adding product to cart:', product);
+
+    let currentCart = this.cart.value;
+    const isIncomingEid = !!product.is_eid;
+
+    const existingIndex = currentCart.findIndex(
+      (item) =>
+        item.productId === product.productId &&
+        this.matchproductAttributes(item.productAttributes, product.productAttributes)
     );
-  
-    if (index > -1) {
-      currentCart[index].quantity += 1;
-      currentCart[index].totalPrice = currentCart[index].price * currentCart[index].quantity + (currentCart[index].slaughterCharge * currentCart[index].quantity);
+
+    const cartHasEid = currentCart.some(item => item.is_eid);
+
+    // 🧹 If incoming product is EID, remove all non-EID items
+    if (isIncomingEid) {
+      currentCart = currentCart.filter(item => item.is_eid);
+    }
+
+    // 🚫 If cart has any EID product, block non-EID additions
+    if (!isIncomingEid && cartHasEid) {
+      console.warn('Cart has EID items. Non-EID product blocked.');
+      return;
+    }
+
+    // ✅ Add or update the product
+    if (existingIndex > -1) {
+      currentCart[existingIndex].quantity += 1;
+      currentCart[existingIndex].totalPrice =
+        currentCart[existingIndex].price * currentCart[existingIndex].quantity +
+        (currentCart[existingIndex].slaughterCharge * currentCart[existingIndex].quantity);
     } else {
       product.quantity = 1;
-      product.totalPrice = Number(product.price) + Number(product.slaughterCharge)  ;  // Initialize totalPrice
+      product.totalPrice = Number(product.price) + Number(product.slaughterCharge);
       currentCart.push(product);
     }
-  
+
     this.cart.next(currentCart);
     this.saveCartToStorage(currentCart);
     this.updateCartCount();

@@ -17,6 +17,7 @@ import { LanguageService } from '../services/language.service';
 import { PaymentMethodModalComponent } from '../components/payment-method-modal/payment-method-modal.component';
 import { PaymentService } from '../services/payment.service';
 import { HttpHeaders } from '@angular/common/http';
+
 declare var google: any;
 
 @Component({
@@ -33,6 +34,8 @@ export class PaymentPage implements OnInit {
   isArabic = true;
   cartItems: CartItem[] = [];
   totalAmount = 0;
+  minDate: string | undefined;
+  maxDate: string | undefined;
   cartCount = this.cartService.cartItemCount$ || 0;
   count: any = 0;
   formattedDate: string;
@@ -45,8 +48,17 @@ export class PaymentPage implements OnInit {
   apiErrors: { [key: string]: string } = {};
   additionalCharge: number = 0;
   private subscriptions: Subscription = new Subscription();
-  private token: any = localStorage.getItem('JWT_Token'); 
-  
+  private token: any = localStorage.getItem('JWT_Token');
+  is_eid: any = 0;
+  // deliveryTimes = [
+  //   { value: 'morning', label: 'Morning Hours' },
+  //   { value: 'afternoon', label: 'Afternoon Hours' },
+  //   { value: 'evening', label: 'Evening Hours' }
+  // ];
+
+  // filteredDeliveryTimes = [...this.deliveryTimes];
+
+
   constructor(
     private formBuilder: FormBuilder,
     private httpClient: HttpClientService,
@@ -63,6 +75,13 @@ export class PaymentPage implements OnInit {
     private paymentService: PaymentService,
     private modalController: ModalController
   ) {
+    const today = new Date();
+    this.minDate = today.toISOString(); // today
+    const max = new Date(today);
+    max.setDate(today.getDate() + 3);   // +3 days from today
+    this.maxDate = max.toISOString();
+    this.orderForm = this.formBuilder.group({
+    });
     const now = new Date();
     this.formattedDate = this.datePipe.transform(now, 'dd-MM-yyyy EEE') as string;
     this.orderForm = this.formBuilder.group({
@@ -76,14 +95,17 @@ export class PaymentPage implements OnInit {
       companyName: [''],
       buildingName_No: ['', Validators.required],
       streetName_No: ['', Validators.required],
-      deliveryTime: ['10AM-01PM', Validators.required],
+      deliveryTime: ["10AM-01PM", Validators.required],
       zoneNo: ['', Validators.required],
-      saveAddress: [false]
+      saveAddress: [false],
+      deliveryDate: ['8June'],
+      location: ['Alanaam-factory'],
+      DeliveryDate: [today.toISOString()]
 
     });
   }
   async ngOnInit() {
-    //this.currentLanguage = this.lan.getCurrentLanguage();
+
     this.subscriptions.add(
       this.languageService.language$.subscribe((language) => {
         this.currentLanguage = language;
@@ -98,11 +120,41 @@ export class PaymentPage implements OnInit {
     this.ifDoorStepDelivery();
     this.loadSavedAddress();
     this.loadingController.dismiss();
+
+    // this.filterDeliveryTimes(this.orderForm.get('deliveryDate')?.value);
+
+    // // Subscribe to changes
+    // this.orderForm.get('deliveryDate')?.valueChanges.subscribe(value => {
+    //   this.filterDeliveryTimes(value);
+    // });
   }
+
+  // filterDeliveryTimes(selectedDate: string) {
+  //   if (selectedDate === '6June') {
+  //     this.filteredDeliveryTimes = this.deliveryTimes.filter(time => time.value !== 'morning');
+  //     if (this.orderForm.get('deliveryTime')?.value === 'morning') {
+  //       this.orderForm.get('deliveryTime')?.setValue(null);
+  //     }
+  //   } else {
+  //     this.filteredDeliveryTimes = [...this.deliveryTimes];
+  //   }
+  // }
+
 
   private subscribeToCart() {
     this.cartSubscription = this.cartService.cart$.subscribe((items) => {
       this.cartItems = items;
+      this.is_eid = this.cartItems[0].is_eid;
+      // if (this.is_eid) {
+      //   this.orderForm.patchValue({
+      //     deliveryTime: 'afternoon', // ✅ final EID time label
+      //   });
+      // } else {
+      //   this.orderForm.patchValue({
+      //     deliveryTime: '10AM-01PM', // ✅ final EID time label
+      //   });
+      // }
+      console.log('Cart items:', this.cartItems);
     });
 
     this.cartCount.subscribe((count: any) => {
@@ -195,10 +247,26 @@ export class PaymentPage implements OnInit {
     formData.append("otherDiscount", "0");
     formData.append("grantTotal", (this.totalAmount + shippingCharge).toString());
     formData.append("paymentType", "Online");
-    //formData.append("DeliveryMethod", this.orderForm.value.deliveryMethod);
-    formData.append("DeliveryMethod", paymentMethod.PaymentMethodEn);
-    formData.append("DeliveryDate", this.formattedDate);
-    formData.append("DeliveryTime", ''); //this.orderForm.value.deliveryTime
+    formData.append("DeliveryMethod", this.orderForm.value.deliveryMethod);
+    //formData.append("DeliveryMethod", paymentMethod.PaymentMethodEn);
+    // if (this.is_eid) {
+    //   formData.append("DeliveryDate", this.orderForm.value.deliveryDate);
+    //   formData.append("DeliveryTime", this.orderForm.value.deliveryTime);
+    //   formData.append("location", this.orderForm.value.location);
+    //   formData.append("is_eid", this.is_eid);
+    // } else {
+    const deliveryDate = this.orderForm.value.DeliveryDate;
+
+    const dateObj = new Date(deliveryDate);
+    const formattedDate = dateObj.toISOString().split('T')[0]; // "2025-06-19"
+    const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const dayName = weekdays[dateObj.getDay()]; // "Thu" in this case
+    const finalString = `${formattedDate} ${dayName}`;
+    formData.append("DeliveryDate", finalString|| this.formattedDate);
+    formData.append("DeliveryTime", this.orderForm.value.deliveryTime); //this.orderForm.value.deliveryTime
+    formData.append("location", this.orderForm.value.location);
+
+    //}
     formData.append("paymentMethod", "card");
     formData.append("addressType", this.orderForm.value.addressType);
     formData.append("AddressTypeName", this.isCompany ? this.orderForm.value.companyName : '');
@@ -222,6 +290,8 @@ export class PaymentPage implements OnInit {
         await Browser.open({ url: response.successMessages.paymentLink });
         this.loadingController.dismiss();
         this.presentSuccessAlert("You are redirecting to payment gateway once you approved you will get an email from us. Please make payment.");
+        //clear cart
+        this.cartService.clearCart();
         this.router.navigate(['/tabs/home']);
       }
     }, error => {

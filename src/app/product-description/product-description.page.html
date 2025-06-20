@@ -24,7 +24,8 @@
             <ion-label class="sub_heading">QAR {{ productData.productPrice }}</ion-label>
             <ion-label class="sub_ttl"></ion-label>
           </div>
-
+          <ion-badge *ngIf="productData.is_eid == 1" color="danger">Eid Special</ion-badge>
+          <p><ion-note color="danger" *ngIf="productData.is_eid == 1">This is an Eid product. Adding it will remove all non-Eid items from your cart..</ion-note></p>
           <ion-label class="sub_heading desc">{{'Description' | translate}}</ion-label>
           <p class="desc-info">{{ currentLanguage == 'ar' ? productData.ar_ProductDescription
             :productData.en_ProductDescription }}
