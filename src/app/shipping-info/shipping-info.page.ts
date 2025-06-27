@@ -37,6 +37,8 @@ export class ShippingInfoPage implements OnInit {
   grandTotal: any = 0;
   additionalCharge: number = 0;
   private subscriptions: Subscription = new Subscription();
+  minDate: string;
+  maxDate: string;
 
 
   constructor(
@@ -52,8 +54,13 @@ export class ShippingInfoPage implements OnInit {
     private ngZone: NgZone,
     private renderer: Renderer2,
     private activatedRoute: ActivatedRoute
-    
+
   ) {
+    const today = new Date();
+    this.minDate = today.toISOString(); // today
+    const max = new Date(today);
+    max.setDate(today.getDate() + 3);   // +3 days from today
+    this.maxDate = max.toISOString();
     this.orderForm = this.formBuilder.group({
       customerName: ['', Validators.required],
       emailID: ['', [Validators.required, Validators.email]],
@@ -66,7 +73,9 @@ export class ShippingInfoPage implements OnInit {
       streetName_No: ['', Validators.required],
       landMark: ['', Validators.required],
       deliveryTime: ['10AM-01PM', Validators.required],
-      saveAddress: [false]
+      saveAddress: [false],
+      DeliveryDate: [today.toISOString()],
+      pickupLocation: ['Alanaam-factory', Validators.required],
     });
     this.setButtonText();
   }
@@ -79,7 +88,7 @@ export class ShippingInfoPage implements OnInit {
         console.log(`Language changed to: ${language}`);
       })
     );
-    
+
     this.setButtonText()
     const loading = await this.loadingController.create({
       message: 'Loading...',
@@ -94,7 +103,7 @@ export class ShippingInfoPage implements OnInit {
         }
       }
     );
-    if (this.grandTotal === 0) { 
+    if (this.grandTotal === 0) {
       this.navCtrl.back();
     }
 
@@ -111,17 +120,17 @@ export class ShippingInfoPage implements OnInit {
 
   }
   getTotal(): void {
-   
-   this.grandTotal = this.bookingCart.reduce((total, item) => {
+
+    this.grandTotal = this.bookingCart.reduce((total, item) => {
       const quantity = item.quantity || 0;
       const price = Number(item.price) || 0;
       const slaughterCharge = Number(item.slaughterCharge) || 0;
       const cuttingAmount = Number(item.cuttingAmount) || 0;
-  
+
       return total + (quantity * (price + slaughterCharge + cuttingAmount));
     }, 0);
   }
-  
+
   ifDoorStepDelivery() {
     this.orderForm.get('deliveryMethod')?.valueChanges.subscribe((method) => {
       if (method === 'Doorstep Delivery') {
@@ -199,6 +208,16 @@ export class ShippingInfoPage implements OnInit {
       formdata.append('city', this.orderForm.value.city);
       formdata.append('deliveryTime', this.orderForm.value.deliveryTime);
       formdata.append('paymentType', 'Self Payment');
+      const deliveryDate = this.orderForm.value.DeliveryDate;
+
+      const dateObj = new Date(deliveryDate);
+      const formattedDate = dateObj.toISOString().split('T')[0]; // "2025-06-19"
+      const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      const dayName = weekdays[dateObj.getDay()]; // "Thu" in this case
+      const finalString = `${formattedDate} ${dayName}`;
+      formdata.append("deliveryDate", finalString) ;
+      formdata.append('pickupLocation', this.orderForm.value.pickupLocation);
+
 
       this.httpClient.post('ecom/booking', formdata).subscribe(
         async (response) => {
@@ -316,7 +335,7 @@ export class ShippingInfoPage implements OnInit {
   onSaveAddress(event: any) {
     const isChecked = event.detail.checked;
     this.orderForm.get('saveAddress')?.setValue(isChecked);
-  
+
     if (isChecked) {
       const addressData = {
         city: this.orderForm.value.city,
@@ -329,7 +348,7 @@ export class ShippingInfoPage implements OnInit {
       localStorage.removeItem('savedAddress');
     }
   }
-  
+
   loadSavedAddress() {
     const savedAddress = localStorage.getItem('savedAddress');
     if (savedAddress) {

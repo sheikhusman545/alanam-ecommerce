@@ -184,8 +184,7 @@
         Landmark is required.
       </ion-note>
 
-      <ion-checkbox  [checked]="orderForm.get('saveAddress')?.value" 
-      (ionChange)="onSaveAddress($event)">
+      <ion-checkbox [checked]="orderForm.get('saveAddress')?.value" (ionChange)="onSaveAddress($event)">
         Save Address
       </ion-checkbox>
       <!-- Delivery Method -->
@@ -200,11 +199,30 @@
 
       <!-- Delivery Time -->
       <ion-item>
-        <ion-label position="floating">{{'Delivery Time' | translate}}</ion-label>
+        <ion-label position="floating">{{'Select Time' | translate}}</ion-label>
         <ion-select formControlName="deliveryTime" [okText]="okButtonText" [cancelText]="cancelButtonText">
           <ion-select-option value="10AM-01PM">10AM-01PM</ion-select-option>
           <ion-select-option value="01PM-04PM">01PM-04PM</ion-select-option>
           <ion-select-option value="04PM-08PM">04PM-08PM</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+
+      <ion-item button>
+        <ion-label position="floating" >Select Date</ion-label>
+        <ion-datetime formControlName="DeliveryDate" display-format="MMM dd, yyyy" presentation="date"
+          picker-format="MMM dd, yyyy" [min]="minDate" [max]="maxDate">
+        </ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">{{'Select Location' | translate}}</ion-label>
+        <ion-select formControlName="pickupLocation">
+          <ion-select-option selected="true" value="Alanaam-factory">Al Anaam Factory</ion-select-option>
+          <ion-select-option value="Lohud-Al-Rayan">Lohud Al Rayan</ion-select-option>
+          <ion-select-option value="Lohud-MAnaseer">Lohud Manaseer</ion-select-option>
+          <ion-select-option value="Lohud-Madina-Khalifa">Lohud Madina Khalifa</ion-select-option>
+          <ion-select-option value="Lohud-Al-Gharafa">Lohud Al Gharafa</ion-select-option>
         </ion-select>
       </ion-item>
 
