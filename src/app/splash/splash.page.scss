@@ -1,12 +1,27 @@
+ion-page {
+  --ion-background-color: #eee !important; // White background
+}
+
 ion-content {
-    --background: #eee; // White background
-  
-  
+  --background: white !important; // White background
+
+
   .splash-container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
   }
+.animate {
+  animation: fadeOut 1s forwards;
+}
 
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
 }

@@ -8,26 +8,24 @@ import { Platform } from '@ionic/angular';
   styleUrls: ['./splash.page.scss'],
 })
 export class SplashPage implements OnInit {
+  animationClass = '';
 
- //audio: HTMLAudioElement;
-
-  constructor(private platform: Platform, private navCtrl: NavController
-  ) {
-  //  this.audio = new Audio('assets/images/start.mp3'); // Set the path to your audio file
-  }
+  constructor(
+    private platform: Platform,
+    private navCtrl: NavController
+  ) { }
 
   async ngOnInit() {
     await this.platform.ready();
 
-    // Try to play the audio
-    // try {
-    //   await this.audio.play();
-    // } catch (error) {
-    // }
+    // Wait 3s BEFORE starting animation
     setTimeout(() => {
+      this.animationClass = 'animate';
 
-      this.navCtrl.navigateRoot('tabs/home');
-    }, 4000);
+      // Wait for animation duration (3s) before navigating
+      setTimeout(() => {
+        this.navCtrl.navigateRoot('tabs/home');
+      }, 300);
+    }, 3000);
   }
-
 }

@@ -26,7 +26,7 @@ export class ProductsService {
     return this.http.get<any>(this.url + 'ecom/shopping/getproducts?featuredProductPriority=1');
   }
   getNewProducts(): Observable<any> {
-    return this.http.get<any>(this.url + 'ecom/shopping/getproducts');
+    return this.http.get<any>(this.url + 'ecom/shopping//getproducts?newProductPriority=1');
   }
   getSearchedProducts(searchTerm: string): Observable<any> {
     return this.http.get<any>(`${this.url}ecom/shopping/getproducts?keyword=${searchTerm}`);
