@@ -67,6 +67,8 @@ ion-list {
   gap: 40px;
   background: no-repeat;
   margin-top: 50px;
+  height: 110vh;
+  overflow-y: scroll;
 }
 
 .products-section {

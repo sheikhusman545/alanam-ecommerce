@@ -197,6 +197,8 @@
           translate}} &nbsp;&nbsp; (20 QAR)</ion-radio>
       </ion-radio-group>
 
+      <h2>{{'Time & Date Selection' | translate}}</h2>
+
       <!-- Delivery Time -->
       <ion-item>
         <ion-label position="floating">{{'Select Time' | translate}}</ion-label>
@@ -209,14 +211,16 @@
 
 
       <ion-item button>
-        <ion-label position="floating">Select Date</ion-label>
+        <ion-label position="floating" style="margin-bottom: 10px;">Select Date</ion-label>
         <ion-datetime formControlName="DeliveryDate" display-format="MMM dd, yyyy" presentation="date"
           picker-format="MMM dd, yyyy" [min]="minDate" [max]="maxDate">
         </ion-datetime>
       </ion-item>
 
+      <h2>{{'Location Selection' | translate}}</h2>
+
       <ion-item>
-        <ion-label position="floating">{{'Select Location' | translate}}</ion-label>
+        <ion-label position="floating">{{'Location' | translate}}</ion-label>
         <ion-select formControlName="pickupLocation">
           <ion-select-option selected="true" value="Alanaam-factory">Al Anaam Factory</ion-select-option>
           <ion-select-option value="Lohud-Al-Rayan">Lohud Al Rayan</ion-select-option>
