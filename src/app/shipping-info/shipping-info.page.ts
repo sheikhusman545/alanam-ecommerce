@@ -193,7 +193,7 @@ export class ShippingInfoPage implements OnInit {
         formdata.append(`slaughterCharge`, cartItem.slaughterCharge || '0.00');
         formdata.append(`cuttingAmount`, cartItem.cuttingAmount || '0');
         formdata.append(`orderTotal`, this.grandTotal + this.additionalCharge || '0');
-        formdata.append(`payableAmount`, this.grandTotal + this.additionalCharge || '0');
+        formdata.append(`payableAmount`, this.grandTotal || '0');
       });
       formdata.append('customerName', this.orderForm.value.customerName);
       formdata.append('deliveryMethod', this.orderForm.value.deliveryMethod);
