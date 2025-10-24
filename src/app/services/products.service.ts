@@ -31,4 +31,16 @@ export class ProductsService {
   getSearchedProducts(searchTerm: string): Observable<any> {
     return this.http.get<any>(`${this.url}ecom/shopping/getproducts?keyword=${searchTerm}`);
   }
+
+  // ...existing code...
+
+  getProductPrices(productIds: string[]): Observable<any> | null {
+    if (!productIds || productIds.length === 0) {
+      return null; // Don't call the API if cart is empty
+    }
+    return this.http.post<any>(
+      this.url + 'ecom/shopping/getproductprices',
+      { productIds }
+    );
+  }
 }

@@ -93,3 +93,4 @@ al-anaam/
 
 ---
 
+#https://shopapi.alanaam.qa/api/app-version/latest

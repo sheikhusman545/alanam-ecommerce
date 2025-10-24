@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { ToastController } from '@ionic/angular';
 
 export interface CartItem {
   productId: number;
   quantity: number;
-  productAttributes: { [key: string]: any }; 
+  productAttributes: { [key: string]: any };
   product: any;
   totalPrice: number;
   cuttingAmount: '';
@@ -26,7 +27,8 @@ export class CartService {
   private cartItemCount = new BehaviorSubject<number>(this.getCartItemCount());
   cartItemCount$ = this.cartItemCount.asObservable();
 
-  constructor() { }
+  constructor(private toastController: ToastController) { }
+
 
   getCartFromStorage(): CartItem[] {
     const storedCart = localStorage.getItem('cart');
@@ -156,7 +158,7 @@ export class CartService {
     this.saveCartToStorage(currentCart);
     this.updateCartCount();
   }
-  
+
 
   // Remove product or decrease quantity
   removeProduct(productId: number, productAttributes: { [key: string]: any }) {
@@ -196,8 +198,88 @@ export class CartService {
     this.cartItemCount.next(count); // Update cart count observable
   }
 
+  // CartService
+  updatePrices(prices: any[]) {
+    let currentCart = this.cart.value;
+    console.log("Updating cart prices with:", prices);
+    let updated = false;
+    let removedItems: string[] = [];
+
+    // Filter out items with status = "2" (disabled)
+    currentCart = currentCart.filter(item => {
+      const priceInfo = prices.find(p => String(p.productID) === String(item.productId));
+      
+      // If product not found or status is "2", remove it
+      if (!priceInfo || String(priceInfo.status) == "2") {
+        removedItems.push(item.productName);
+        updated = true;
+        return false; // Remove this item
+      }
+      
+      return true; // Keep this item
+    });
+
+    // Update prices for remaining items
+    currentCart = currentCart.map(item => {
+      const priceInfo = prices.find(p => String(p.productID) === String(item.productId));
+      if (priceInfo) {
+        const newPrice = Number(priceInfo.productPrice);
+        const newSlaughter = Number(priceInfo.SlaughterCharge || 0);
+
+        // Only update if changed
+        if (item.price !== newPrice || item.slaughterCharge !== newSlaughter) {
+          item.price = newPrice;
+          item.slaughterCharge = newSlaughter;
+
+          item.totalPrice =
+            (item.price * item.quantity) +
+            (item.slaughterCharge * item.quantity) +
+            (Number(item.cuttingAmount) * item.quantity || 0);
+
+          updated = true;
+        }
+      }
+      return item;
+    });
+
+    if (updated) {
+      this.cart.next(currentCart);
+      this.saveCartToStorage(currentCart);
+      this.updateCartCount();
+
+      // Show appropriate message based on what was updated
+      if (removedItems.length > 0) {
+        const message = removedItems.length === 1
+          ? `"${removedItems[0]}" has been removed (no longer available)`
+          : `${removedItems.length} items have been removed (no longer available)`;
+        this.showToast(message);
+      } else {
+        this.showToast("Cart prices have been updated");
+      }
+
+      console.log("Cart updated with new prices");
+      if (removedItems.length > 0) {
+        console.log("Removed disabled items:", removedItems);
+      }
+    } else {
+      console.log("Prices unchanged — cart left as is");
+    }
+  }
+
+
   private getCartItemCount(): number {
     const cart = this.getCartFromStorage();
     return cart.reduce((total, item) => total + item.quantity, 0);
   }
+
+  private async showToast(message: string) {
+    const toast = await this.toastController.create({
+      message,
+      duration: 2000, // 2 seconds
+      position: 'bottom',
+      color: 'success' // you can use "primary" | "danger" | "warning" etc.
+    });
+    await toast.present();
+  }
+
 }

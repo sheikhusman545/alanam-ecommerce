@@ -4,6 +4,8 @@ import { CartItem, CartService } from '../services/cart.service';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { LanguageService } from '../services/language.service';
+import { ProductsService } from '../services/products.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-cart',
@@ -23,7 +25,8 @@ export class CartPage implements OnInit, OnDestroy {
     private router: Router,
     private cartService: CartService,
     private authService: AuthService,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private productsService: ProductsService
   ) {}
 
   ngOnInit() {
@@ -83,10 +86,38 @@ export class CartPage implements OnInit, OnDestroy {
 
   }
 
-  proceedToCheckout() {
-    if (this.cartItems.length === 0) return;
+  // proceedToCheckout() {
+  //   if (this.cartItems.length === 0) return;
+  //   this.isAuthenticated();
+  // }
+
+
+async proceedToCheckout() {
+  if (this.cartItems.length === 0) return;
+
+  const productIds = this.cartItems.map(item => String(item.productId));
+
+  try {
+    const pricesObservable = this.productsService.getProductPrices(productIds);
+    if (!pricesObservable) {
+      console.error('No product prices observable returned.');
+      return;
+    }
+    const response = await firstValueFrom(pricesObservable);
+    console.log('Product prices response:', response.requestedData.PrdPrices);
+
+    if (response) {
+      this.cartService.updatePrices(response.requestedData.PrdPrices);
+      this.calculateTotal();
+    }
+
     this.isAuthenticated();
+  } catch (err) {
+    console.error('Error fetching product prices:', err);
   }
+}
+
+
 
   isAuthenticated() {
     this.authService.check().subscribe({
